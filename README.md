@@ -5,7 +5,7 @@
 - git
 - JUnit
 
-# Idée
+# Idées
 - Chat (la messagerie)
 - Jeu
     - Quizz
