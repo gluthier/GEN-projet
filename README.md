@@ -5,14 +5,8 @@
 - git
 - JUnit
 
-# Idées
-- Chat (la messagerie)
-- Jeu
-    - Quizz
-    - Go
-    - PaperRun
-    - **Exploding Kittens**
-- Service pour les taxis
+# Projet
+- Frogger / Descente de ski valaisan
 
 # Auteurs
 - *Gabriel Luthier*
