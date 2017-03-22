@@ -1,0 +1,198 @@
+\newcommand\auteur{Gabriel Luthier, Maxime Guillod \& Guillaume Milani}
+\newcommand\cours{GEN}
+\newcommand\ecole{IL - TIC - HEIG-VD}
+\newcommand\domaine{Mini-Projet}
+\newcommand\titre{Frogger}
+
+\documentclass[a4paper,11pt]{article}
+%
+\author{\auteur}
+\title{\titre}
+\date{\today}
+
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{listingsutf8}
+\usepackage{color}
+\usepackage{enumerate}
+\usepackage[utf8]{inputenc}
+\usepackage[frenchb]{babel}
+\usepackage{float}
+\usepackage{geometry}
+\usepackage{amssymb,mathtools,pifont} 
+\usepackage{enumitem}
+\usepackage{xspace}
+\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2.5cm}
+\selectlanguage{frenchb}
+\frenchbsetup{StandardLists=true}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg}
+\setlength\parindent{0pt}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%
+\floatname{algorithm}{Algorithme}
+\algrenewcommand\algorithmicrequire{\textbf{Données :}}
+\algrenewcommand\algorithmicensure{\textbf{Résultat :}}
+%
+\algnewcommand\algorithmicto{\textbf{to}}
+\algrenewtext{For}[3]{\algorithmicfor\ #1 $\gets$ #2 \algorithmicto\ #3 \algorithmicdo}
+%
+\algrenewcommand{\algorithmiccomment}[1]{\hfill{\color{blue}$\triangleright$ #1}}
+
+% headers & footers
+\pagestyle{fancy}
+
+\lhead{\domaine}
+\rhead{\titre}
+
+\lfoot{\auteur}
+\cfoot{}
+\rfoot{\thepage}
+
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{lightblue}{rgb}{0.0,0.0,0.9}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\definecolor{darkred}{rgb}{0.6,0.0,0.0}
+\definecolor{maroon}{rgb}{0.5,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Define inport style 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstset{
+	breaklines=true, 
+	basicstyle=\scriptsize,
+	inputencoding=utf8/latin1,
+	extendedchars=true,
+	numbers=left,   
+	firstnumber=1,
+	numberfirstline=true, 
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{black}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	showstringspaces=false
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Define XML 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{XML}{
+	morestring=[s]{"}{"},
+	morecomment=[s]{?}{?},
+	morecomment=[s]{!--}{--},
+	commentstyle=\color{darkgreen},
+	moredelim=[s][\color{black}]{>}{<},
+	moredelim=[s][\color{red}]{\ }{=},
+	stringstyle=\color{blue},
+	identifierstyle=\color{maroon}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Define DTD 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\lstdefinelanguage{DTD}{
+	morestring=[b]",
+	morestring=[s]{>}{<},
+	morecomment=[s]{<?}{?>},
+	stringstyle=\color{black},
+	identifierstyle=\color{darkblue},
+	keywordstyle=\color{maroon},
+	morekeywords={ELEMENT,PCDATA}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% Define JSON 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand\JSONnumbervaluestyle{\color{blue}}
+\newcommand\JSONstringvaluestyle{\color{red}}
+
+% switch used as state variable
+\newif\ifcolonfoundonthisline
+
+\makeatletter
+
+\lstdefinelanguage{JSON}
+{
+	showstringspaces    = false,
+	keywords            = {false,true},
+	alsoletter          = 0123456789.,
+	morestring          = [s]{"}{"},
+	stringstyle         = \ifcolonfoundonthisline\JSONstringvaluestyle\fi,
+	MoreSelectCharTable =%
+	\lst@DefSaveDef{`:}\colon@json{\processColon@json}
+}
+
+% flip the switch if a colon is found in Pmode
+\newcommand\processColon@json{%
+	\colon@json%
+	\ifnum\lst@mode=\lst@Pmode%
+	\global\colonfoundonthislinetrue%
+	\fi
+}
+
+\lst@AddToHook{Output}{%
+	\ifcolonfoundonthisline%
+	\ifnum\lst@mode=\lst@Pmode%
+	\def\lst@thestyle{\JSONnumbervaluestyle}%
+	\fi
+	\fi
+	%override by keyword style if a keyword is detected!
+	\lsthk@DetectKeywords% 
+}
+
+% reset the switch at the end of line
+\lst@AddToHook{EOL}%
+{\global\colonfoundonthislinefalse}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%% BEGIN DOCUMENT 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+	
+	% Entete première page
+	\thispagestyle{empty}
+	%
+	\noindent \cours \hfill \ecole{} \newline
+	\noindent \auteur \hfill \today \newline
+	\hrule
+	\vspace{7mm}
+	\noindent {\large \bf \domaine } \hfill \titre {\large \bf }\\[3mm]
+	\hrule
+	
+	\tableofcontents
+	
+	\newpage
+	
+	\section{Introduction}
+		Du contenu
+		
+	\section{Partage des responsabilité serveur - client}
+	
+	\section{Fonctionnement général}
+	
+	\section{Cas d'utilisation}
+	
+	\section{Protocole d'échange entre le client et le serveur}
+	
+	\section{Ébauche du modèle de domaine}
+	
+	\section{Base de donnée}
+	
+	\section{Rôle des participants}
+	
+	\section{Plan d'itération}
+	
+\end{document}
+
