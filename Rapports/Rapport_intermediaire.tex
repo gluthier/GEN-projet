@@ -21,7 +21,7 @@
 \usepackage[frenchb]{babel}
 \usepackage{float}
 \usepackage{geometry}
-\usepackage{amssymb,mathtools,pifont} 
+\usepackage{amssymb,mathtools,pifont}
 \usepackage{enumitem}
 \usepackage{xspace}
 \geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2.5cm}
@@ -29,6 +29,7 @@
 \frenchbsetup{StandardLists=true}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \setlength\parindent{0pt}
+\setlength{\parskip}{1em}
 
 \usepackage{algorithm}
 \usepackage[noend]{algpseudocode}
@@ -65,16 +66,16 @@
 \definecolor{darkgreen}{rgb}{0,0.5,0}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Define inport style 
+%%%%%%% Define inport style
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \lstset{
-	breaklines=true, 
+	breaklines=true,
 	basicstyle=\scriptsize,
 	inputencoding=utf8/latin1,
 	extendedchars=true,
-	numbers=left,   
+	numbers=left,
 	firstnumber=1,
-	numberfirstline=true, 
+	numberfirstline=true,
 	keywordstyle=\color{blue}\ttfamily,
 	stringstyle=\color{red}\ttfamily,
 	commentstyle=\color{black}\ttfamily,
@@ -83,7 +84,7 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Define XML 
+%%%%%%% Define XML
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \lstdefinelanguage{XML}{
 	morestring=[s]{"}{"},
@@ -97,7 +98,7 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Define DTD 
+%%%%%%% Define DTD
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \lstdefinelanguage{DTD}{
 	morestring=[b]",
@@ -111,7 +112,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% Define JSON 
+%%%%%%% Define JSON
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newcommand\JSONnumbervaluestyle{\color{blue}}
 \newcommand\JSONstringvaluestyle{\color{red}}
@@ -147,7 +148,7 @@
 	\fi
 	\fi
 	%override by keyword style if a keyword is detected!
-	\lsthk@DetectKeywords% 
+	\lsthk@DetectKeywords%
 }
 
 % reset the switch at the end of line
@@ -156,11 +157,11 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%% BEGIN DOCUMENT 
+%%%%%%% BEGIN DOCUMENT
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-	
+
 	% Entete première page
 	\thispagestyle{empty}
 	%
@@ -170,29 +171,47 @@
 	\vspace{7mm}
 	\noindent {\large \bf \domaine } \hfill \titre {\large \bf }\\[3mm]
 	\hrule
-	
-	\tableofcontents
-	
-	\newpage
-	
-	\section{Introduction}
-		Du contenu
-		
-	\section{Partage des responsabilité serveur - client}
-	
-	\section{Fonctionnement général}
-	
-	\section{Cas d'utilisation}
-	
-	\section{Protocole d'échange entre le client et le serveur}
-	
-	\section{Ébauche du modèle de domaine}
-	
-	\section{Base de donnée}
-	
-	\section{Rôle des participants}
-	
-	\section{Plan d'itération}
-	
-\end{document}
 
+	\tableofcontents
+
+	\newpage
+
+	\section{Introduction}
+	\subsection{Objectifs de base}
+	Le but de ce projet est de réaliser une application client-serveur dans le cadre du cours GEN. Nous avons décidé de proposer un jeu de type « Frogger » en version valaisanne. \par
+
+	Le but du jeu sera de faire descendre une piste de ski à un Valaisan. Il devra éviter les skieurs genevois la traversant la piste à vive allure.
+
+	\subsection{Utilisation de l'applicatif}
+	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
+
+	L'administrateur peut régler les paramètres du jeu (« skin » du jeu, vitesse des obstacles, vitesse de rechargement de la bouteille de Fendant\texttrademark).
+
+	\subsection{Règles du jeu}
+	Pour le joueur 1 : le but est d'arriver en bas de la piste sans avoir heurté d'obstacle. \\
+	Pour le joueur 2 : le but est que le joueur 1 heurte un obstacle.
+
+	\subsection{Contraintes}
+	Le joueur 1 ne peut pas revenir en arrière, une fois descendu une portion de piste il peut s'arrêter, changer de «colonne», continuer à descendre. \par
+
+	Le joueur 2 peut envoyer des obstacles pour autant que la bouteille de Fendant\texttrademark ne soit pas vide.
+
+	\subsection{Priorités de développement}
+
+	\section{Partage des responsabilité serveur - client}
+
+	\section{Fonctionnement général}
+
+	\section{Cas d'utilisation}
+
+	\section{Protocole d'échange entre le client et le serveur}
+
+	\section{Ébauche du modèle de domaine}
+
+	\section{Base de donnée}
+
+	\section{Rôle des participants}
+
+	\section{Plan d'itération}
+
+\end{document}
