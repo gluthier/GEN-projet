@@ -26,3 +26,5 @@ hs_err_pid*
 *.log
 *.synctex.gz
 *.toc
+*.fls
+*.fdb_latexmk
