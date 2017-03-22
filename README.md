@@ -1,14 +1,17 @@
-# Requis
+# Frogger
+![Logo Frogger](Logo/logo.jpg)
+
+## Requis
 - Client-Server
 - BD
 - 2 acteurs
 - git
 - JUnit
 
-# Projet
+## Projet
 - Frogger / Descente de ski valaisan
 
-# Auteurs
+## Auteurs
 - *Gabriel Luthier*
 - *Maxime Guillod*
 - *Tony Clavien*
