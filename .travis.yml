@@ -1,1 +1,12 @@
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - oracle-java8-installer
+builds
 language: java
+jdk:
+  - oraclejdk8
+
+script: sh -c 'mvn clean test -f Application/frogger/pom.xml'
