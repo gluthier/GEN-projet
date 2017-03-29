@@ -30,3 +30,25 @@ hs_err_pid*
 *.fdb_latexmk
 *.lof
 *.lot
+
+# Maven
+Application/target/
+Application/pom.xml.tag
+Application/pom.xml.releaseBackup
+Application/pom.xml.versionsBackup
+Application/pom.xml.next
+Application/release.properties
+Application/dependency-reduced-pom.xml
+Application/buildNumber.properties
+Application/.mvn/timing.properties
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!/Application/.mvn/wrapper/maven-wrapper.jar
+
+# Netbeans
+Application/nbproject/private/
+Application/build/
+Application/nbbuild/
+Application/dist/
+Application/nbdist/
+Application/.nb-gradle/
