@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/gluthier/GEN-projet.svg?branch=master)](https://travis-ci.org/gluthier/GEN-projet)
 # Frogger
 ![Logo Frogger](Logo/logo.jpg)
 
