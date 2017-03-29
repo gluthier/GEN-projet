@@ -125,7 +125,12 @@
 
 	\section{Cas d'utilisation}
 
+	\newpage
 	\section{Protocole d'échange entre le client et le serveur}
+		\subsection{Communication}
+			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \\
+			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
+		\subsection{Données échangées}
 
 	\section{Ébauche du modèle de domaine}
 
@@ -133,6 +138,20 @@
 
 	\section{Rôle des participants}
 
+	\newpage
 	\section{Plan d'itération}
+		\begin{enumerate}
+			\item Création de l'interface de base
+			\item Ajout du 1er joueur avec les obstacles
+			\item Ajout du 2ème joueur en local
+			\item Mise en place des logiques de jeu
+				\subitem Conditions de départ
+				\subitem Conditions de victoire
+				\subitem Barre de recharge pour la pose d'obstacle
+			\item Ajout de la communication avec le serveur
+			\item Application administrateur
+			\item Ajout du Lobby
+			\item Finalisation 
+		\end{enumerate}
 
 \end{document}
