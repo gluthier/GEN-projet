@@ -1,6 +1,6 @@
 \newcommand\auteur{Tony Clavien, Maxime Guillod, Gabriel Luthier, \& Guillaume Milani}
 \newcommand\cours{GEN}
-\newcommand\ecole{IL - TIC - HEIG-VD}
+\newcommand\ecole{IL --- TIC --- HEIG-VD}
 \newcommand\domaine{Mini-Projet}
 \newcommand\titre{Frogger}
 
@@ -67,31 +67,35 @@
 	% \hrule
 
 	\tableofcontents
+	\listoffigures
+	\listoftables
 
 	\newpage
 
-	\section{Introduction}
+	\section{Fonctionnement général}
 	\subsection{Objectifs de base}
 	Le but de ce projet est de réaliser une application client-serveur dans le cadre du cours GEN. Nous avons décidé de proposer un jeu de type « Frogger » en version valaisanne. \par
 
 	Le but du jeu sera de faire descendre une piste de ski à un Valaisan. Il devra éviter les skieurs genevois la traversant la piste à vive allure.
 
+
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.7]{../Screenshots/demo.png}		\caption{Maquette d'une partie}
-		\label{fig:maquette}
+		\fbox{\includegraphics[scale=0.7]{../Screenshots/demo.png}}
+			\caption{Maquette d'une partie}
+			\label{maquette}
 	\end{figure}
 
 	Les zones rouges sont les zones à disposition du joueur 2 pour placer les obstacles, les sapins sont des obstacles fixes. Le joueur 1 gagne s'il atteint la zone en vert sans heurter d'obstacle.
 
 	\subsection{Utilisation de l'applicatif}
-	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
+	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier ($\leftarrow \downarrow \rightarrow$) et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait que l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
 
-	L'administrateur peut régler les paramètres du jeu (« skin » du jeu, vitesse des obstacles, vitesse de rechargement de la bouteille de Fendant\texttrademark).
+	L'administrateur peut régler les paramètres du jeu (« skin » du jeu, vitesse des obstacles, vitesse de rechargement de la bouteille de Fendant\texttrademark). L'administrateur est un rôle hérité de celui de joueur (un administrateur est donc avant tout un joueur). Ce droit est stocké dans la base de données.
 
 	\subsection{Règles du jeu}
-	Pour le joueur 1 : le but est d'arriver en bas de la piste sans avoir heurté d'obstacle. \\
-	Pour le joueur 2 : le but est que le joueur 1 heurte un obstacle.
+	Pour le joueur 1: le but est d'arriver en bas de la piste sans avoir heurté d'obstacle. \\
+	Pour le joueur 2: le but est que le joueur 1 heurte un obstacle.
 
 	\subsection{Contraintes}
 	Le joueur 1 ne peut pas revenir en arrière, une fois descendu une portion de piste il peut s'arrêter, changer de «colonne», continuer à descendre. \par
@@ -103,13 +107,21 @@
 	\begin{enumerate}
 		\item Première version du jeu «standalone» avec un seul joueur qui prend le rôle du joueur 1 (descendre la piste). Les obstacles sont envoyés aléatoirement. (En parallèle, développement du serveur et de l'API).
 		\item Ajout du deuxième joueur en local (les deux jouent sur la même machine avec des touches différentes du clavier).
-		\item Les joueurs jouent chacun sur leur machine et se connectent à un serveur distant centralisant la partie.
+		\item Les joueurs jouent chacun sur leur machine et se connectent à un serveur distant centralisant la partie. Lorsqu'un joueur se connecte, il voit la liste des parties crées (soit en attente d'un joueur, soit en cours). Il peut soit rejoindre une partie en attente d'un joueur soit créer une nouvelle partie.
 		\item L'administrateur peut configurer le serveur (paramètres des parties).
 	\end{enumerate}
 
-	\section{Partage des responsabilité serveur - client}
+	\subsection{Base de données}
+	La base de données stocke et partage les informations suivantes entre les joueurs et l'administrateur :
+	\begin{itemize}
+		\item Informations des joueurs (nom d'utilisateur, mot de passe, rôle, points totaux gagnés)
+		\item Informations des parties (joueurs, points remportés par chacun)
+		\item Paramètres de l'application (ce qui peut être configuré par l'administrateur)
+		\item Logs de l'application
+	\end{itemize}
 
-	\section{Fonctionnement général}
+
+	\section{Partage des responsabilité serveur --- client}
 
 	\section{Cas d'utilisation}
 
