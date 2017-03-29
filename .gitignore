@@ -32,23 +32,23 @@ hs_err_pid*
 *.lot
 
 # Maven
-Application/target/
-Application/pom.xml.tag
-Application/pom.xml.releaseBackup
-Application/pom.xml.versionsBackup
-Application/pom.xml.next
-Application/release.properties
-Application/dependency-reduced-pom.xml
-Application/buildNumber.properties
-Application/.mvn/timing.properties
+*/target/
+*/pom.xml.tag
+*/pom.xml.releaseBackup
+*/pom.xml.versionsBackup
+*/pom.xml.next
+*/release.properties
+*/dependency-reduced-pom.xml
+*/buildNumber.properties
+*/.mvn/timing.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
-!/Application/.mvn/wrapper/maven-wrapper.jar
+!*/.mvn/wrapper/maven-wrapper.jar
 
 # Netbeans
-Application/nbproject/private/
-Application/build/
-Application/nbbuild/
-Application/dist/
-Application/nbdist/
-Application/.nb-gradle/
+*/nbproject/private/
+*/build/
+*/nbbuild/
+*/dist/
+*/nbdist/
+*/.nb-gradle/
