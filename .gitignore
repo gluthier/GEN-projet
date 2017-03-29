@@ -28,3 +28,5 @@ hs_err_pid*
 *.toc
 *.fls
 *.fdb_latexmk
+*.lof
+*.lot
