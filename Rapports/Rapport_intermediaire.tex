@@ -29,7 +29,7 @@
 \frenchbsetup{StandardLists=true}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \setlength\parindent{0pt}
-\setlength{\parskip}{1em}
+\setlength{\parskip}{0.7em}
 
 % headers & footers
 \pagestyle{fancy}
@@ -122,9 +122,9 @@
 
 
 	\section{Partage des responsabilité serveur --- client}
-	
+
 	\section{Rôle des participants}
-	
+
 		Joueurs : 2 personnes par jeu, l'un ayant pour but de réussir le jeu, l'autre l'en empêcher. \\
 		Administrateur : Peut changer les règles du jeu, et s'occuper des données (nettoyer, modifier des joueurs, etc...)
 
@@ -141,16 +141,16 @@
 			\begin{enumerate}
 				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage.
 				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles.
-				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté. 
+				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté.
 			\end{enumerate}
 			\item À la fin de la partie, soit les rôles s'inversent et on recommande à l'étape 4 soit les joueurs quittent la partie, la partie est donc interrompus et les joueurs retournent au lobby.
 		\end{enumerate}
-			
+
 		\subsection{Extensions (ou scénarios alternatifs)}
 		Pour permettre la récupération des parties de manière correct, s'assurer que tous les états et les	événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
-		
+
 		Lors d'une partie, si l'un des deux joueurs est déconnecté, l'adversaire gagne automatiquement le jeu et est renvoyé au lobby.
-		
+
 		\subsection{Scénario d'administration}
 		\begin{enumerate}
 			\item l'administrateur se connecte à l'interface.
@@ -161,7 +161,7 @@
 			\end{enumerate}
 			\item puis il peut se déconnecte ou recommencer à l'étape 2.
 		\end{enumerate}
-	
+
 
 	\newpage
 	\section{Protocole d'échange entre le client et le serveur}
