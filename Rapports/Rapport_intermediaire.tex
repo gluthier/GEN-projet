@@ -18,18 +18,30 @@
 \usepackage{color}
 \usepackage{enumerate}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[frenchb]{babel}
 \usepackage{float}
 \usepackage{geometry}
 \usepackage{amssymb,mathtools,pifont}
 \usepackage{enumitem}
 \usepackage{xspace}
-\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=2cm,rmargin=2.5cm}
+\geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=1.8cm,rmargin=1.8cm}
 \selectlanguage{frenchb}
 \frenchbsetup{StandardLists=true}
 \DeclareGraphicsExtensions{.pdf,.png,.jpg}
 \setlength\parindent{0pt}
 \setlength{\parskip}{0.7em}
+
+\usepackage{color}
+\definecolor{light-gray}{gray}{0.95}
+\usepackage{listings}
+\lstset{
+	breaklines=true,
+	breakatwhitespace=true,
+	backgroundcolor=\color{light-gray}
+}
+
+\usepackage{tabularx} % for 'tabularx' environment
 
 % headers & footers
 \pagestyle{fancy}
@@ -168,15 +180,32 @@
 		\subsection{Communication}
 			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \\
 			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
+
+\begin{table}[ht]
+	\begin{tabularx}{\textwidth}{|X|X|X|}
+		\hline
+		\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
+		\hline
+		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"login":"sucess"\}} \\
+		\hline
+
+	\end{tabularx}
+	\caption{Protocole de communication Client / Serveur}
+	\label{procotole_client_serveur}
+
+\end{table}
+
 		\subsection{Données échangées}
 
 	\section{Ébauche du modèle de domaine}
 
 	\section{Base de donnée}
-	L'objectif de la base de données est principalement de stocker les paramètres du jeu.
-	\begin{figure}[!ht]
+	L'objectif de la base de données est principalement de stocker les paramètres du jeu et les données utilisateurs. Nous avons fait le choix de ne pas stocker d'informations concernant les parties en cours qui seront chargées uniquement dans la mémoire du serveur. \par
+
+	On trouve donc une entité \texttt{User} qui peut être \texttt{Administrator}, dont on stocke le login et le nombre de victoires. \texttt{Settings} modélise les réglages généraux du jeu, \texttt{MapSize} permettra à l'utilisateur qui créé une partie de choisir parmis plusieurs tailles de carte. \texttt{DifficultyLevel} modélise les niveaux de difficultés parmi lesquels l'utilisateur créant la partie aura le choix.
+	\begin{figure}[ht]
 		\centering
-		\includegraphics[scale=0.4]{../Database/ER_diagram.png}
+		\includegraphics[width=\textwidth]{../Database/ER_diagram.png}
 		\caption{Modèle conceptuel}
 		\label{database_er}
 	\end{figure}
