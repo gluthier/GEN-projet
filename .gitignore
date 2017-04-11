@@ -30,6 +30,7 @@ hs_err_pid*
 *.fdb_latexmk
 *.lof
 *.lot
+*.out
 
 #PDF
 Rapports/Rapport_intermediaire.pdf
