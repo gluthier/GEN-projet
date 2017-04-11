@@ -195,21 +195,30 @@
 		\subsection{Communication}
 			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \\
 			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
-
-\begin{table}[ht]
-	\begin{tabularx}{\textwidth}{|X|X|X|}
-		\hline
-		\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
-		\hline
-		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"token":"as73dhadc&7"\}} (réussite) ou \lstinline{\{"token":null\}} (échec) \\
-		\hline
-
-
-	\end{tabularx}
-	\caption{Protocole de communication Client / Serveur}
-	\label{procotole_client_serveur}
-
-\end{table}
+	
+	\section{Modèle de domaine}
+	La figure \ref{model_domain} représente une ébauche du modèle de domaine.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{../Schemas/model_domain.pdf}
+		\caption{Modèle de domaine}
+		\label{model_domain}
+	\end{figure}
+	
+	\begin{table}[ht]
+		\begin{tabularx}{\textwidth}{|X|X|X|}
+			\hline
+			\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
+			\hline
+			\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"token":"as73dhadc&7"\}} (réussite) ou \lstinline{\{"token":null\}} (échec) \\
+			\hline
+	
+	
+		\end{tabularx}
+		\caption{Protocole de communication Client / Serveur}
+		\label{procotole_client_serveur}
+	
+	\end{table}
 
 		\subsection{Données échangées}
 
