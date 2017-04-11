@@ -200,14 +200,6 @@
 			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \\
 			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
 	
-	\section{Modèle de domaine}
-	La figure \ref{model_domain} représente une ébauche du modèle de domaine.
-	\begin{figure}[!ht]
-		\centering
-		\includegraphics[scale=0.6]{../Schemas/model_domain.pdf}
-		\caption{Modèle de domaine}
-		\label{model_domain}
-	\end{figure}
 	
 	\begin{table}[ht]
 		\begin{tabularx}{\textwidth}{|X|X|X|}
@@ -227,6 +219,14 @@
 		\subsection{Données échangées}
 
 	\section{Ébauche du modèle de domaine}
+	La figure \ref{model_domain} représente une ébauche du modèle de domaine.
+
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{../Schemas/model_domain.pdf}
+		\caption{Modèle de domaine}
+		\label{model_domain}
+	\end{figure}
 
 	\section{Base de donnée}
 	L'objectif de la base de données est principalement de stocker les paramètres du jeu et les données utilisateurs. Nous avons fait le choix de ne pas stocker d'informations concernant les parties en cours qui seront chargées uniquement dans la mémoire du serveur. \par
