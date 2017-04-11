@@ -88,7 +88,9 @@
 
 	\tableofcontents
 	\listoffigures
-	\listoftables
+	
+	% On a pas de tableau
+	% \listoftables
 
 	\newpage
 
@@ -96,7 +98,7 @@
 	\subsection{Objectifs de base}
 	Le but de ce projet est de réaliser une application client-serveur dans le cadre du cours GEN. Nous avons décidé de proposer un jeu de type « Frogger » en version valaisanne. \par
 
-	Le but du jeu sera de faire descendre une piste de ski à un Valaisan. Il devra éviter les skieurs genevois la traversant la piste à vive allure.
+	Le but du jeu sera de faire descendre une piste de ski à un Valaisan (\textit{joueur skieur}). Il devra éviter les obstacles la traversant qui seront envoyé par le \textit{défenseur}.
 
 
 	\begin{figure}[h!]
@@ -169,14 +171,14 @@
 			\begin{enumerate}
 				\item Difficulté
 				\item Taille de la carte
-				\item Son rôle (\textit{Défsenseur} ou \textit{Attaquant})
+				\item Son rôle (\textit{Skieur} ou \textit{Défenseur})
 			\end{enumerate}
 			\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prends le rôle restant.
 			\item Lorsque les 2 joueurs sont prêts la partie commence.
 			\begin{enumerate}
-				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage de haut en bas.
-				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
-				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté.
+				\item "\textit{Le skieur}" tente de traverser la piste en déplaçant son personnage de haut en bas.
+				\item "\textit{Le défenseur}" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
+				\item La partie se termine si le skieur n'a plus de vie ou si il a atteint l'autre côté (le but).
 			\end{enumerate}
 			\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompue et les joueurs retournent au lobby.
 		\end{enumerate}
@@ -249,7 +251,7 @@
 			\end{enumerate}
 		\subsection{Ajout du 1er joueur avec les obstacles}
 		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
-			\objectif Développement de la logique du joueur "attaquant" qui descend la piste.
+			\objectif Développement de la logique du joueur "skieur" qui descend la piste.
 			\duree 1 semaine
 			\partageTache interaction avec les touches du clavier, déplacement du skieur sur la carte
 			\effort 20 heures
@@ -263,7 +265,7 @@
 		\end{enumerate}
 		\subsection{Mise en place des logiques de jeu}
 		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
-			\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "attaquant", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
+			\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "skieur", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
 			\duree 1 semaine
 			\partageTache détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
 			\effort 20 heures

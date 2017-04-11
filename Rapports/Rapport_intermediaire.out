@@ -1,0 +1,29 @@
+\BOOKMARK [1][-]{section.1}{Fonctionnement g\351n\351ral}{}% 1
+\BOOKMARK [2][-]{subsection.1.1}{Objectifs de base}{section.1}% 2
+\BOOKMARK [2][-]{subsection.1.2}{Utilisation de l'applicatif}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.3}{R\350gles du jeu}{section.1}% 4
+\BOOKMARK [2][-]{subsection.1.4}{Contraintes}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.5}{Priorit\351s de d\351veloppement}{section.1}% 6
+\BOOKMARK [2][-]{subsection.1.6}{Base de donn\351es}{section.1}% 7
+\BOOKMARK [1][-]{section.2}{Partage des responsabilit\351 serveur \204 client}{}% 8
+\BOOKMARK [1][-]{section.3}{R\364le des participants}{}% 9
+\BOOKMARK [1][-]{section.4}{Cas d'utilisation}{}% 10
+\BOOKMARK [2][-]{subsection.4.1}{Acteurs}{section.4}% 11
+\BOOKMARK [2][-]{subsection.4.2}{Sc\351nario principal \(succ\350s\)}{section.4}% 12
+\BOOKMARK [2][-]{subsection.4.3}{Extensions \(ou sc\351narios alternatifs\)}{section.4}% 13
+\BOOKMARK [2][-]{subsection.4.4}{Sc\351nario d'administration}{section.4}% 14
+\BOOKMARK [1][-]{section.5}{Protocole d'\351change entre le client et le serveur}{}% 15
+\BOOKMARK [2][-]{subsection.5.1}{Communication}{section.5}% 16
+\BOOKMARK [2][-]{subsection.5.2}{Donn\351es \351chang\351es}{section.5}% 17
+\BOOKMARK [1][-]{section.6}{\311bauche du mod\350le de domaine}{}% 18
+\BOOKMARK [1][-]{section.7}{Base de donn\351e}{}% 19
+\BOOKMARK [1][-]{section.8}{R\364le des participants}{}% 20
+\BOOKMARK [1][-]{section.9}{Plan d'it\351ration}{}% 21
+\BOOKMARK [2][-]{subsection.9.1}{Cr\351ation de l'interface de base}{section.9}% 22
+\BOOKMARK [2][-]{subsection.9.2}{Ajout du 1er joueur avec les obstacles}{section.9}% 23
+\BOOKMARK [2][-]{subsection.9.3}{Ajout du 2\350me joueur en local}{section.9}% 24
+\BOOKMARK [2][-]{subsection.9.4}{Mise en place des logiques de jeu}{section.9}% 25
+\BOOKMARK [2][-]{subsection.9.5}{Ajout de la communication avec le serveur}{section.9}% 26
+\BOOKMARK [2][-]{subsection.9.6}{Application administrateur}{section.9}% 27
+\BOOKMARK [2][-]{subsection.9.7}{Ajout du Lobby}{section.9}% 28
+\BOOKMARK [2][-]{subsection.9.8}{Finalisation}{section.9}% 29
