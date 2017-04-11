@@ -145,33 +145,36 @@
 
 	\section{Rôle des participants}
 
-		Joueurs : 2 personnes par jeu, l'un ayant pour but de réussir le jeu, l'autre l'en empêcher. \\
-		Administrateur : Peut changer les règles du jeu, et s'occuper des données (nettoyer, modifier des joueurs, etc...)
+		\textbf{Joueurs} : 2 personnes par partie, l'un ayant pour but de réussir à descendre la piste, tandis que l'autre l'en empêcher. \\
+		
+		\textbf{Administrateur} : Peut changer les règles du jeu, et s'occuper des données (nettoyer, modifier des joueurs, etc...)
 
 	\section{Cas d'utilisation}
 		\subsection{Acteurs}
-		\begin{itemize}
-			\item Joueurs, dans une partie nommés : joueur 1 et joueur 2
-			\item Administrateur
-		\end{itemize}
+			Joueurs, dans une partie nommés : \textit{Attaquant} et \textit{Défenseur} \\
+			Administrateur
 		\subsection{Scénario principal (succès)}
 		\begin{enumerate}
-			\item Un des deux joueurs se connecte au lobby et crée une partie.
-			\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby.
-			\item Dans la préparation de partie, les joueurs choisissent leurs objectifs (traverser la piste, ou empêcher l'adversaire de le faire)
-			\item Lorsque les 2 joueurs sont prêts le jeu commence.
+			\item L'un des deux joueurs se connecte au lobby et crée une partie en spécifiant les paramètres qu'il souhaite.
 			\begin{enumerate}
-				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage de haut en bas.
-				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
+				\item Difficulté
+				\item Taille de la carte
+				\item Son rôle (\textit{Défsenseur} ou \textit{Attaquant})
+			\end{enumerate}
+			\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prends le rôle restant.
+			\item Lorsque les 2 joueurs sont prêts la partie commence.
+			\begin{enumerate}
+				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage.
+				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles.
 				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté.
 			\end{enumerate}
-			\item À la fin de la partie, soit les rôles s'inversent et on recommence à l'étape 4 soit les joueurs quittent la partie, la partie est donc interrompue et les joueurs retournent au lobby.
+			\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompus et les joueurs retournent au lobby.
 		\end{enumerate}
 
 		\subsection{Extensions (ou scénarios alternatifs)}
-		Pour permettre la récupération des parties de manière correct, s'assurer que tous les états et les	événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
+		Pour permettre la récupération des parties de manière correct, il faut s'assurer que tous les états et les événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
 
-		Lors d'une partie, si l'un des deux joueurs est déconnecté, l'adversaire gagne automatiquement le jeu et est renvoyé au lobby.
+		Lors d'une partie, si l'un des deux joueurs est déconnecté, l'adversaire gagne automatiquement la partie et est renvoyé au lobby.
 
 		\subsection{Scénario d'administration}
 		\begin{enumerate}
@@ -220,6 +223,14 @@
 		\caption{Modèle conceptuel}
 		\label{database_er}
 	\end{figure}
+	
+	\section{Rôle des participants}
+		\begin{enumerate}
+			\item Tony Clavien: Analyste, design manager, programmeur
+			\item Maxime Guillod: Chef de projet, programmeur
+			\item Gabriel Luthier: Responsable des tests, programmeur
+			\item Guillaume Milani: Architecte, concepteur en chef, programmeur, community manager
+		\end{enumerate}
 
 	\newpage
 	\section{Plan d'itération}
@@ -236,5 +247,14 @@
 			\item Ajout du Lobby
 			\item Finalisation
 		\end{enumerate}
+	
+		\subsection{Création de l'interface de base}
+		\subsection{Ajout du 1er joueur avec les obstacles}
+		\subsection{Ajout du 2ème joueur en local}
+		\subsection{Mise en place des logiques de jeu}
+		\subsection{Ajout de la communication avec le serveur}
+		\subsection{Application administrateur}
+		\subsection{Ajout du Lobby}
+		\subsection{Finalisation}
 
 \end{document}
