@@ -25,6 +25,9 @@
 \usepackage{amssymb,mathtools,pifont}
 \usepackage{enumitem}
 \usepackage{xspace}
+% Liens
+\usepackage[hyphens]{url}
+\usepackage{hyperref}
 \geometry{verbose,tmargin=2.5cm,bmargin=2cm,lmargin=1.8cm,rmargin=1.8cm}
 \selectlanguage{frenchb}
 \frenchbsetup{StandardLists=true}
@@ -193,25 +196,11 @@
 	\newpage
 	\section{Protocole d'échange entre le client et le serveur}
 		\subsection{Communication}
-			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \\
+			Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \par
 			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
 
-\begin{table}[ht]
-	\begin{tabularx}{\textwidth}{|X|X|X|}
-		\hline
-		\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
-		\hline
-		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"token":"as73dhadc&7"\}} (réussite) ou \lstinline{\{"token":null\}} (échec) \\
-		\hline
-
-
-	\end{tabularx}
-	\caption{Protocole de communication Client / Serveur}
-	\label{procotole_client_serveur}
-
-\end{table}
-
 		\subsection{Données échangées}
+			L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API}
 
 	\section{Ébauche du modèle de domaine}
 
