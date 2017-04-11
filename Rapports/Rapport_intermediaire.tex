@@ -56,6 +56,7 @@
 \lhead{\domaine}
 \rhead{\titre}
 
+\renewcommand{\footrulewidth}{0.4pt}% default is 0pt
 \lfoot{\auteur}
 \cfoot{}
 \rfoot{\thepage}
@@ -204,7 +205,8 @@
 			En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
 
 		\subsection{Données échangées}
-			L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API}
+			L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API} \\
+			L'idée est que chaque joueur envoie au serveur ses commandes : pour le skieur s'il souhaite tourner à gauche ou à droite, pour le valaisan sur quelle ligne il envoie un obstacle. Le serveur s'occupe de placer les obstacles et le skieur et envoie les positions de manière régulière aux deux clients. Les clients ne font que l'affichage et l'envoi de commande alors que le serveur s'occupe de la synchronisation, gestion des collisions etc.
 
 	\section{Ébauche du modèle de domaine}
 	La figure \ref{model_domain} représente une ébauche du modèle de domaine.
