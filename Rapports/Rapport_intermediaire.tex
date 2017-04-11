@@ -150,20 +150,22 @@
 
 	\section{Cas d'utilisation}
 		\subsection{Acteurs}
-			joueurs, dans une partie nommés : joueur 1 et joueur 2 \\
-			administrateur
+		\begin{itemize}
+			\item Joueurs, dans une partie nommés : joueur 1 et joueur 2
+			\item Administrateur
+		\end{itemize}
 		\subsection{Scénario principal (succès)}
 		\begin{enumerate}
-			\item l'un des deux joueurs se connecte au lobby et crée une partie.
-			\item le second joueur rejoint la partie libre du joueur 1 dans le lobby.
+			\item Un des deux joueurs se connecte au lobby et crée une partie.
+			\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby.
 			\item Dans la préparation de partie, les joueurs choisissent leurs objectifs (traverser la piste, ou empêcher l'adversaire de le faire)
 			\item Lorsque les 2 joueurs sont prêts le jeu commence.
 			\begin{enumerate}
-				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage.
-				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles.
+				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage de haut en bas.
+				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
 				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté.
 			\end{enumerate}
-			\item À la fin de la partie, soit les rôles s'inversent et on recommande à l'étape 4 soit les joueurs quittent la partie, la partie est donc interrompus et les joueurs retournent au lobby.
+			\item À la fin de la partie, soit les rôles s'inversent et on recommence à l'étape 4 soit les joueurs quittent la partie, la partie est donc interrompue et les joueurs retournent au lobby.
 		\end{enumerate}
 
 		\subsection{Extensions (ou scénarios alternatifs)}
@@ -194,8 +196,9 @@
 		\hline
 		\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
 		\hline
-		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"login":"sucess"\}} \\
+		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"token":"as73dhadc&7"\}} (réussite) ou \lstinline{\{"token":null\}} (échec) \\
 		\hline
+
 
 	\end{tabularx}
 	\caption{Protocole de communication Client / Serveur}
