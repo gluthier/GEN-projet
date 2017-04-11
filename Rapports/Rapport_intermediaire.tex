@@ -3,6 +3,10 @@
 \newcommand\ecole{IL --- TIC --- HEIG-VD}
 \newcommand\domaine{Mini-Projet}
 \newcommand\titre{Frogger}
+\newcommand\objectif{\item[\textit{Objectif :}]}
+\newcommand\duree{\item[\textit{Dur\`ee :}]}
+\newcommand\partageTache{\item[\textit{Partage des t\^aches :}]}
+\newcommand\effort{\item[\textit{Effort :}]}
 
 \documentclass[a4paper,11pt]{article}
 %
@@ -236,75 +240,62 @@
 
 	\newpage
 	\section{Plan d'itération}
-		\begin{enumerate}
-			\item Création de l'interface de base
-			\item Ajout du 1er joueur avec les obstacles
-			\item Ajout du 2ème joueur en local
-			\item Mise en place des logiques de jeu
-				\subitem Conditions de départ
-				\subitem Conditions de victoire
-				\subitem Barre de recharge pour la pose d'obstacle
-			\item Ajout de la communication avec le serveur
-			\item Application administrateur
-			\item Ajout du Lobby
-			\item Finalisation
-		\end{enumerate}
 	
 		\subsection{Création de l'interface de base}
-			\begin{enumerate}
-				\item[] Objectif: Mise en place de l'interface utilisateur de l'écran principal du jeu.
-				\item[] Durée: 1 semaine
-				\item[] Partage des tâches: création des images/sprites, affichage de l'UI, mise en place des obstacles fixes
-				\item[] Effort: 15 heures
+			\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+				\objectif Mise en place de l'interface utilisateur de l'écran principal du jeu.
+				\duree 1 semaine
+				\partageTache Création des images/sprites, affichage de l'UI, mise en place des obstacles fixes
+				\effort 15 heures
 			\end{enumerate}
 		\subsection{Ajout du 1er joueur avec les obstacles}
-		\begin{enumerate}
-			\item[] Objectif: Développement de la logique du joueur "attaquant" qui descend la piste.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: interaction avec les touches du clavier, déplacement du skieur sur la carte
-			\item[] Effort: 20 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Développement de la logique du joueur "attaquant" qui descend la piste.
+			\duree 1 semaine
+			\partageTache interaction avec les touches du clavier, déplacement du skieur sur la carte
+			\effort 20 heures
 		\end{enumerate}
 		\subsection{Ajout du 2ème joueur en local}
-		\begin{enumerate}
-			\item[] Objectif: Développement de la logique du joueur "défendant" qui envoie des obstacles contre l'autre joueur.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: interaction avec les touches du clavier, logique de déplacement des obstacles sur la carte
-			\item[] Effort: 20 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Développement de la logique du joueur "défendant" qui envoie des obstacles contre l'autre joueur.
+			\duree 1 semaine
+			\partageTache interaction avec les touches du clavier, logique de déplacement des obstacles sur la carte
+			\effort 20 heures
 		\end{enumerate}
 		\subsection{Mise en place des logiques de jeu}
-		\begin{enumerate}
-			\item[] Objectif: Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "attaquant", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
-			\item[] Effort: 20 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "attaquant", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
+			\duree 1 semaine
+			\partageTache détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
+			\effort 20 heures
 		\end{enumerate}
 		\subsection{Ajout de la communication avec le serveur}
-		\begin{enumerate}
-			\item[] Objectif: Développement du serveur pour pouvoir jouer à distance.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: connexion des deux joueurs à une partie, communication réseau entre le serveur et les deux joueurs, gestion de l'état d'une partie
-			\item[] Effort: 30 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Développement du serveur pour pouvoir jouer à distance.
+			\duree 1 semaine
+			\partageTache connexion des deux joueurs à une partie, communication réseau entre le serveur et les deux joueurs, gestion de l'état d'une partie
+			\effort 30 heures
 		\end{enumerate}
 		\subsection{Application administrateur}
-		\begin{enumerate}
-			\item[] Objectif: Développement de l'application administrateur utilisée afin de modifier les paramètres des différents modes de jeu et des données des joueurs.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: UI de l'applicatif, connexion à la base de données, fonctions de modification de la BD
-			\item[] Effort: 20 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Développement de l'application administrateur utilisée afin de modifier les paramètres des différents modes de jeu et des données des joueurs.
+			\duree 1 semaine
+			\partageTache UI de l'applicatif, connexion à la base de données, fonctions de modification de la BD
+			\effort 20 heures
 		\end{enumerate}
 		\subsection{Ajout du Lobby}
-		\begin{enumerate}
-			\item[] Objectif: Gestion du lobby (UI et logique).
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: UI du lobby (menu), récupérer les informations sur les parties en recherche de joueurs, création d'une nouvelle partie 
-			\item[] Effort: 20 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Gestion du lobby (UI et logique).
+			\duree 1 semaine
+			\partageTache UI du lobby (menu), récupérer les informations sur les parties en recherche de joueurs, création d'une nouvelle partie 
+			\effort 20 heures
 		\end{enumerate}
 		\subsection{Finalisation}
-		\begin{enumerate}
-			\item[] Objectif: Finalisation de l'application et ajout de bonus.
-			\item[] Durée: 1 semaine
-			\item[] Partage des tâches: derniers détails, mise en places des bonus/easter eggs
-			\item[] Effort: 15 heures
+		\begin{enumerate}[labelwidth=5em,leftmargin=6em]
+			\objectif Finalisation de l'application et ajout de bonus.
+			\duree 1 semaine
+			\partageTache derniers détails, mise en places des bonus/easter eggs
+			\effort 15 heures
 		\end{enumerate}
 
 \end{document}
