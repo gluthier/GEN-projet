@@ -3,6 +3,10 @@
 \newcommand\ecole{IL --- TIC --- HEIG-VD}
 \newcommand\domaine{Mini-Projet}
 \newcommand\titre{Frogger}
+\newcommand\objectif{\item[\textit{Objectif :}]}
+\newcommand\duree{\item[\textit{Dur\'ee :}]}
+\newcommand\partageTache{\item[\textit{Partage des t\^aches :}]}
+\newcommand\effort{\item[\textit{Effort :}]}
 
 \documentclass[a4paper,11pt]{article}
 %
@@ -96,7 +100,7 @@
 
 	\begin{figure}[h!]
 		\centering
-		\fbox{\includegraphics[scale=0.7]{../Screenshots/demo.png}}
+		\fbox{\includegraphics[scale=0.7]{../Screenshots/demo_annotation.png}}
 			\caption{Maquette d'une partie}
 			\label{maquette}
 	\end{figure}
@@ -154,10 +158,10 @@
 
 	\section{Cas d'utilisation}
 		\subsection{Acteurs}
-		\begin{itemize}
+		\begin{enumerate}
 			\item Joueurs, dans une partie nommés : \textit{Attaquant} et \textit{Défenseur}
 			\item Administrateur
-		\end{itemize}
+		\end{enumerate}
 		\subsection{Scénario principal (succès)}
 		\begin{enumerate}
 			\item L'un des deux joueurs se connecte au lobby et crée une partie en spécifiant les paramètres qu'il souhaite.
@@ -203,6 +207,14 @@
 			L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API}
 
 	\section{Ébauche du modèle de domaine}
+	La figure \ref{model_domain} représente une ébauche du modèle de domaine.
+
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{../Schemas/model_domain.pdf}
+		\caption{Modèle de domaine}
+		\label{model_domain}
+	\end{figure}
 
 	\section{Base de donnée}
 	L'objectif de la base de données est principalement de stocker les paramètres du jeu et les données utilisateurs. Nous avons fait le choix de ne pas stocker d'informations concernant les parties en cours qui seront chargées uniquement dans la mémoire du serveur. \par
@@ -215,20 +227,72 @@
 		\label{database_er}
 	\end{figure}
 
+	\section{Rôle des participants}
+		\begin{enumerate}
+			\item Tony Clavien: Analyste, design manager, programmeur, représentant valaisan
+			\item Maxime Guillod: Chef de projet, programmeur
+			\item Gabriel Luthier: Responsable des tests, programmeur
+			\item Guillaume Milani: Architecte, concepteur en chef, programmeur, community manager
+		\end{enumerate}
+
 	\newpage
 	\section{Plan d'itération}
-		\begin{enumerate}
-			\item Création de l'interface de base
-			\item Ajout du 1er joueur avec les obstacles
-			\item Ajout du 2ème joueur en local
-			\item Mise en place des logiques de jeu
-				\subitem Conditions de départ
-				\subitem Conditions de victoire
-				\subitem Barre de recharge pour la pose d'obstacle
-			\item Ajout de la communication avec le serveur
-			\item Application administrateur
-			\item Ajout du Lobby
-			\item Finalisation
+
+		\subsection{Création de l'interface de base}
+			\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+				\objectif Mise en place de l'interface utilisateur de l'écran principal du jeu.
+				\duree 1 semaine
+				\partageTache Création des images/sprites, affichage de l'UI, mise en place des obstacles fixes
+				\effort 15 heures
+			\end{enumerate}
+		\subsection{Ajout du 1er joueur avec les obstacles}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Développement de la logique du joueur "attaquant" qui descend la piste.
+			\duree 1 semaine
+			\partageTache interaction avec les touches du clavier, déplacement du skieur sur la carte
+			\effort 20 heures
+		\end{enumerate}
+		\subsection{Ajout du 2ème joueur en local}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Développement de la logique du joueur "défendant" qui envoie des obstacles contre l'autre joueur.
+			\duree 1 semaine
+			\partageTache interaction avec les touches du clavier, logique de déplacement des obstacles sur la carte
+			\effort 20 heures
+		\end{enumerate}
+		\subsection{Mise en place des logiques de jeu}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "attaquant", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
+			\duree 1 semaine
+			\partageTache détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
+			\effort 20 heures
+		\end{enumerate}
+		\subsection{Ajout de la communication avec le serveur}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Développement du serveur pour pouvoir jouer à distance.
+			\duree 1 semaine
+			\partageTache connexion des deux joueurs à une partie, communication réseau entre le serveur et les deux joueurs, gestion de l'état d'une partie
+			\effort 30 heures
+		\end{enumerate}
+		\subsection{Application administrateur}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Développement de l'application administrateur utilisée afin de modifier les paramètres des différents modes de jeu et des données des joueurs.
+			\duree 1 semaine
+			\partageTache UI de l'applicatif, connexion à la base de données, fonctions de modification de la BD
+			\effort 20 heures
+		\end{enumerate}
+		\subsection{Ajout du Lobby}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Gestion du lobby (UI et logique).
+			\duree 1 semaine
+			\partageTache UI du lobby (menu), récupérer les informations sur les parties en recherche de joueurs, création d'une nouvelle partie
+			\effort 20 heures
+		\end{enumerate}
+		\subsection{Finalisation}
+		\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+			\objectif Finalisation de l'application et ajout de bonus.
+			\duree 1 semaine
+			\partageTache derniers détails, mise en places des bonus/easter eggs
+			\effort 15 heures
 		\end{enumerate}
 
 \end{document}
