@@ -146,15 +146,15 @@
 	\section{Rôle des participants}
 
 		\textbf{Joueurs} : 2 personnes par partie, l'un ayant pour but de réussir à descendre la piste, tandis que l'autre l'en empêcher. \\
-		
+
 		\textbf{Administrateur} : Peut changer les règles du jeu, et s'occuper des données (nettoyer, modifier des joueurs, etc...)
 
 	\section{Cas d'utilisation}
 		\subsection{Acteurs}
-			\begin{enumerate}
-				\item Joueurs, dans une partie nommés : \textit{Attaquant} et \textit{Défenseur}
-				\item Administrateur
-			\end{enumerate}
+		\begin{enumerate}
+			\item Joueurs, dans une partie nommés : \textit{Attaquant} et \textit{Défenseur}
+			\item Administrateur
+		\end{enumerate}
 		\subsection{Scénario principal (succès)}
 		\begin{enumerate}
 			\item L'un des deux joueurs se connecte au lobby et crée une partie en spécifiant les paramètres qu'il souhaite.
@@ -166,11 +166,11 @@
 			\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prends le rôle restant.
 			\item Lorsque les 2 joueurs sont prêts la partie commence.
 			\begin{enumerate}
-				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage.
-				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles.
+				\item "L'attaquant" tente de traverser la piste en déplaçant son personnage de haut en bas.
+				\item "Le défenseur" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
 				\item La partie se termine si l'attaquant n'a plus de vie ou si il a atteint l'autre côté.
 			\end{enumerate}
-			\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompus et les joueurs retournent au lobby.
+			\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompue et les joueurs retournent au lobby.
 		\end{enumerate}
 
 		\subsection{Extensions (ou scénarios alternatifs)}
@@ -201,8 +201,9 @@
 		\hline
 		\textbf{Commande} & \textbf{Processus effectué par le serveur} & \textbf{Réponse} \\
 		\hline
-		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"login":"sucess"\}} \\
+		\lstinline{\{"command":"login", "param":\{"user":"toto", "password":"hash(1234)"\}\}} & Vérification du hash de mot de passe & \lstinline{\{"token":"as73dhadc&7"\}} (réussite) ou \lstinline{\{"token":null\}} (échec) \\
 		\hline
+
 
 	\end{tabularx}
 	\caption{Protocole de communication Client / Serveur}
@@ -224,7 +225,7 @@
 		\caption{Modèle conceptuel}
 		\label{database_er}
 	\end{figure}
-	
+
 	\section{Rôle des participants}
 		\begin{enumerate}
 			\item Tony Clavien: Analyste, design manager, programmeur, représentant valaisan
