@@ -1,5 +1,6 @@
 package ch.heigvd.frogger.item;
 
+import ch.heigvd.frogger.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.Grid;
 import javafx.scene.canvas.GraphicsContext;
@@ -24,6 +25,24 @@ public abstract class Item {
      * Update the item. For exemple, move obstacle every t secondes.
      */
     public abstract void update();
+
+    /**
+     * position X
+     *
+     * @return
+     */
+    public int getPosX() {
+        return posX;
+    }
+
+    /**
+     * Position Y
+     *
+     * @return
+     */
+    public int getPosY() {
+        return posY;
+    }
 
     /**
      * Set the visibility of the item on the grid
@@ -51,6 +70,7 @@ public abstract class Item {
     public void draw(GraphicsContext gc) {
         if (isVisible()) {
             // set img
+            // dans le img, attention a la fin de la méthode pour éviter d'étirer le modèle
             gc.drawImage(null,
                     posX * grid.getCellHeight(),
                     posY * grid.getCellWidth(),
@@ -59,43 +79,71 @@ public abstract class Item {
         }
     }
 
-    private boolean isTopFree() {
-        throw new UnsupportedOperationException();
+    private boolean isTopAccessible() {
+        if (posY > 0) {
+            return grid.isFree(posX, posY - 1);
+        }
+        return false;
     }
 
-    private boolean isRightFree() {
-        throw new UnsupportedOperationException();
+    private boolean isRightAccessible() {
+        if (posX < Constants.NUM_COLS) {
+            return grid.isFree(posX + 1, posY);
+        }
+        return false;
     }
 
-    private boolean isBottomFree() {
-        throw new UnsupportedOperationException();
+    private boolean isBottomAccessible() {
+        if (posY < Constants.NUM_ROWS) {
+            return grid.isFree(posX, posY + 1);
+        }
+        return false;
     }
 
-    private boolean isLeftFree() {
-        throw new UnsupportedOperationException();
+    private boolean isLeftAccessible() {
+        if (posX > 0) {
+            return grid.isFree(posX - 1, posY);
+        }
+        return false;
     }
 
-    public void moveTop() {
-        if (posY > 0 && isTopFree()) {
-            throw new UnsupportedOperationException();
+    public void moveTop() throws CellAlreadyOccupiedException {
+        synchronized (grid) {
+            if (isTopAccessible()) {
+                grid.removeItem(posX, posY);
+                posY--;
+                grid.addItem(this);
+            }
         }
     }
 
-    public void moveRight() {
-        if (posX < Constants.NUM_COLS && isRightFree()) {
-            throw new UnsupportedOperationException();
+    public void moveRight() throws CellAlreadyOccupiedException {
+        synchronized (grid) {
+            if (isRightAccessible()) {
+                grid.removeItem(posX, posY);
+                posX++;
+                grid.addItem(this);
+            }
         }
     }
 
-    public void moveBottom() {
-        if (posY < Constants.NUM_COLS && isBottomFree()) {
-            throw new UnsupportedOperationException();
+    public void moveBottom() throws CellAlreadyOccupiedException {
+        synchronized (grid) {
+            if (isBottomAccessible()) {
+                grid.removeItem(posX, posY);
+                posY++;
+                grid.addItem(this);
+            }
         }
     }
 
-    public void moveLeft() {
-        if (posX > 0 && isLeftFree()) {
-            throw new UnsupportedOperationException();
+    public void moveLeft() throws CellAlreadyOccupiedException {
+        synchronized (grid) {
+            if (isLeftAccessible()) {
+                grid.removeItem(posX, posY);
+                posX--;
+                grid.addItem(this);
+            }
         }
     }
 
