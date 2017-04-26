@@ -27,7 +27,9 @@ public class Grid {
 
     private Grid() {
         this.items = new Item[Constants.NUM_ROWS][Constants.NUM_COLS];
-        Arrays.fill(items, null);
+        for (Item[] item : items) {
+            Arrays.fill(item, null);
+        }
     }
 
     // TODO: change Object to Item
