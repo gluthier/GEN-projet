@@ -36,6 +36,10 @@ public class Grid {
         return items[x][y];
     }
 
+    public void addItem(Item item) throws CellAlreadyOccupiedException {
+        addItem(item, item.getPosX(), item.getPosY());
+    }
+
     public void addItem(Item item, int x, int y) throws CellAlreadyOccupiedException {
         checkIndex(x, y);
         if (items[x][y] != null) {
@@ -94,4 +98,5 @@ public class Grid {
             throw new IllegalArgumentException("Incorrect element index");
         }
     }
+
 }
