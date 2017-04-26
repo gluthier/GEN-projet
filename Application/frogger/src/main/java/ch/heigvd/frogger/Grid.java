@@ -25,7 +25,7 @@ public class Grid {
     }
 
     private Grid() {
-        this.items = new Item[Constants.NUM_ROWS][Constants.NUM_COLS];
+        this.items = new Item[Constants.NUM_COLS][Constants.NUM_ROWS];
         for (Item[] item : items) {
             Arrays.fill(item, null);
         }
@@ -44,7 +44,6 @@ public class Grid {
         items[x][y] = item;
     }
 
-    // TODO: change Item to Item
     public Item removeItem(int x, int y) throws IllegalArgumentException {
         checkIndex(x, y);
 
@@ -91,7 +90,7 @@ public class Grid {
     }
 
     private void checkIndex(int x, int y) throws IllegalArgumentException {
-        if (x < 0 || x >= Constants.NUM_ROWS || y < 0 || y >= Constants.NUM_COLS) {
+        if (x < 0 || x >= Constants.NUM_COLS || y < 0 || y >= Constants.NUM_ROWS) {
             throw new IllegalArgumentException("Incorrect element index");
         }
     }

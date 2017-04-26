@@ -1,5 +1,6 @@
 package ch.heigvd.frogger;
 
+import ch.heigvd.frogger.item.Item;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -36,49 +37,26 @@ public class GameFXMLController implements Initializable {
         try {
             // Create the canvas
             Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-
             Grid grid = Grid.getInstance();
 
-            // Create the game grid
-            GridPane gameGridPane = new GridPane();
-            gameGridPane.setAlignment(Pos.CENTER);
-            gameGridPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-            gameGridPane.setMinSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-            gameGridPane.setGridLinesVisible(true);
-
-            Image background = new Image(getClass().getResource("/images/background/fond.jpg").toString(), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, false, true);
-
             // Load the background
+            Image background = new Image(getClass().getResource(Constants.BACKGROUND_PATH).toString(), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, false, true);
+
             BackgroundImage myBI = new BackgroundImage(
                     background,
                     BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT
             );
 
+            // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
 
-            gameGridPane.setBackground(new Background(myBI));
-
-            // Create the columns
-            for (int i = 0; i < Constants.NUM_COLS; i++) {
-                ColumnConstraints colConst = new ColumnConstraints();
-                colConst.setPercentWidth(100.0 / Constants.NUM_COLS);
-                gameGridPane.getColumnConstraints().add(colConst);
-            }
-
-            // Create the rows
-            for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                RowConstraints rowConst = new RowConstraints();
-                rowConst.setPercentHeight(100.0 / Constants.NUM_ROWS);
-                gameGridPane.getRowConstraints().add(rowConst);
-            }
-
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                gameGridPane.add(getObstacle(Constants.Obstacles.Chalet), 0, i);
-                gameGridPane.add(getObstacle(Constants.Obstacles.Chalet), 1, i);
-                gameGridPane.add(getObstacle(Constants.Obstacles.ChaletVS), Constants.NUM_COLS - 1, i);
-                gameGridPane.add(getObstacle(Constants.Obstacles.ChaletVS), Constants.NUM_COLS, i);
+                grid.addItem(null, 0, i); // chalet
+                grid.addItem(null, 1, i); // chalet
+                grid.addItem(null, Constants.NUM_COLS - 2, i); // chaletVS
+                grid.addItem(null, Constants.NUM_COLS - 1, i);      // chaletVS
             }
 
             // Create the static obstacles
@@ -87,22 +65,28 @@ public class GameFXMLController implements Initializable {
                 int x = 0;
                 int y = 0;
 
-                gameGridPane.add(getObstacle(Constants.Obstacles.Sapin), r.nextInt(Constants.NUM_COLS - 4) + 2, r.nextInt(Constants.NUM_ROWS - 10) + 10);
+                // TODO: Avoid infinite loop
+                do {
+                    x = r.nextInt(Constants.NUM_COLS - 4) + 2;
+                    y = r.nextInt(Constants.NUM_ROWS - 10) + 10;
+                } while (!grid.isFree(x, y));
+                
+                grid.addItem(null, x, y); // sapin
             }
 
-            AnchorPane.setTopAnchor(gameGridPane, 0.);
-
+            // Draw the grid on the Canvas
             grid.draw(gc);
 
-            // anchorPane.getChildren().addAll(gameGridPane);
             AnchorPane.setTopAnchor(canvas, 0.);
             anchorPane.getChildren().add(canvas);
 
-        } catch (Exception e2) {
+        } catch (CellAlreadyOccupiedException | IllegalArgumentException e2) {
             e2.printStackTrace();
         }
     }
 
+    
+    // TODO: Remove
     private Node getObstacle(Constants.Obstacles type) {
         Label label = new Label("");
         label.setPrefSize(cellWidth, cellHeight);
