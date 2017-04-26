@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
@@ -32,16 +31,15 @@ public class GameFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("opening background");
-
         try {
-
+            // Create the game grid
             GridPane gameGridPane = new GridPane();
             gameGridPane.setAlignment(Pos.CENTER);
             gameGridPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
             gameGridPane.setMinSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
             gameGridPane.setGridLinesVisible(true);
 
+            // Load the background
             BackgroundImage myBI = new BackgroundImage(
                     new Image(getClass().getResource("/images/background/fond.jpg").toString(), 3648, 2736, false, true),
                     BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT
@@ -49,28 +47,35 @@ public class GameFXMLController implements Initializable {
 
             gameGridPane.setBackground(new Background(myBI));
 
+            // Create the columns
             for (int i = 0; i < Constants.NUM_COLS; i++) {
                 ColumnConstraints colConst = new ColumnConstraints();
                 colConst.setPercentWidth(100.0 / Constants.NUM_COLS);
                 gameGridPane.getColumnConstraints().add(colConst);
             }
 
+            // Create the rows
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
                 RowConstraints rowConst = new RowConstraints();
                 rowConst.setPercentHeight(100.0 / Constants.NUM_ROWS);
                 gameGridPane.getRowConstraints().add(rowConst);
             }
 
+            // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-
                 gameGridPane.add(getObstacle(Constants.Obstacles.Chalet), 0, i);
                 gameGridPane.add(getObstacle(Constants.Obstacles.Chalet), 1, i);
                 gameGridPane.add(getObstacle(Constants.Obstacles.ChaletVS), Constants.NUM_COLS - 1, i);
                 gameGridPane.add(getObstacle(Constants.Obstacles.ChaletVS), Constants.NUM_COLS, i);
-
+            }
+            
+            // Create the static obstacles
+            for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
                 Random r = new Random();
+                int x = 0;
+                int y = 0;
+                                
                 gameGridPane.add(getObstacle(Constants.Obstacles.Sapin), r.nextInt(Constants.NUM_COLS - 4) + 2, r.nextInt(Constants.NUM_ROWS - 10) + 10);
-                //root.add(label1, Constants.NUM_COLS, i);
             }
 
             AnchorPane.setTopAnchor(gameGridPane, 0.);

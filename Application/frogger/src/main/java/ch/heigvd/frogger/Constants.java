@@ -14,6 +14,8 @@ public class Constants {
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
     
+    public static final int NUM_OBSTACLES = 20;
+    
     public static enum Obstacles {
         Chalet ("chalet"),
         ChaletVS ("chalet_vs"),
