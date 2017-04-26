@@ -1,5 +1,6 @@
 package ch.heigvd.frogger;
 
+import ch.heigvd.frogger.item.Item;
 import java.util.Arrays;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -11,25 +12,25 @@ import javafx.scene.paint.Color;
  */
 public class Grid {
 
-    // TODO: change Object to Item
-    private final Object[][] items;
+    // TODO: change Item to Item
+    private final Item[][] items;
 
     final double cellWidth = Constants.GAME_WIDTH / Constants.NUM_COLS;
     final double cellHeight = Constants.GAME_HEIGHT / Constants.NUM_ROWS;
 
     public Grid() {
-        this.items = new Object[Constants.NUM_ROWS][Constants.NUM_COLS];
+        this.items = new Item[Constants.NUM_ROWS][Constants.NUM_COLS];
         Arrays.fill(items, null);
     }
 
-    // TODO: change Object to Item
-    public Object getItem(int x, int y) throws IllegalArgumentException {
+    // TODO: change Item to Item
+    public Item getItem(int x, int y) throws IllegalArgumentException {
         checkIndex(x, y);
         return items[x][y];
     }
 
-    // TODO: change Object to Item
-    public void addItem(Object item, int x, int y) throws CellAlreadyOccupiedException {
+    // TODO: change Item to Item
+    public void addItem(Item item, int x, int y) throws CellAlreadyOccupiedException {
         checkIndex(x, y);
         if (items[x][y] != null) {
             throw new CellAlreadyOccupiedException();
@@ -37,14 +38,14 @@ public class Grid {
         items[x][y] = item;
     }
 
-    // TODO: change Object to Item
-    public Object removeItem(int x, int y) throws IllegalArgumentException {
+    // TODO: change Item to Item
+    public Item removeItem(int x, int y) throws IllegalArgumentException {
         checkIndex(x, y);
 
         if (items[x][y] == null) {
             throw new IllegalArgumentException("Can't remove element from empty cell");
         }
-        Object item = items[x][y];
+        Item item = items[x][y];
         items[x][y] = null;
         return item;
 
