@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
  */
 public class Grid {
 
-    // TODO: change Object to Item
     private final Item[][] items;
     private static Grid grid = null;
 
@@ -32,13 +31,11 @@ public class Grid {
         }
     }
 
-    // TODO: change Object to Item
-    public Object getItem(int x, int y) throws IllegalArgumentException {
+    public Item getItem(int x, int y) throws IllegalArgumentException {
         checkIndex(x, y);
         return items[x][y];
     }
 
-    // TODO: change Object to Item
     public void addItem(Item item, int x, int y) throws CellAlreadyOccupiedException {
         checkIndex(x, y);
         if (items[x][y] != null) {
@@ -47,14 +44,14 @@ public class Grid {
         items[x][y] = item;
     }
 
-    // TODO: change Object to Item
-    public Object removeItem(int x, int y) throws IllegalArgumentException {
+    // TODO: change Item to Item
+    public Item removeItem(int x, int y) throws IllegalArgumentException {
         checkIndex(x, y);
 
         if (items[x][y] == null) {
             throw new IllegalArgumentException("Can't remove element from empty cell");
         }
-        Object item = items[x][y];
+        Item item = items[x][y];
         items[x][y] = null;
         return item;
 
