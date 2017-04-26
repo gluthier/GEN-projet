@@ -37,7 +37,7 @@ public class GameFXMLController implements Initializable {
             // Create the canvas
             Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
 
-            Grid grid = new Grid();
+            Grid grid = Grid.getInstance();
 
             // Create the game grid
             GridPane gameGridPane = new GridPane();

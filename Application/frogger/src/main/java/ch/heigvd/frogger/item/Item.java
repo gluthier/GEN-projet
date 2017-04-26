@@ -1,5 +1,7 @@
 package ch.heigvd.frogger.item;
 
+import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.Grid;
 import javafx.scene.canvas.GraphicsContext;
 
 /**
@@ -50,9 +52,9 @@ public abstract class Item {
         if (isVisible()) {
             // set img
             gc.drawImage(null,
-                    posX * grid.getCellHeigth(),
+                    posX * grid.getCellHeigt(),
                     posY * grid.getCellWidth(),
-                    grid.getCellHeight(),
+                    grid.getCellHeigt(),
                     grid.getCellWidth());
         }
     }
@@ -80,13 +82,13 @@ public abstract class Item {
     }
 
     public void moveRight() {
-        if (posX < grid.getWidth() && isRightFree()) {
+        if (posX < Constants.NUM_COLS && isRightFree()) {
             throw new UnsupportedOperationException();
         }
     }
 
     public void moveBottom() {
-        if (posY < grid.getHeight() && isBottomFree()) {
+        if (posY < Constants.NUM_COLS && isBottomFree()) {
             throw new UnsupportedOperationException();
         }
     }

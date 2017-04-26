@@ -1,7 +1,7 @@
 package ch.heigvd.frogger;
 
+import ch.heigvd.frogger.item.Item;
 import java.util.Arrays;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
@@ -12,13 +12,21 @@ import javafx.scene.paint.Color;
 public class Grid {
 
     // TODO: change Object to Item
-    private final Object[][] items;
+    private final Item[][] items;
+    private static Grid grid = null;
 
     final double cellWidth = Constants.GAME_WIDTH / Constants.NUM_COLS;
     final double cellHeight = Constants.GAME_HEIGHT / Constants.NUM_ROWS;
 
-    public Grid() {
-        this.items = new Object[Constants.NUM_ROWS][Constants.NUM_COLS];
+    public static Grid getInstance() {
+        if (grid == null) {
+            Grid.grid = new Grid();
+        }
+        return grid;
+    }
+
+    private Grid() {
+        this.items = new Item[Constants.NUM_ROWS][Constants.NUM_COLS];
         Arrays.fill(items, null);
     }
 
@@ -29,7 +37,7 @@ public class Grid {
     }
 
     // TODO: change Object to Item
-    public void addItem(Object item, int x, int y) throws CellAlreadyOccupiedException {
+    public void addItem(Item item, int x, int y) throws CellAlreadyOccupiedException {
         checkIndex(x, y);
         if (items[x][y] != null) {
             throw new CellAlreadyOccupiedException();
@@ -49,11 +57,11 @@ public class Grid {
         return item;
 
     }
-    
+
     public double getCellHeigt() {
         return cellHeight;
     }
-    
+
     public double getCellWidth() {
         return cellWidth;
     }
@@ -73,7 +81,7 @@ public class Grid {
         for (int i = 0; i < Constants.NUM_COLS; i++) {
             gc.strokeLine(i * cellWidth, 0, i * cellWidth, Constants.GAME_HEIGHT);
         }
-        
+
         for (int x = 0; x < items.length; x++) {
             for (int y = 0; y < items[0].length; y++) {
                 items[x][y].draw(gc);
