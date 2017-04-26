@@ -58,7 +58,7 @@ public class Grid {
 
     }
 
-    public double getCellHeigt() {
+    public double getCellHeight() {
         return cellHeight;
     }
 
@@ -83,8 +83,10 @@ public class Grid {
         }
 
         for (int x = 0; x < items.length; x++) {
-            for (int y = 0; y < items[0].length; y++) {
-                items[x][y].draw(gc);
+            for (int y = 0; y < items[x].length; y++) {
+                if (items[x][y] != null) {
+                    items[x][y].draw(gc);
+                }
             }
         }
     }

@@ -52,9 +52,9 @@ public abstract class Item {
         if (isVisible()) {
             // set img
             gc.drawImage(null,
-                    posX * grid.getCellHeigt(),
+                    posX * grid.getCellHeight(),
                     posY * grid.getCellWidth(),
-                    grid.getCellHeigt(),
+                    grid.getCellHeight(),
                     grid.getCellWidth());
         }
     }
