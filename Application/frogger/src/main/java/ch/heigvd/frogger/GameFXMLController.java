@@ -1,6 +1,7 @@
 package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.item.Item;
+import ch.heigvd.frogger.item.Obstacle;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -53,10 +54,10 @@ public class GameFXMLController implements Initializable {
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                grid.addItem(null, 0, i); // chalet
-                grid.addItem(null, 1, i); // chalet
-                grid.addItem(null, Constants.NUM_COLS - 2, i); // chaletVS
-                grid.addItem(null, Constants.NUM_COLS - 1, i);      // chaletVS
+                grid.addItem(new Obstacle(0, i, Constants.ItemType.Chalet)); // chalet
+                grid.addItem(new Obstacle(1, i, Constants.ItemType.Chalet)); // chalet
+                grid.addItem(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS)); // chaletVS
+                grid.addItem(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));      // chaletVS
             }
 
             // Create the static obstacles
@@ -68,10 +69,10 @@ public class GameFXMLController implements Initializable {
                 // TODO: Avoid infinite loop
                 do {
                     x = r.nextInt(Constants.NUM_COLS - 4) + 2;
-                    y = r.nextInt(Constants.NUM_ROWS - 10) + 10;
+                    y = r.nextInt(Constants.NUM_ROWS - 2) + 2;
                 } while (!grid.isFree(x, y));
                 
-                grid.addItem(null, x, y); // sapin
+                grid.addItem(new Obstacle(x, y, Constants.ItemType.Sapin)); // sapin
             }
 
             // Draw the grid on the Canvas
@@ -84,19 +85,4 @@ public class GameFXMLController implements Initializable {
             e2.printStackTrace();
         }
     }
-
-    
-    // TODO: Remove
-    private Node getObstacle(Constants.Obstacles type) {
-        Label label = new Label("");
-        label.setPrefSize(cellWidth, cellHeight);
-        label.setMinSize(cellWidth, cellHeight);
-        Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + Constants.OBSTACLE_FOLDER + type + ".png").toString(), cellWidth, cellHeight, false, true);
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-        label.setBackground(new Background(backgroundImage));
-
-        return label;
-    }
-
 }

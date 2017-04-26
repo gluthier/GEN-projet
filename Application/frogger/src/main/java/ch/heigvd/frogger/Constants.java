@@ -17,14 +17,14 @@ public class Constants {
     
     public static final int NUM_OBSTACLES = 20;
     
-    public static enum Obstacles {
+    public static enum ItemType {
         Chalet ("chalet"),
         ChaletVS ("chalet_vs"),
         Sapin ("sapin");
         
         private String filename = "";
         
-        Obstacles(String filename) {
+        ItemType(String filename) {
             this.filename = filename;
         }
         

@@ -14,8 +14,8 @@ public class Grid {
     private final Item[][] items;
     private static Grid grid = null;
 
-    final double cellWidth = Constants.GAME_WIDTH / Constants.NUM_COLS;
-    final double cellHeight = Constants.GAME_HEIGHT / Constants.NUM_ROWS;
+    final double cellWidth = (double)Constants.GAME_WIDTH / (double)Constants.NUM_COLS;
+    final double cellHeight = (double)Constants.GAME_HEIGHT / (double)Constants.NUM_ROWS;
 
     public static Grid getInstance() {
         if (grid == null) {

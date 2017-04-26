@@ -4,6 +4,11 @@ import ch.heigvd.frogger.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.Grid;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 /**
  *
@@ -15,10 +20,12 @@ public abstract class Item {
     private int posY;
     private boolean visible = true;
     private final Grid grid = Grid.getInstance();
+    private final Constants.ItemType type;
 
-    public Item(int getPosX, int getPosY) {
+    public Item(int getPosX, int getPosY, Constants.ItemType type) {
         this.posX = getPosX;
         this.posY = getPosY;
+        this.type = type;
     }
 
     /**
@@ -69,13 +76,15 @@ public abstract class Item {
      */
     public void draw(GraphicsContext gc) {
         if (isVisible()) {
+            Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + Constants.OBSTACLE_FOLDER + type + ".png").toString(), grid.getCellWidth(), grid.getCellHeight(), true, true);
             // set img
             // dans le img, attention a la fin de la méthode pour éviter d'étirer le modèle
-            gc.drawImage(null,
-                    posX * grid.getCellHeight(),
-                    posY * grid.getCellWidth(),
-                    grid.getCellHeight(),
-                    grid.getCellWidth());
+            gc.drawImage(image,
+                    posX * grid.getCellWidth() + (grid.getCellWidth()-image.getWidth()) / 2,
+                    posY * grid.getCellHeight() + (grid.getCellHeight()-image.getHeight()) / 2,
+                    image.getWidth(),
+                    image.getHeight()
+            );
         }
     }
 
