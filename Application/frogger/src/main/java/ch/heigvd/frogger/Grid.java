@@ -1,13 +1,18 @@
 package ch.heigvd.frogger;
 
+import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Item;
 import java.util.Arrays;
+
+import javafx.scene.Node;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
  *
- * @author lognaume
+ * @author Guillaume Milani
+ * @date 28/04/17
  */
 public class Grid {
 
@@ -37,12 +42,13 @@ public class Grid {
     }
 
     public void addItem(Item item) throws CellAlreadyOccupiedException {
-        addItem(item, item.getPosX(), item.getPosY());
+    	addItem(item, item.getPosX(), item.getPosY());
     }
 
     public void addItem(Item item, int x, int y) throws CellAlreadyOccupiedException {
         checkIndex(x, y);
         if (items[x][y] != null) {
+        	System.out.println(x+", "+y+" : "+items[x][y]);
             throw new CellAlreadyOccupiedException();
         }
         items[x][y] = item;
@@ -73,7 +79,9 @@ public class Grid {
         return items[x][y] == null;
     }
 
-    public void draw(GraphicsContext gc) {
+    public void draw(Canvas canvas) {
+    	// Draw the lines directly on the graphicContext
+    	GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setStroke(Color.GRAY);
         gc.setLineWidth(1);
         for (int i = 0; i < Constants.NUM_ROWS; i++) {
@@ -87,7 +95,7 @@ public class Grid {
         for (int x = 0; x < items.length; x++) {
             for (int y = 0; y < items[x].length; y++) {
                 if (items[x][y] != null) {
-                    items[x][y].draw(gc);
+                    items[x][y].draw(canvas);
                 }
             }
         }

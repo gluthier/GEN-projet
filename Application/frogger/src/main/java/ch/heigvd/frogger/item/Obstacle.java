@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 
 /**
  *
@@ -8,7 +9,7 @@ import ch.heigvd.frogger.Constants;
  */
 public class Obstacle extends Item {
 
-    public Obstacle(int getPosX, int getPosY, Constants.ItemType type) {
+    public Obstacle(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
         super(getPosX, getPosY, type);
     }
 

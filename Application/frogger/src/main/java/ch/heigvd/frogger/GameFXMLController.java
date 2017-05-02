@@ -1,29 +1,16 @@
 package ch.heigvd.frogger;
 
-import ch.heigvd.frogger.item.Item;
+import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.stage.Stage;
 
 public class GameFXMLController implements Initializable {
 
@@ -42,11 +29,6 @@ public class GameFXMLController implements Initializable {
 
             // Load the background
             Image background = new Image(getClass().getResource(Constants.BACKGROUND_PATH).toString(), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, false, true);
-
-            BackgroundImage myBI = new BackgroundImage(
-                    background,
-                    BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT
-            );
 
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -76,12 +58,12 @@ public class GameFXMLController implements Initializable {
             }
 
             // Draw the grid on the Canvas
-            grid.draw(gc);
+            grid.draw(canvas);
 
             AnchorPane.setTopAnchor(canvas, 0.);
             anchorPane.getChildren().add(canvas);
 
-        } catch (CellAlreadyOccupiedException | IllegalArgumentException e2) {
+        } catch (Exception e2) {
             e2.printStackTrace();
         }
     }
