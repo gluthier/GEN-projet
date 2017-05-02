@@ -1,34 +1,20 @@
 package ch.heigvd.frogger;
 
-import ch.heigvd.frogger.item.Item;
+import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
+import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.stage.Stage;
+import javafx.scene.paint.Color;
 
 public class GameFXMLController implements Initializable {
-
-    final double cellWidth = Constants.GAME_WIDTH / Constants.NUM_COLS;
-    final double cellHeight = Constants.GAME_HEIGHT / Constants.NUM_ROWS;
 
     @FXML
     private AnchorPane anchorPane;
@@ -38,15 +24,14 @@ public class GameFXMLController implements Initializable {
         try {
             // Create the canvas
             Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-            Grid grid = Grid.getInstance();
+            Group elementsGroup = new Group();
 
             // Load the background
-            Image background = new Image(getClass().getResource(Constants.BACKGROUND_PATH).toString(), Constants.GAME_WIDTH, Constants.GAME_HEIGHT, false, true);
-
-            BackgroundImage myBI = new BackgroundImage(
-                    background,
-                    BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT
-            );
+            Image background = new Image(
+                    getClass().getResource(Constants.BACKGROUND_PATH).toString(),
+                    Constants.GAME_WIDTH,
+                    Constants.GAME_HEIGHT,
+                    false, true);
 
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
@@ -54,10 +39,10 @@ public class GameFXMLController implements Initializable {
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                grid.addItem(new Obstacle(0, i, Constants.ItemType.Chalet)); // chalet
-                grid.addItem(new Obstacle(1, i, Constants.ItemType.Chalet)); // chalet
-                grid.addItem(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS)); // chaletVS
-                grid.addItem(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));      // chaletVS
+                new Obstacle(0, i, Constants.ItemType.Chalet, elementsGroup); // chalet
+                new Obstacle(1, i, Constants.ItemType.Chalet, elementsGroup); // chalet
+                new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS, elementsGroup); // chaletVS
+                new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS, elementsGroup);      // chaletVS
             }
 
             // Create the static obstacles
@@ -66,22 +51,35 @@ public class GameFXMLController implements Initializable {
                 int x = 0;
                 int y = 0;
 
+                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin, elementsGroup); // sapin
+
                 // TODO: Avoid infinite loop
                 do {
-                    x = r.nextInt(Constants.NUM_COLS - 4) + 2;
-                    y = r.nextInt(Constants.NUM_ROWS - 2) + 2;
-                } while (!grid.isFree(x, y));
-                
-                grid.addItem(new Obstacle(x, y, Constants.ItemType.Sapin)); // sapin
+                    sapin.setXFromGrid(r.nextInt(Constants.NUM_COLS - 4) + 2);
+                    sapin.setYFromGrid(r.nextInt(Constants.NUM_ROWS - 2) + 2);
+                } while (sapin.collisionWithObstacle());
             }
 
-            // Draw the grid on the Canvas
-            grid.draw(gc);
+            // ----- ONLY FOR DEBUG : draw lines -----
+            // TODO : Remove
+            // Draw the lines directly on the graphicContext
+            gc.setStroke(Color.GRAY);
+            gc.setLineWidth(1);
+            for (int i = 0; i < Constants.NUM_ROWS; i++) {
+                gc.strokeLine(0, i * Constants.CELL_HEIGHT, Constants.GAME_WIDTH, i * Constants.CELL_HEIGHT);
+            }
+
+            for (int i = 0; i < Constants.NUM_COLS; i++) {
+                gc.strokeLine(i * Constants.CELL_WIDTH, 0, i * Constants.CELL_WIDTH, Constants.GAME_HEIGHT);
+            }
+
+            // ---------------------------------------
 
             AnchorPane.setTopAnchor(canvas, 0.);
             anchorPane.getChildren().add(canvas);
+            anchorPane.getChildren().add(elementsGroup);
 
-        } catch (CellAlreadyOccupiedException | IllegalArgumentException e2) {
+        } catch (CellAlreadyOccupiedException e2) {
             e2.printStackTrace();
         }
     }
