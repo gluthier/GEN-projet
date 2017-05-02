@@ -1,11 +1,16 @@
 package ch.heigvd.frogger;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
+
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+
+import ch.heigvd.frogger.Constants;
 
 
 public class MainApp extends Application {
@@ -16,6 +21,21 @@ public class MainApp extends Application {
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
+        
+        // Key handler Example
+        // TODO get the eventHandler Out
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+
+			@Override
+			public void handle(KeyEvent event) {
+				if(Constants.ACTION_ATTACK.containsKey(event.getCode())) {
+					System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
+				} else if(Constants.ACTION_DEFEND.containsKey(event.getCode())) {
+					System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+				}
+			}
+        	
+		});
         
         stage.setTitle("Walliser Frogger");
         stage.setScene(scene);
