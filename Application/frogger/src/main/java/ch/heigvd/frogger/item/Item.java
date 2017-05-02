@@ -1,179 +1,106 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.Grid;
-import javafx.scene.canvas.GraphicsContext;
+import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import javafx.geometry.Bounds;
+import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
+import javafx.scene.image.ImageView;
 
 /**
  *
  * @author Maxime Guillod
  */
-public abstract class Item {
+public abstract class Item extends ImageView {
 
-    private int posX;
-    private int posY;
-    private boolean visible = true;
-    private final Grid grid = Grid.getInstance();
+    private final Group parent;
     private Constants.ItemType type;
 
-    public Item(int getPosX, int getPosY, Constants.ItemType type) {
-        this.posX = getPosX;
-        this.posY = getPosY;
+    public Item(int posX, int posY, Constants.ItemType type, Group parent) throws CellAlreadyOccupiedException {
+        super();
+
+        if (posX < 0 || posY < 0) {
+            throw new IndexOutOfBoundsException("Initial position must be positive");
+        }
+
+        String folder = "";
+        
+        if (type == Constants.ItemType.SkierLeft ||
+                type == Constants.ItemType.Skier ||
+                type == Constants.ItemType.SkierRight) {
+            folder = Constants.PLAYER_FOLDER;
+        } else {
+            folder = Constants.OBSTACLE_FOLDER;
+        }
+        
+        Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
+
+        setImage(image);
+
+        setXFromGrid(posX);
+        setYFromGrid(posY);
+
+        // Negative value -> image intrinsic width and height
+        setFitHeight(-1);
+        setFitWidth(-1);
+
         this.type = type;
+        this.parent = parent;
+        parent.getChildren().add(this);
     }
 
-    /**
-     * Update the item. For exemple, move item every t secondes.
-     */
-    public abstract void update();
-
-    /**
-     * position X
-     *
-     * @return
-     */
-    public int getPosX() {
-        return posX;
+    public final void setXFromGrid(int x) {
+        setX(x * Constants.CELL_WIDTH + (Constants.CELL_WIDTH - getImage().getWidth()) / 2);
     }
 
-    /**
-     * Position Y
-     *
-     * @return
-     */
-    public int getPosY() {
-        return posY;
+    public final void setYFromGrid(int y) {
+        setY(y * Constants.CELL_HEIGHT + (Constants.CELL_HEIGHT - getImage().getHeight()) / 2);
     }
     
-    /**
-     * Set the type
-     * 
-     * @param newType 
-     */
     public void setType(Constants.ItemType newType) {
-        type = newType;
+        this.type = newType;
     }
 
-    /**
-     * Set the visibility of the item on the grid
-     *
-     * @param visible
-     */
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    /**
-     * Is the item visible on the grid
-     *
-     * @return
-     */
-    public boolean isVisible() {
-        return visible;
-    }
-
-    /**
-     * Draw the item on the UI if it's visible
-     *
-     * @param gc
-     */
-    public void draw(GraphicsContext gc) {
-        if (isVisible()) {
-            String folder = "";
-            if (type == Constants.ItemType.SkierLeft ||
-                    type == Constants.ItemType.Skier ||
-                    type == Constants.ItemType.SkierRight) {
-                folder = Constants.PLAYER_FOLDER;
-            } else {
-                folder = Constants.OBSTACLE_FOLDER;
+    public boolean collisionWithObstacle() {
+        for (Node n : parent.getChildren()) {
+            if (n != this && this.getBoundsInParent().intersects(n.getBoundsInParent())) {
+                return true;
             }
-            
-            Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), 
-                    grid.getCellWidth(), grid.getCellHeight(), true, true);
-            
-            // set img
-            // dans le img, attention a la fin de la méthode pour éviter d'étirer le modèle
-            gc.drawImage(image,
-                    posX * grid.getCellWidth() + (grid.getCellWidth()-image.getWidth()) / 2,
-                    posY * grid.getCellHeight() + (grid.getCellHeight()-image.getHeight()) / 2,
-                    image.getWidth(),
-                    image.getHeight()
-            );
-            }
-    }
-
-    private boolean isTopAccessible() {
-        if (posY > 0) {
-            return grid.isFree(posX, posY - 1);
         }
         return false;
     }
 
-    private boolean isRightAccessible() {
-        if (posX < Constants.NUM_COLS) {
-            return grid.isFree(posX + 1, posY);
-        }
-        return false;
+    private boolean collisionWithEdge() {
+        return this.getBoundsInParent().intersects(parent.getBoundsInLocal());
     }
 
-    private boolean isBottomAccessible() {
-        if (posY < Constants.NUM_ROWS) {
-            return grid.isFree(posX, posY + 1);
-        }
-        return false;
-    }
+    private void move(int diffX, int diffY) {
+        double oldX = getX();
+        double oldY = getY();
 
-    private boolean isLeftAccessible() {
-        if (posX > 0) {
-            return grid.isFree(posX - 1, posY);
+        setX(getX() + diffX * Constants.CELL_WIDTH);
+        setY(getY() + diffY * Constants.CELL_HEIGHT);
+
+        if (collisionWithObstacle() || collisionWithEdge()) {
+            setX(oldX);
+            setY(oldY);
         }
-        return false;
     }
 
     public void moveTop() throws CellAlreadyOccupiedException {
-        synchronized (grid) {
-            if (isTopAccessible()) {
-                grid.removeItem(posX, posY);
-                posY--;
-                grid.addItem(this);
-            }
-        }
+        move(0, -1);
     }
 
     public void moveRight() throws CellAlreadyOccupiedException {
-        synchronized (grid) {
-            if (isRightAccessible()) {
-                grid.removeItem(posX, posY);
-                posX++;
-                grid.addItem(this);
-            }
-        }
+        move(1, 0);
     }
 
     public void moveBottom() throws CellAlreadyOccupiedException {
-        synchronized (grid) {
-            if (isBottomAccessible()) {
-                grid.removeItem(posX, posY);
-                posY++;
-                grid.addItem(this);
-            }
-        }
+        move(0, 1);
     }
 
     public void moveLeft() throws CellAlreadyOccupiedException {
-        synchronized (grid) {
-            if (isLeftAccessible()) {
-                grid.removeItem(posX, posY);
-                posX--;
-                grid.addItem(this);
-            }
-        }
+        move(-1, 0);
     }
-
 }

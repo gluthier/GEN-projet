@@ -12,16 +12,15 @@ import javafx.stage.Stage;
 
 import ch.heigvd.frogger.Constants;
 
-
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Game.fxml"));
-        
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
-        
+
         stage.setTitle("Walliser Frogger");
         stage.setScene(scene);
         stage.show();

@@ -1,4 +1,4 @@
-package ch.heigvd.frogger;
+package ch.heigvd.frogger.exception;
 
 /**
  *
