@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -14,6 +15,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
@@ -80,6 +82,22 @@ public class GameFXMLController implements Initializable {
 
             // Draw the grid on the Canvas
             grid.draw(gc);
+            
+            // make the canvas focusable
+            canvas.setFocusTraversable(true);
+            
+            // keyboard handler
+            canvas.addEventHandler(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+
+    			@Override
+    			public void handle(KeyEvent event) {
+    				if(Constants.ACTION_ATTACK.containsKey(event.getCode())) {
+    					System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
+    				} else if(Constants.ACTION_DEFEND.containsKey(event.getCode())) {
+    					System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+    				}
+    			}
+            });
 
             AnchorPane.setTopAnchor(canvas, 0.);
             anchorPane.getChildren().add(canvas);
