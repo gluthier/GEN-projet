@@ -20,7 +20,7 @@ public abstract class Item {
     private int posY;
     private boolean visible = true;
     private final Grid grid = Grid.getInstance();
-    private final Constants.ItemType type;
+    private Constants.ItemType type;
 
     public Item(int getPosX, int getPosY, Constants.ItemType type) {
         this.posX = getPosX;
@@ -50,6 +50,15 @@ public abstract class Item {
     public int getPosY() {
         return posY;
     }
+    
+    /**
+     * Set the type
+     * 
+     * @param newType 
+     */
+    public void setType(Constants.ItemType newType) {
+        type = newType;
+    }
 
     /**
      * Set the visibility of the item on the grid
@@ -76,7 +85,14 @@ public abstract class Item {
      */
     public void draw(GraphicsContext gc) {
         if (isVisible()) {
-            String folder = type == Constants.ItemType.Skier ? Constants.PLAYER_FOLDER : Constants.OBSTACLE_FOLDER;
+            String folder = "";
+            if (type == Constants.ItemType.SkierLeft ||
+                    type == Constants.ItemType.Skier ||
+                    type == Constants.ItemType.SkierRight) {
+                folder = Constants.PLAYER_FOLDER;
+            } else {
+                folder = Constants.OBSTACLE_FOLDER;
+            }
             
             Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), 
                     grid.getCellWidth(), grid.getCellHeight(), true, true);

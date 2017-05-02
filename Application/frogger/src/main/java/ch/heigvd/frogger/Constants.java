@@ -62,7 +62,9 @@ public class Constants {
     public static enum ItemType {
         Chalet ("chalet"),
         ChaletVS ("chalet_vs"),
+        SkierLeft ("skier-left1"),
         Skier ("skier-down"),
+        SkierRight ("skier-right1"),
         Sapin ("sapin");
         
         private String filename = "";
