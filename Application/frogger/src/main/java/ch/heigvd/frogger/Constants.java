@@ -9,6 +9,8 @@ public class Constants {
     public static final int GAME_HEIGHT = 1026;
     public static final int NUM_COLS = 36;
     public static final int NUM_ROWS = 27;
+    public static final double CELL_WIDTH = (double)Constants.GAME_WIDTH / (double)Constants.NUM_COLS;
+    public static final double CELL_HEIGHT = (double)Constants.GAME_HEIGHT / (double)Constants.NUM_ROWS;
     
     public static final String IMG_FOLDER = "/images/";
     public static final String OBSTACLE_FOLDER = "background/";

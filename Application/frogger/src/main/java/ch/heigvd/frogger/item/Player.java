@@ -2,6 +2,7 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import javafx.scene.Group;
 
 /**
  *
@@ -9,13 +10,7 @@ import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
  */
 public class Player extends Item {
 
-    public Player(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
-        super(getPosX, getPosY, type);
+    public Player(int getPosX, int getPosY, Constants.ItemType type, Group parent) throws CellAlreadyOccupiedException {
+        super(getPosX, getPosY, type, parent);
     }
-
-    @Override
-    public void update() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
 }
