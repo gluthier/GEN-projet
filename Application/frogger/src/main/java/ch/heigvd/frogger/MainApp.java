@@ -24,6 +24,7 @@ public class MainApp extends Application {
         
         // Key handler Example
         // TODO get the eventHandler Out
+        //TODO Find a way to link it with GameFXMLController
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
