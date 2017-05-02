@@ -13,17 +13,18 @@ public class Constants {
     public static final String IMG_FOLDER = "/images/";
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
+    public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
     
     public static final int NUM_OBSTACLES = 20;
     
-    public static enum Obstacles {
+    public static enum ItemType {
         Chalet ("chalet"),
         ChaletVS ("chalet_vs"),
         Sapin ("sapin");
         
         private String filename = "";
         
-        Obstacles(String filename) {
+        ItemType(String filename) {
             this.filename = filename;
         }
         
