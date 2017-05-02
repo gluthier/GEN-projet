@@ -29,7 +29,7 @@ public abstract class Item {
     }
 
     /**
-     * Update the item. For exemple, move obstacle every t secondes.
+     * Update the item. For exemple, move item every t secondes.
      */
     public abstract void update();
 
@@ -76,7 +76,11 @@ public abstract class Item {
      */
     public void draw(GraphicsContext gc) {
         if (isVisible()) {
-            Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + Constants.OBSTACLE_FOLDER + type + ".png").toString(), grid.getCellWidth(), grid.getCellHeight(), true, true);
+            String folder = type == Constants.ItemType.Skier ? Constants.PLAYER_FOLDER : Constants.OBSTACLE_FOLDER;
+            
+            Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), 
+                    grid.getCellWidth(), grid.getCellHeight(), true, true);
+            
             // set img
             // dans le img, attention a la fin de la méthode pour éviter d'étirer le modèle
             gc.drawImage(image,
@@ -85,7 +89,7 @@ public abstract class Item {
                     image.getWidth(),
                     image.getHeight()
             );
-        }
+            }
     }
 
     private boolean isTopAccessible() {

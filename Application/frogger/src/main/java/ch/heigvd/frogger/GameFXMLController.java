@@ -74,6 +74,9 @@ public class GameFXMLController implements Initializable {
                 
                 grid.addItem(new Obstacle(x, y, Constants.ItemType.Sapin)); // sapin
             }
+            
+            // Skier start
+            grid.addItem(new Obstacle(14, 5, Constants.ItemType.Skier)); // Skier on top of the mountain
 
             // Draw the grid on the Canvas
             grid.draw(gc);
