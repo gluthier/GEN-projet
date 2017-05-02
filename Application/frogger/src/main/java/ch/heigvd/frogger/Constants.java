@@ -1,5 +1,11 @@
 package ch.heigvd.frogger;
 
+import java.util.Collections;
+import java.util.EnumMap;
+import java.util.Map;
+
+import javafx.scene.input.KeyCode;
+
 /**
  *
  * @author lognaume
@@ -17,6 +23,41 @@ public class Constants {
     
     public static final int NUM_OBSTACLES = 20;
     
+    /**
+     * Map between key pressed and action related for the attacker
+     */
+    public static final Map<KeyCode, ActionType> ACTION_ATTACK = 
+    		Collections.unmodifiableMap( 
+    				new EnumMap<KeyCode,ActionType>(KeyCode.class) 
+    				{
+    					{
+    						put(KeyCode.DOWN, ActionType.MovePlayer);
+    						put(KeyCode.LEFT, ActionType.MovePlayer);
+    						put(KeyCode.RIGHT, ActionType.MovePlayer);
+    					}
+    				});
+    
+    /**
+     * Map between key pressed and action related for the defender
+     */
+    public static final Map<KeyCode, ActionType> ACTION_DEFEND = 
+    		Collections.unmodifiableMap( 
+    				new EnumMap<KeyCode,ActionType>(KeyCode.class) 
+    				{
+    					{
+    						put(KeyCode.DIGIT0, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT1, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT2, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT3, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT4, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT5, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT6, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT7, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT8, ActionType.SendObstacle);
+    						put(KeyCode.DIGIT9, ActionType.SendObstacle);
+    					}
+    				});
+    
     public static enum ItemType {
         Chalet ("chalet"),
         ChaletVS ("chalet_vs"),
@@ -31,5 +72,10 @@ public class Constants {
         public String toString() {
             return filename;
         }
+    };
+    
+    public static enum ActionType {
+    	SendObstacle,
+    	MovePlayer;
     };
 }
