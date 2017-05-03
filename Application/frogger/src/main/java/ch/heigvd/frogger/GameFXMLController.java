@@ -2,6 +2,7 @@ package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -11,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
@@ -37,6 +39,12 @@ public class GameFXMLController implements Initializable {
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
 
+            // Skier on top of the mountain
+            Player player = new Player(14, 5, Constants.ItemType.Skier);
+            
+            Group playerGroup = new Group();
+            playerGroup.getChildren().add(player);
+            
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
                 elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
@@ -73,13 +81,45 @@ public class GameFXMLController implements Initializable {
             for (int i = 0; i < Constants.NUM_COLS; i++) {
                 gc.strokeLine(i * Constants.CELL_WIDTH, 0, i * Constants.CELL_WIDTH, Constants.GAME_HEIGHT);
             }
-
             // ---------------------------------------
+
+            // make the canvas focusable
+            canvas.setFocusTraversable(true);
 
             AnchorPane.setTopAnchor(canvas, 0.);
             anchorPane.getChildren().add(canvas);
             anchorPane.getChildren().add(elementsGroup);
-
+            anchorPane.getChildren().add(playerGroup);
+                    
+            // keyboard handler
+            canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+                if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
+                    System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
+                    
+                    try {
+                        switch (event.getCode()) {
+                            case LEFT:
+                                player.setType(Constants.ItemType.SkierLeft);
+                                player.moveLeft();
+                                break;
+                            case DOWN:
+                                player.setType(Constants.ItemType.Skier);
+                                player.moveBottom();
+                                break;
+                            case RIGHT:
+                                player.setType(Constants.ItemType.SkierRight);
+                                player.moveRight();
+                                break;
+                            default:
+                                break;
+                        }
+                    } catch (CellAlreadyOccupiedException e) {
+                        e.printStackTrace();
+                    }
+                } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
+                    System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+                }
+            });
         } catch (CellAlreadyOccupiedException e2) {
             e2.printStackTrace();
         }
