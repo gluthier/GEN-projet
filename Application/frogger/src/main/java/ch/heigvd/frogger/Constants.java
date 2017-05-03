@@ -5,6 +5,10 @@ import java.util.EnumMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableBiMap;
+
 import ch.heigvd.frogger.item.ActionAttack;
 import ch.heigvd.frogger.item.ActionDefend;
 import ch.heigvd.frogger.item.Actions;
@@ -57,39 +61,34 @@ public class Constants {
             = Collections.unmodifiableMap(
                     new EnumMap<KeyCode, Actions>(KeyCode.class) {
                 {
-                    put(KeyCode.DIGIT1, new ActionDefend(0));
-                    put(KeyCode.DIGIT2, new ActionDefend(1));
-                    put(KeyCode.DIGIT3, new ActionDefend(2));
-                    put(KeyCode.DIGIT4, new ActionDefend(3));
-                    put(KeyCode.DIGIT5, new ActionDefend(4));
-                    put(KeyCode.DIGIT6, new ActionDefend(5));
-                    put(KeyCode.DIGIT7, new ActionDefend(6));
-                    put(KeyCode.DIGIT8, new ActionDefend(7));
-                    put(KeyCode.DIGIT9, new ActionDefend(8));
-                    put(KeyCode.DIGIT0, new ActionDefend(9));
+                    put(KeyCode.DIGIT1, new ActionDefend(1));
+                    put(KeyCode.DIGIT2, new ActionDefend(2));
+                    put(KeyCode.DIGIT3, new ActionDefend(3));
+                    put(KeyCode.DIGIT4, new ActionDefend(4));
+                    put(KeyCode.DIGIT5, new ActionDefend(5));
+                    put(KeyCode.DIGIT6, new ActionDefend(6));
+                    put(KeyCode.DIGIT7, new ActionDefend(7));
+                    put(KeyCode.DIGIT8, new ActionDefend(8));
+                    put(KeyCode.DIGIT9, new ActionDefend(9));
+                    put(KeyCode.DIGIT0, new ActionDefend(0));
                 }
             });
     
-    @SuppressWarnings("serial")
     /**
      * Map between obstacle row number and grid row number
      */
-	public static final Map<Integer,Integer> OBSTACLE_ROW
-    	= Collections.unmodifiableMap(
-    			new LinkedHashMap<Integer,Integer>() {
-    				{
-    					put(0,7);
-    					put(1,9);
-    					put(2,11);
-    					put(3,13);
-    					put(4,15);
-    					put(5,17);
-    					put(6,19);
-    					put(7,21);
-    					put(8,23);
-    					put(9,25);
-    				}
-    			});
+    public static final BiMap<Integer, Integer> OBSTACLE_ROW 
+    	= new ImmutableBiMap.Builder<Integer,Integer>().put(1,7)
+													.put(2,9)
+													.put(3,11)
+													.put(4,13)
+													.put(5,15)
+													.put(6,17)
+													.put(7,19)
+													.put(8,21)
+													.put(9,23)
+													.put(0,25)
+													.build();
 
     public static enum ItemType {
         Chalet("chalet"),

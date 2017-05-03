@@ -49,8 +49,8 @@ public class GameFXMLController implements Initializable {
             
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-            	if(Constants.OBSTACLE_ROW.containsKey(i)) {
-            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(i)));
+            	if(Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
+            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
             	} else {
             		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
             	}
@@ -71,7 +71,7 @@ public class GameFXMLController implements Initializable {
                 // TODO: Avoid infinite loop
                 do {
                     sapin.setXGridCoordinate(r.nextInt(Constants.NUM_COLS - 4) + 2);
-                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - 2) + 2);
+                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y);
                 } while (sapin.collisionWithOtherNode());
             }
 
