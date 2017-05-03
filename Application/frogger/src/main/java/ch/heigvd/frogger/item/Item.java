@@ -13,31 +13,19 @@ import javafx.scene.image.ImageView;
  * @date 02/05/17
  */
 public abstract class Item extends ImageView {
-    
+
     private Constants.ItemType type;
 
     public Item(int initPosX, int initPosY, Constants.ItemType type) {
         super();
-        
+
         this.type = type;
 
         if (initPosX < 0 || initPosY < 0) {
             throw new IndexOutOfBoundsException("Initial position must be positive");
         }
+        changeImage();
 
-        String folder;
-        if (type == Constants.ItemType.SkierLeft
-                || type == Constants.ItemType.Skier
-                || type == Constants.ItemType.SkierRight) {
-            folder = Constants.PLAYER_FOLDER;
-        } else {
-            folder = Constants.OBSTACLE_FOLDER;
-        }
-
-        Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
-
-        setImage(image);
- 
         setXGridCoordinate(initPosX);
         setYGridCoordinate(initPosY);
 
@@ -48,6 +36,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Set the item's position from it's grid coordinate
+     *
      * @param x item's position in the grid coordinates
      */
     public final void setXGridCoordinate(int x) {
@@ -56,6 +45,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Set the item's position from it's grid coordinate
+     *
      * @param y item's position in the grid coordinates
      */
     public final void setYGridCoordinate(int y) {
@@ -67,16 +57,26 @@ public abstract class Item extends ImageView {
         changeImage();
     }
 
-    public void changeImage() {
-        String folder;
-        if (type == Constants.ItemType.SkierLeft
-                || type == Constants.ItemType.Skier
-                || type == Constants.ItemType.SkierRight) {
-            folder = Constants.PLAYER_FOLDER;
-        } else {
-            folder = Constants.OBSTACLE_FOLDER;
-        }
+    /**
+     * Type of the item
+     *
+     * @return
+     */
+    public Constants.ItemType getType() {
+        return type;
+    }
 
+    /**
+     * Update the image
+     */
+    public abstract void changeImage();
+
+    /**
+     * Update the image with specific folder
+     *
+     * @param folder
+     */
+    protected void changeImage(String folder) {
         Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
 
         setImage(image);
@@ -84,6 +84,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Get the item's position in grid coordinate
+     *
      * @return the item's position in grid coordinate
      */
     public final int getXGridCoordinate() {
@@ -92,6 +93,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Get the item's position in grid coordinate
+     *
      * @return the item's position in grid coordinate
      */
     public final int getYGridCoordinate() {
@@ -100,7 +102,8 @@ public abstract class Item extends ImageView {
 
     /**
      * Check if there is a collision with an other Node in the Group
-     * @return  if there is a collision
+     *
+     * @return if there is a collision
      */
     public boolean collisionWithOtherNode() {
         for (Node n : getParent().getChildrenUnmodifiable()) {
@@ -113,6 +116,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Check if there is a collision with the game corners
+     *
      * @return if there is a collision with the game corners
      */
     private boolean collisionWithEdge() {
@@ -124,6 +128,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Move the item diffX and diffY (grid coordinates).
+     *
      * @param diffX the number of cells to move horizontally (in grid coordinates)
      * @param diffY the number of cells to move vertically (in grid coordinates)
      * @throws CellAlreadyOccupiedException if the cell is already occupied
@@ -144,6 +149,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Move from one cell to the top
+     *
      * @throws CellAlreadyOccupiedException
      */
     public void moveTop() throws CellAlreadyOccupiedException {
@@ -152,6 +158,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Move from one cell to the right
+     *
      * @throws CellAlreadyOccupiedException
      */
     public void moveRight() throws CellAlreadyOccupiedException {
@@ -160,6 +167,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Move from one cell to the bottom
+     *
      * @throws CellAlreadyOccupiedException
      */
     public void moveBottom() throws CellAlreadyOccupiedException {
@@ -168,6 +176,7 @@ public abstract class Item extends ImageView {
 
     /**
      * Move from one cell to the left
+     *
      * @throws CellAlreadyOccupiedException
      */
     public void moveLeft() throws CellAlreadyOccupiedException {
