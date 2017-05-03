@@ -41,15 +41,17 @@ public class GameFXMLController implements Initializable {
             gc.drawImage(background, 0, 0);
 
             // Skier on top of the mountain
+            Player player = new Player(14, 5, Constants.ItemType.Skier);
+            
             Group playerGroup = new Group();
-            Player player = new Player(14, 5, Constants.ItemType.Skier, playerGroup);
+            playerGroup.getChildren().add(player);
             
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                new Obstacle(0, i, Constants.ItemType.Chalet, elementsGroup); // chalet
-                new Obstacle(1, i, Constants.ItemType.Chalet, elementsGroup); // chalet
-                new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS, elementsGroup); // chaletVS
-                new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS, elementsGroup);      // chaletVS
+                elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
+                elementsGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
+                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
+                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
 
             // Create the static obstacles
@@ -58,13 +60,14 @@ public class GameFXMLController implements Initializable {
                 int x = 0;
                 int y = 0;
 
-                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin, elementsGroup); // sapin
+                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin); // sapin
+                elementsGroup.getChildren().add(sapin);
 
                 // TODO: Avoid infinite loop
                 do {
-                    sapin.setXFromGrid(r.nextInt(Constants.NUM_COLS - 4) + 2);
-                    sapin.setYFromGrid(r.nextInt(Constants.NUM_ROWS - 2) + 2);
-                } while (sapin.collisionWithObstacle());
+                    sapin.setXGridCoordinate(r.nextInt(Constants.NUM_COLS - 4) + 2);
+                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - 2) + 2);
+                } while (sapin.collisionWithOtherNode());
             }
 
             // ----- ONLY FOR DEBUG : draw lines -----
