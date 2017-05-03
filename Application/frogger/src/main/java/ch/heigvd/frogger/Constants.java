@@ -20,6 +20,9 @@ public class Constants {
     public static final int NUM_ROWS = 27;
     public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
     public static final double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
+    
+    public static final int INITIAL_PLAYER_X = 14;
+    public static final int INITIAL_PLAYER_Y = 5;
 
     public static final String IMG_FOLDER = "/images/";
     public static final String PLAYER_FOLDER = "ski-personnages/";
@@ -68,7 +71,8 @@ public class Constants {
         SkierLeft("skier-left1"),
         Skier("skier-down"),
         SkierRight("skier-right1"),
-        Sapin("sapin");
+        Sapin("sapin"),
+    	Saucisson("saucisson_vaudois");
 
         private String filename = "";
 

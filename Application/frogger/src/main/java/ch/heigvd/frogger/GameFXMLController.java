@@ -2,6 +2,7 @@ package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
@@ -12,6 +13,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -40,7 +42,7 @@ public class GameFXMLController implements Initializable {
             gc.drawImage(background, 0, 0);
 
             // Skier on top of the mountain
-            Player player = new Player(14, 5, Constants.ItemType.Skier);
+            Player player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
             
             Group playerGroup = new Group();
             playerGroup.getChildren().add(player);
@@ -98,6 +100,17 @@ public class GameFXMLController implements Initializable {
                     Constants.ACTION_ATTACK.get(event.getCode()).act(player);
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+                    if(event.getCode() == KeyCode.DIGIT1) {
+                    	System.out.println("obstacle on row 1");
+                    	try {
+							DynamicObstacle OD = new DynamicObstacle(5, Constants.ItemType.Saucisson);
+							OD.setYGridCoordinate(12);
+							elementsGroup.getChildren().add(OD);
+						} catch (CellAlreadyOccupiedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+                    }
                 }
             });
         } catch (CellAlreadyOccupiedException e2) {
