@@ -3,7 +3,6 @@ package ch.heigvd.frogger;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
-
 import javafx.scene.input.KeyCode;
 
 /**
