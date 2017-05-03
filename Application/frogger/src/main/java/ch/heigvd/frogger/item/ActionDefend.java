@@ -15,8 +15,7 @@ public class ActionDefend implements Actions{
 
 	@Override
 	public void act(Item i) {
-		// TODO Auto-generated method stub
-		
+		i.setYGridCoordinate(row*2 + 7);
 	}
 
 }

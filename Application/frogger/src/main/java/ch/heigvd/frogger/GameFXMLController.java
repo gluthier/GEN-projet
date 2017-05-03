@@ -100,18 +100,15 @@ public class GameFXMLController implements Initializable {
                     Constants.ACTION_ATTACK.get(event.getCode()).act(player);
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
-                    if(event.getCode() == KeyCode.DIGIT1) {
-                    	System.out.println("obstacle on row 1");
                     	try {
 							DynamicObstacle OD = new DynamicObstacle(5, Constants.ItemType.Saucisson);
-							OD.setYGridCoordinate(12);
+							Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
 							elementsGroup.getChildren().add(OD);
 						} catch (CellAlreadyOccupiedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						} 
                     }
-                }
             });
         } catch (CellAlreadyOccupiedException e2) {
             e2.printStackTrace();

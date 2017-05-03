@@ -5,6 +5,7 @@ import java.util.EnumMap;
 import java.util.Map;
 
 import ch.heigvd.frogger.item.ActionAttack;
+import ch.heigvd.frogger.item.ActionDefend;
 import ch.heigvd.frogger.item.Actions;
 import javafx.scene.input.KeyCode;
 
@@ -48,20 +49,20 @@ public class Constants {
     /**
      * Map between key pressed and action related for the defender
      */
-    public static final Map<KeyCode, ActionType> ACTION_DEFEND
+    public static final Map<KeyCode, Actions> ACTION_DEFEND
             = Collections.unmodifiableMap(
-                    new EnumMap<KeyCode, ActionType>(KeyCode.class) {
+                    new EnumMap<KeyCode, Actions>(KeyCode.class) {
                 {
-                    put(KeyCode.DIGIT0, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT1, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT2, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT3, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT4, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT5, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT6, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT7, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT8, ActionType.SendObstacle);
-                    put(KeyCode.DIGIT9, ActionType.SendObstacle);
+                    put(KeyCode.DIGIT1, new ActionDefend(0));
+                    put(KeyCode.DIGIT2, new ActionDefend(1));
+                    put(KeyCode.DIGIT3, new ActionDefend(2));
+                    put(KeyCode.DIGIT4, new ActionDefend(3));
+                    put(KeyCode.DIGIT5, new ActionDefend(4));
+                    put(KeyCode.DIGIT6, new ActionDefend(5));
+                    put(KeyCode.DIGIT7, new ActionDefend(6));
+                    put(KeyCode.DIGIT8, new ActionDefend(7));
+                    put(KeyCode.DIGIT9, new ActionDefend(8));
+                    put(KeyCode.DIGIT0, new ActionDefend(9));
                 }
             });
 
