@@ -2,7 +2,6 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -24,16 +23,15 @@ public abstract class Item extends ImageView {
             throw new IndexOutOfBoundsException("Initial position must be positive");
         }
 
-        String folder = "";
-        
-        if (type == Constants.ItemType.SkierLeft ||
-                type == Constants.ItemType.Skier ||
-                type == Constants.ItemType.SkierRight) {
+        String folder;
+        if (type == Constants.ItemType.SkierLeft
+                || type == Constants.ItemType.Skier
+                || type == Constants.ItemType.SkierRight) {
             folder = Constants.PLAYER_FOLDER;
         } else {
             folder = Constants.OBSTACLE_FOLDER;
         }
-        
+
         Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
 
         setImage(image);
@@ -57,9 +55,25 @@ public abstract class Item extends ImageView {
     public final void setYFromGrid(int y) {
         setY(y * Constants.CELL_HEIGHT + (Constants.CELL_HEIGHT - getImage().getHeight()) / 2);
     }
-    
+
     public void setType(Constants.ItemType newType) {
         this.type = newType;
+        changeImage();
+    }
+
+    public void changeImage() {
+        String folder;
+        if (type == Constants.ItemType.SkierLeft
+                || type == Constants.ItemType.Skier
+                || type == Constants.ItemType.SkierRight) {
+            folder = Constants.PLAYER_FOLDER;
+        } else {
+            folder = Constants.OBSTACLE_FOLDER;
+        }
+
+        Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
+
+        setImage(image);
     }
 
     public boolean collisionWithObstacle() {
@@ -81,11 +95,11 @@ public abstract class Item extends ImageView {
 
         setX(getX() + diffX * Constants.CELL_WIDTH);
         setY(getY() + diffY * Constants.CELL_HEIGHT);
-
+        /* TODO
         if (collisionWithObstacle() || collisionWithEdge()) {
             setX(oldX);
             setY(oldY);
-        }
+        }*/
     }
 
     public void moveTop() throws CellAlreadyOccupiedException {

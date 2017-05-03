@@ -1,16 +1,12 @@
 package ch.heigvd.frogger;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-
-import ch.heigvd.frogger.Constants;
 
 public class MainApp extends Application {
 
