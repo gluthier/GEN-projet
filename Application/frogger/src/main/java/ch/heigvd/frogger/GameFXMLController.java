@@ -95,27 +95,7 @@ public class GameFXMLController implements Initializable {
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
                     System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
-                    
-                    try {
-                        switch (event.getCode()) {
-                            case LEFT:
-                                player.setType(Constants.ItemType.SkierLeft);
-                                player.moveLeft();
-                                break;
-                            case DOWN:
-                                player.setType(Constants.ItemType.Skier);
-                                player.moveBottom();
-                                break;
-                            case RIGHT:
-                                player.setType(Constants.ItemType.SkierRight);
-                                player.moveRight();
-                                break;
-                            default:
-                                break;
-                        }
-                    } catch (CellAlreadyOccupiedException e) {
-                        e.printStackTrace();
-                    }
+                    Constants.ACTION_ATTACK.get(event.getCode()).act(player);
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
                 }

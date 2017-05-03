@@ -3,6 +3,9 @@ package ch.heigvd.frogger;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Map;
+
+import ch.heigvd.frogger.item.ActionAttack;
+import ch.heigvd.frogger.item.Actions;
 import javafx.scene.input.KeyCode;
 
 /**
@@ -29,13 +32,13 @@ public class Constants {
     /**
      * Map between key pressed and action related for the attacker
      */
-    public static final Map<KeyCode, ActionType> ACTION_ATTACK
+    public static final Map<KeyCode, Actions> ACTION_ATTACK
             = Collections.unmodifiableMap(
-                    new EnumMap<KeyCode, ActionType>(KeyCode.class) {
+                    new EnumMap<KeyCode, Actions>(KeyCode.class) {
                 {
-                    put(KeyCode.DOWN, ActionType.MovePlayer);
-                    put(KeyCode.LEFT, ActionType.MovePlayer);
-                    put(KeyCode.RIGHT, ActionType.MovePlayer);
+                    put(KeyCode.DOWN, new ActionAttack(ActionAttack.MoveType.DOWN));
+                    put(KeyCode.LEFT, new ActionAttack(ActionAttack.MoveType.LEFT));
+                    put(KeyCode.RIGHT, new ActionAttack(ActionAttack.MoveType.RIGHT));
                 }
             });
 
