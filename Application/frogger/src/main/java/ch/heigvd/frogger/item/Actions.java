@@ -7,6 +7,10 @@ package ch.heigvd.frogger.item;
  */
 public interface Actions {
 	
+	/** 
+	 * Do the actions on an item
+	 * @param i the item
+	 */
 	public void act(Item i);
 
 }

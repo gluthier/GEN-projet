@@ -3,8 +3,18 @@ package ch.heigvd.frogger.item;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 
+/**
+ * Define Attack action for Player 1
+ * @author Tony Clavien
+ *
+ */
 public class ActionAttack implements Actions{
 	
+	/**
+	 * list of possible move
+	 * @author Tony Clavien
+	 *
+	 */
 	public static enum MoveType {
         LEFT,
         RIGHT,

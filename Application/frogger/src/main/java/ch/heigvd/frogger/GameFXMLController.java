@@ -49,7 +49,11 @@ public class GameFXMLController implements Initializable {
             
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
+            	if(Constants.OBSTACLE_ROW.containsKey(i)) {
+            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(i)));
+            	} else {
+            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
+            	}
                 elementsGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
                 elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
                 elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
@@ -101,7 +105,7 @@ public class GameFXMLController implements Initializable {
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
                     	try {
-							DynamicObstacle OD = new DynamicObstacle(5, Constants.ItemType.Saucisson);
+							DynamicObstacle OD = new DynamicObstacle(Constants.ItemType.Saucisson);
 							Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
 							elementsGroup.getChildren().add(OD);
 						} catch (CellAlreadyOccupiedException e) {
