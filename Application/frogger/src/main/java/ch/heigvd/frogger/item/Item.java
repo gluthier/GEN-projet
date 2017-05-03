@@ -72,7 +72,10 @@ public abstract class Item extends ImageView {
     }
 
     private boolean collisionWithEdge() {
-        return this.getBoundsInParent().intersects(parent.getBoundsInLocal());
+        return getX() < 0 || getY() < 0 || getX() >= Constants.GAME_WIDTH || getY() >= Constants.GAME_HEIGHT;
+
+        // Old version
+        // this.getBoundsInParent().intersects(parent.getBoundsInLocal());
     }
 
     private void move(int diffX, int diffY) {
