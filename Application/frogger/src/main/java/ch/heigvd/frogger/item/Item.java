@@ -116,7 +116,10 @@ public abstract class Item extends ImageView {
      * @return if there is a collision with the game corners
      */
     private boolean collisionWithEdge() {
-        return this.getBoundsInParent().intersects(getParent().getBoundsInLocal());
+        return getX() < 0 || getY() < 0 || getX() >= Constants.GAME_WIDTH || getY() >= Constants.GAME_HEIGHT;
+
+        // Old version
+        // this.getBoundsInParent().intersects(parent.getBoundsInLocal());
     }
 
     /**
