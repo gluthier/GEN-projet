@@ -2,6 +2,9 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Represent a Player of the frogger
@@ -32,6 +35,15 @@ public class Player extends Item {
         }
 
         changeImage(folder);
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        try {
+            moveBottom();
+        } catch (CellAlreadyOccupiedException ex) {
+            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
