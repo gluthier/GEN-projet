@@ -42,7 +42,7 @@ public abstract class Item extends ImageView {
     public final void setXGridCoordinate(int x) {
         setX(x * Constants.CELL_WIDTH + (Constants.CELL_WIDTH - getImage().getWidth()) / 2);
     }
-
+    
     /**
      * Set the item's position from it's grid coordinate
      *
@@ -51,7 +51,7 @@ public abstract class Item extends ImageView {
     public final void setYGridCoordinate(int y) {
         setY(y * Constants.CELL_HEIGHT + (Constants.CELL_HEIGHT - getImage().getHeight()) / 2);
     }
-
+    
     public void setType(Constants.ItemType newType) {
         this.type = newType;
         changeImage();

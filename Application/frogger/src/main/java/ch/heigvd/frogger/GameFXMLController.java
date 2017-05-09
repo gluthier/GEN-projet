@@ -40,7 +40,9 @@ public class GameFXMLController implements Initializable {
             gc.drawImage(background, 0, 0);
 
             // Skier on top of the mountain
-            Player player = new Player(14, 5, Constants.ItemType.Skier);
+            Player player = new Player(Constants.PLAYER_POS_START_X,
+                    Constants.PLAYER_POS_START_Y,
+                    Constants.ItemType.Skier);
             
             Group playerGroup = new Group();
             playerGroup.getChildren().add(player);

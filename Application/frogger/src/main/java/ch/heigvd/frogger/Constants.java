@@ -25,6 +25,9 @@ public class Constants {
     public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
 
     public static final int NUM_OBSTACLES = 20;
+    
+    public static final int PLAYER_POS_START_X = 14;
+    public static final int PLAYER_POS_START_Y = 5;
 
     /**
      * Map between key pressed and action related for the attacker
