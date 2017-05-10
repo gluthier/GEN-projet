@@ -2,6 +2,7 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import java.util.Observer;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,12 +13,14 @@ import javafx.scene.image.ImageView;
  * @author Maxime Guillod, Guillaume Milani, Gabriel Luthier
  * @date 02/05/17
  */
-public abstract class Item extends ImageView {
+public abstract class Item extends ImageView implements Observer {
 
     private Constants.ItemType type;
 
     public Item(int initPosX, int initPosY, Constants.ItemType type) {
         super();
+        
+        ItemClock.getInstance().addObserver(this);
 
         this.type = type;
 
@@ -133,7 +136,7 @@ public abstract class Item extends ImageView {
      * @param diffY the number of cells to move vertically (in grid coordinates)
      * @throws CellAlreadyOccupiedException if the cell is already occupied
      */
-    private void move(int diffX, int diffY) throws CellAlreadyOccupiedException {
+    protected void move(int diffX, int diffY) throws CellAlreadyOccupiedException {
         double oldX = getX();
         double oldY = getY();
 
