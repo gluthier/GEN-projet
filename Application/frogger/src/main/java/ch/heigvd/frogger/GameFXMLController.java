@@ -32,9 +32,6 @@ public class GameFXMLController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
-    private Text looser;
-    int looserSize;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create the canvas
@@ -106,8 +103,6 @@ public class GameFXMLController implements Initializable {
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
-                    System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
-
                     try {
                         switch (event.getCode()) {
                             case LEFT:
@@ -126,49 +121,20 @@ public class GameFXMLController implements Initializable {
                                 break;
                         }
                     } catch (CellAlreadyOccupiedException e) {
-                        cellAlreadyOccupied();
+                        Text lostText = new Text("Lost");
+                        lostText.setX(Constants.GAME_WIDTH/2 - lostText.getBoundsInLocal().getWidth()/2);
+                        lostText.setY(Constants.GAME_HEIGHT/2 - lostText.getBoundsInLocal().getHeight()/2);
+                        lostText.setFill(Color.RED);
+                        lostText.setFont(new Font(50));
+                        elementsGroup.getChildren().add(lostText);
+                        System.out.println("CellAlreadyOccupiedException ! (obstacle collision)");
                     }
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
                 }
             });
-        } catch (CellAlreadyOccupiedException e) {
-            cellAlreadyOccupied();
         } catch (Exception e) {
-
+            System.out.println("Exception catch !!");
         }
-    }
-
-    private void cellAlreadyOccupied() {
-
-        if (looser == null) {
-            looser = new Text("PERDANT");
-            looser.setFill(Color.RED);
-            final DropShadow dropShadow = new DropShadow(BlurType.THREE_PASS_BOX, Color.YELLOW, 20, 0, 10, 10);
-            looser.setEffect(dropShadow);
-            final DropShadow ds2 = new DropShadow(BlurType.THREE_PASS_BOX, Color.BLUE, 20, 0, 10, 10);
-            dropShadow.setInput(ds2);
-            anchorPane.getChildren().add(looser);
-            looser.setTextAlignment(TextAlignment.CENTER);
-            RotateTransition rt = new RotateTransition(Duration.millis(1000), looser);
-            rt.setByAngle(360);
-            rt.setCycleCount(Animation.INDEFINITE);
-            rt.setAutoReverse(false);
-            rt.setInterpolator(Interpolator.LINEAR);
-
-            rt.play();
-            ScaleTransition st = new ScaleTransition(Duration.millis(3000), looser);
-            st.setCycleCount(Animation.INDEFINITE);
-            st.setByX(4);
-            st.setByY(4);
-            st.setAutoReverse(true);
-            st.play();
-        }
-
-        looserSize = 70;
-
-        looser.setFont(new Font(looserSize));
-        looser.setY(Constants.GAME_HEIGHT/2. + looser.getBoundsInLocal().getHeight()/2.);
-        looser.setX(Constants.GAME_WIDTH/2. - looser.getBoundsInLocal().getWidth()/2.);
     }
 }
