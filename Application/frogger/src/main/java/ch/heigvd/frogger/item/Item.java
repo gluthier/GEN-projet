@@ -3,9 +3,13 @@ package ch.heigvd.frogger.item;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import java.util.Observer;
+
+import javafx.geometry.Bounds;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.shape.Shape;
 
 /**
  * Represent a game item. It's mainly an ImageView node implementing collision detection.
@@ -103,6 +107,10 @@ public abstract class Item extends ImageView implements Observer {
         return (int) ((getY() - (Constants.CELL_HEIGHT - getImage().getHeight()) / 2) / Constants.CELL_HEIGHT);
     }
 
+    private boolean checkCollision(Node n) {
+        return n != this && this.localToScene(getBoundsInLocal()).intersects(n.localToScene(n.getBoundsInLocal()));
+    }
+
     /**
      * Check if there is a collision with an other Node in the Group
      *
@@ -110,8 +118,14 @@ public abstract class Item extends ImageView implements Observer {
      */
     public boolean collisionWithOtherNode() {
         for (Node n : getParent().getChildrenUnmodifiable()) {
-            if (n != this && this.getBoundsInParent().intersects(n.getBoundsInParent())) {
-                return true;
+            if (n instanceof Group) {
+                for (Node nChild : ((Group)n).getChildrenUnmodifiable()) {
+                    if (checkCollision(nChild)) {
+                        return true;
+                    }
+                }
+            } else {
+                return checkCollision(n);
             }
         }
         return false;
