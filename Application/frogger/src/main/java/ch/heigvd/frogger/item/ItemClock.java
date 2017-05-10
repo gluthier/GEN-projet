@@ -17,6 +17,9 @@ public class ItemClock extends Observable implements Runnable {
 
     private ItemClock() {
         thread = new Thread(this);
+        /*
+        Lancement de la clock dès le premier appelle à getInstance
+         */
         thread.start();
     }
 
@@ -24,9 +27,6 @@ public class ItemClock extends Observable implements Runnable {
         if (instance == null) {
             instance = new ItemClock();
         }
-        /*
-        Lancement de la clock dès le premier appelle à getInstance
-         */
         return instance;
     }
 
