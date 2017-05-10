@@ -2,8 +2,6 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
