@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 /**
  *
  * @author lognaume
+ * @author Maxime Guillod
  */
 public class Constants {
 
@@ -18,11 +19,15 @@ public class Constants {
     public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
     public static final double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
 
+    public static final int PLAYER_SPEED = 10;
+
     public static final String IMG_FOLDER = "/images/";
     public static final String PLAYER_FOLDER = "ski-personnages/";
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
     public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
+    
+    public static final int ITEM_CLOCK_DELAY = 200;
 
     public static final int NUM_OBSTACLES = 20;
     

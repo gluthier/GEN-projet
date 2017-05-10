@@ -2,6 +2,7 @@ package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import java.util.Observer;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,12 +13,14 @@ import javafx.scene.image.ImageView;
  * @author Maxime Guillod, Guillaume Milani, Gabriel Luthier
  * @date 02/05/17
  */
-public abstract class Item extends ImageView {
+public abstract class Item extends ImageView implements Observer {
 
     private Constants.ItemType type;
 
     public Item(int initPosX, int initPosY, Constants.ItemType type) {
         super();
+        
+        ItemClock.getInstance().addObserver(this);
 
         this.type = type;
 
@@ -120,7 +123,7 @@ public abstract class Item extends ImageView {
      * @return if there is a collision with the game corners
      */
     private boolean collisionWithEdge() {
-        return getX() < 0 || getY() < 0 || getX() >= Constants.GAME_WIDTH || getY() >= Constants.GAME_HEIGHT;
+        return getX() <= 0 || getY() <= 0 || getX() + getImage().getWidth() >= Constants.GAME_WIDTH || getY() + getImage().getHeight() >= Constants.GAME_HEIGHT;
 
         // Old version
         // this.getBoundsInParent().intersects(parent.getBoundsInLocal());
@@ -133,18 +136,18 @@ public abstract class Item extends ImageView {
      * @param diffY the number of cells to move vertically (in grid coordinates)
      * @throws CellAlreadyOccupiedException if the cell is already occupied
      */
-    private void move(int diffX, int diffY) throws CellAlreadyOccupiedException {
+    protected void move(int diffX, int diffY) throws CellAlreadyOccupiedException {
         double oldX = getX();
         double oldY = getY();
 
-        setX(getX() + diffX * Constants.CELL_WIDTH);
-        setY(getY() + diffY * Constants.CELL_HEIGHT);
-        /* TODO
-        if (collisionWithObstacle() || collisionWithEdge()) {
+        setX(getX() + diffX * Constants.PLAYER_SPEED);
+        setY(getY() + diffY * Constants.PLAYER_SPEED);
+
+        if (collisionWithOtherNode() || collisionWithEdge()) {
             setX(oldX);
             setY(oldY);
             throw new CellAlreadyOccupiedException();
-        }*/
+        }
     }
 
     /**
