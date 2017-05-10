@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 /**
  *
  * @author lognaume
+ * @author Maxime Guillod
  */
 public class Constants {
 

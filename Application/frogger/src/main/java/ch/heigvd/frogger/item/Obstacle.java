@@ -3,8 +3,6 @@ package ch.heigvd.frogger.item;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Represent an Obstacle of the frogger

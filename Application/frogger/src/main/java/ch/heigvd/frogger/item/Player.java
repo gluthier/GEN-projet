@@ -10,7 +10,6 @@ import java.util.logging.Logger;
  * Represent a Player of the frogger
  *
  * @author Maxime Guillod
- * @date 25/04/17
  */
 public class Player extends Item {
 
