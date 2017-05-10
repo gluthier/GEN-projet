@@ -120,7 +120,7 @@ public abstract class Item extends ImageView {
      * @return if there is a collision with the game corners
      */
     private boolean collisionWithEdge() {
-        return getX() < 0 || getY() < 0 || getX() >= Constants.GAME_WIDTH || getY() >= Constants.GAME_HEIGHT;
+        return getX() <= 0 || getY() <= 0 || getX() + getImage().getWidth() >= Constants.GAME_WIDTH || getY() + getImage().getHeight() >= Constants.GAME_HEIGHT;
 
         // Old version
         // this.getBoundsInParent().intersects(parent.getBoundsInLocal());
@@ -137,14 +137,14 @@ public abstract class Item extends ImageView {
         double oldX = getX();
         double oldY = getY();
 
-        setX(getX() + diffX * Constants.CELL_WIDTH);
-        setY(getY() + diffY * Constants.CELL_HEIGHT);
-        /* TODO
-        if (collisionWithObstacle() || collisionWithEdge()) {
+        setX(getX() + diffX * Constants.PLAYER_SPEED);
+        setY(getY() + diffY * Constants.PLAYER_SPEED);
+
+        if (collisionWithOtherNode() || collisionWithEdge()) {
             setX(oldX);
             setY(oldY);
             throw new CellAlreadyOccupiedException();
-        }*/
+        }
     }
 
     /**

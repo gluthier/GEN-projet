@@ -18,6 +18,8 @@ public class Constants {
     public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
     public static final double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
 
+    public static final int PLAYER_SPEED = 10;
+
     public static final String IMG_FOLDER = "/images/";
     public static final String PLAYER_FOLDER = "ski-personnages/";
     public static final String OBSTACLE_FOLDER = "background/";
