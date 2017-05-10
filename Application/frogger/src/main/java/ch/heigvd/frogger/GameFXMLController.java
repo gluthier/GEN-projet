@@ -7,6 +7,7 @@ import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Group;
@@ -17,6 +18,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 
 public class GameFXMLController implements Initializable {
 
@@ -25,10 +28,15 @@ public class GameFXMLController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Create the canvas
+        Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        Group elementsGroup = new Group();
+
+        AnchorPane.setTopAnchor(canvas, 0.);
+        anchorPane.getChildren().add(canvas);
+        anchorPane.getChildren().add(elementsGroup);
+
         try {
-            // Create the canvas
-            Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-            Group elementsGroup = new Group();
 
             // Load the background
             Image background = new Image(
@@ -43,17 +51,15 @@ public class GameFXMLController implements Initializable {
 
             // Skier on top of the mountain
             Player player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
-            
-            Group playerGroup = new Group();
-            playerGroup.getChildren().add(player);
-            
+            elementsGroup.getChildren().add(player);
+
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-            	if(Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
-            	} else {
-            		elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
-            	}
+                if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
+                    elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
+                } else {
+                    elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
+                }
                 elementsGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
                 elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
                 elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
@@ -92,11 +98,6 @@ public class GameFXMLController implements Initializable {
             // make the canvas focusable
             canvas.setFocusTraversable(true);
 
-            AnchorPane.setTopAnchor(canvas, 0.);
-            anchorPane.getChildren().add(canvas);
-            anchorPane.getChildren().add(elementsGroup);
-            anchorPane.getChildren().add(playerGroup);
-                    
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
@@ -104,18 +105,18 @@ public class GameFXMLController implements Initializable {
                     Constants.ACTION_ATTACK.get(event.getCode()).act(player);
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
-                    	try {
-							DynamicObstacle OD = new DynamicObstacle(Constants.ItemType.Saucisson);
-							Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
-							elementsGroup.getChildren().add(OD);
-						} catch (CellAlreadyOccupiedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} 
+                    try {
+                        DynamicObstacle OD = new DynamicObstacle(Constants.ItemType.Saucisson);
+                        Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
+                        elementsGroup.getChildren().add(OD);
+                    } catch (CellAlreadyOccupiedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
+                }
             });
-        } catch (CellAlreadyOccupiedException e2) {
-            e2.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exception catch !!");
         }
     }
 }
