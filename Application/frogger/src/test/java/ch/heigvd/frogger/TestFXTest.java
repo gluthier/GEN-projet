@@ -27,7 +27,7 @@ public class TestFXTest extends ApplicationTest {
     private Obstacle chalet;
     private int chaletX = 0;
     private int chaletY = 0;
-    
+
     private Obstacle chaletVS;
     private int chaletVSX = 1;
     private int chaletVSY = 1;
@@ -69,18 +69,18 @@ public class TestFXTest extends ApplicationTest {
         assertEquals(Constants.ItemType.ChaletVS, chaletVS.getType());
         assertEquals(Constants.ItemType.Sapin, sapin.getType());
     }
-    
+
     @Test
     public void testPlayerCorrectType() {
         assertEquals(Constants.ItemType.Skier, player.getType());
     }
-    
+
     @Test
     public void testPlayerCorrectStartingPosition() {
         assertEquals(Constants.PLAYER_POS_START_X, player.getXGridCoordinate());
         assertEquals(Constants.PLAYER_POS_START_Y, player.getYGridCoordinate());
     }
-    
+    /*
     @Test
     public void testPlayerLeftMove() {
         push(KeyCode.LEFT); // move left from start position
@@ -104,4 +104,5 @@ public class TestFXTest extends ApplicationTest {
         assertEquals(Constants.PLAYER_POS_START_Y+1, player.getYGridCoordinate());
         assertEquals(Constants.ItemType.Skier, player.getType());
     }
+     */
 }
