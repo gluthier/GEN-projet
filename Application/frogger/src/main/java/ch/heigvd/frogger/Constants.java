@@ -98,15 +98,15 @@ public class Constants {
         SkierRight("skier-right1"),
         Sapin("sapin"),
     	Saucisson("saucisson_vaudois"),
-    	Row_0("Row_0"),
+    	Row_0("ROW_0"),
     	Row_1("ROW_1"),
-    	Row_2("Row_2"),
+    	Row_2("ROW_2"),
     	Row_3("ROW_3"),
-    	Row_4("Row_4"),
+    	Row_4("ROW_4"),
     	Row_5("ROW_5"),
-    	Row_6("Row_6"),
+    	Row_6("ROW_6"),
     	Row_7("ROW_7"),
-    	Row_8("Row_8"),
+    	Row_8("ROW_8"),
     	Row_9("ROW_9");
 
         private String filename = "";
