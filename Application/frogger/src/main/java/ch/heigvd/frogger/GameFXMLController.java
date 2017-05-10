@@ -30,11 +30,15 @@ public class GameFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // Create the canvas
         Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        Group elementsGroup = new Group();
+        Group itemsGroup = new Group();
+        Group staticObstacleGroup = new Group();
+        Group dynamicObstacleGroup = new Group();
+        itemsGroup.getChildren().add(staticObstacleGroup);
+        itemsGroup.getChildren().add(dynamicObstacleGroup);
 
         AnchorPane.setTopAnchor(canvas, 0.);
         anchorPane.getChildren().add(canvas);
-        anchorPane.getChildren().add(elementsGroup);
+        anchorPane.getChildren().add(itemsGroup);
 
         try {
 
@@ -51,18 +55,18 @@ public class GameFXMLController implements Initializable {
 
             // Skier on top of the mountain
             Player player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
-            elementsGroup.getChildren().add(player);
+            itemsGroup.getChildren().add(player);
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
                 if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-                    elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
+                    staticObstacleGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
                 } else {
-                    elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
+                    staticObstacleGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
                 }
-                elementsGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
-                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
-                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
+                staticObstacleGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
+                staticObstacleGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
+                staticObstacleGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
 
             // Create the static obstacles
@@ -72,7 +76,7 @@ public class GameFXMLController implements Initializable {
                 int y = 0;
 
                 Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin); // sapin
-                elementsGroup.getChildren().add(sapin);
+                staticObstacleGroup.getChildren().add(sapin);
 
                 // TODO: Avoid infinite loop
                 do {
@@ -108,7 +112,7 @@ public class GameFXMLController implements Initializable {
                     try {
                         DynamicObstacle OD = new DynamicObstacle(Constants.ItemType.Saucisson);
                         Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
-                        elementsGroup.getChildren().add(OD);
+                        dynamicObstacleGroup.getChildren().add(OD);
                     } catch (CellAlreadyOccupiedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
