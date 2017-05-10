@@ -3,7 +3,6 @@ package ch.heigvd.frogger;
 import ch.heigvd.frogger.item.ItemClock;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,12 +23,9 @@ public class MainApp extends Application {
         stage.show();
         
         // Fermeture de l'application
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                // Stop ItemClock timer Thread
-                ItemClock.getInstance().stop();
-            }
+        stage.setOnCloseRequest((WindowEvent event) -> {
+            // Stop ItemClock timer Thread
+            ItemClock.getInstance().stop();
         });
     }
     
