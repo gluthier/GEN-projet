@@ -38,11 +38,11 @@ public class Player extends Item {
 
     @Override
     public void update(Observable o, Object arg) {
-        try {
-            moveBottom();
-        } catch (CellAlreadyOccupiedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
+//        try {
+//            moveBottom();
+//        } catch (CellAlreadyOccupiedException ex) {
+//            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
 }
