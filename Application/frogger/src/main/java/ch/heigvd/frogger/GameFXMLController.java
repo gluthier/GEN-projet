@@ -25,12 +25,14 @@ public class GameFXMLController implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
+    private Canvas canvas;
+    private Group itemsGroup;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create the canvas
-        Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        Group itemsGroup = new Group();
+        canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        itemsGroup = new Group();
         Group staticObstacleGroup = new Group();
         Group dynamicObstacleGroup = new Group();
         itemsGroup.getChildren().add(staticObstacleGroup);
@@ -99,9 +101,6 @@ public class GameFXMLController implements Initializable {
             }
             // ---------------------------------------
 
-            // make the canvas focusable
-            canvas.setFocusTraversable(true);
-
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
@@ -122,5 +121,28 @@ public class GameFXMLController implements Initializable {
         } catch (Exception e) {
             System.out.println("Exception catch !!");
         }
+    }
+    
+    public void start() {
+        // make the canvas focusable
+    	Text startText = new Text("START");
+        startText.setX(Constants.GAME_WIDTH / 2 - startText.getBoundsInLocal().getWidth() / 2);
+        startText.setY(Constants.GAME_HEIGHT / 2 - startText.getBoundsInLocal().getHeight() / 2);
+        startText.setFill(Color.BLUE);
+        startText.setFont(new Font(50));
+        itemsGroup.getChildren().add(startText);
+        
+        canvas.setFocusTraversable(true);
+    }
+    
+    public void stop() {
+        // make the canvas unfocusable
+        canvas.setFocusTraversable(false);
+        Text stopText = new Text("END");
+        stopText.setX(Constants.GAME_WIDTH / 2 - stopText.getBoundsInLocal().getWidth() / 2);
+        stopText.setY(Constants.GAME_HEIGHT / 2 - stopText.getBoundsInLocal().getHeight() / 2);
+        stopText.setFill(Color.RED);
+        stopText.setFont(new Font(50));
+        itemsGroup.getChildren().add(stopText);
     }
 }

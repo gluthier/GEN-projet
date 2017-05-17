@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class MainApp extends Application {
+	
+	public static GameFXMLController controller = null;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -41,6 +43,16 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+    
+    public static void setController(GameFXMLController con) {
+    	if(controller == null) {
+    		controller = con;
+    	}
+    }
+    
+    public static GameFXMLController getController() {
+    	return controller;
     }
 
 }
