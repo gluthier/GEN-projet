@@ -22,8 +22,8 @@ import javafx.scene.input.KeyCode;
  */
 public class Constants {
 
-    public static final int GAME_WIDTH = 1368;
-    public static final int GAME_HEIGHT = 1026;
+    public static final int GAME_WIDTH = 1280;
+    public static final int GAME_HEIGHT = 960;
     public static final int NUM_COLS = 36;
     public static final int NUM_ROWS = 27;
     public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
@@ -116,6 +116,8 @@ public class Constants {
     	Saucisson("saucisson_vaudois"),
     	StartLeft("sign-start-left"),
     	StartRight("sign-start-right"),
+    	FinishLeft("sign-finish-left"),
+    	FinishRight("sign-finish-right"),
     	Row_0("ROW_0"),
     	Row_1("ROW_1"),
     	Row_2("ROW_2"),

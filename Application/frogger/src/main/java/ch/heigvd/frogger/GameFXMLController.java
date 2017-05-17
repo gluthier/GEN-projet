@@ -45,7 +45,7 @@ public class GameFXMLController implements Initializable {
 
     @FXML
     private BorderPane borderPane;
-    
+
     private Canvas canvas;
 
     @Override
@@ -59,8 +59,7 @@ public class GameFXMLController implements Initializable {
         AnchorPane.setTopAnchor(canvas, 0.);
         borderPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         borderPane.getChildren().add(canvas);
-        
-        
+
         try {
             // Load the background
             Image background = new Image(
@@ -72,7 +71,7 @@ public class GameFXMLController implements Initializable {
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
-           
+
             // ----- ONLY FOR DEBUG : draw lines -----
             // TODO : Remove
             // Draw the lines directly on the graphicContext
@@ -112,20 +111,20 @@ public class GameFXMLController implements Initializable {
     public void addPlayer(Player p) {
         borderPane.getChildren().add(p);
     }
-    
+
     public void showLooserMessage() {
         Text tLost = new Text();
         tLost.setText("YOU LOST !");
         tLost.setId("lostText");
-        
+
         Text tRestart = new Text();
         tRestart.setText("Press 'r' to restart.");
         tRestart.setId("restartText");
-        
+
         VBox vbox = new VBox();
         vbox.getChildren().addAll(tLost, tRestart);
         vbox.setAlignment(Pos.CENTER);
-        
+
         borderPane.setCenter(null);
         borderPane.setCenter(vbox);
     }

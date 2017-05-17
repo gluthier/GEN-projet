@@ -80,19 +80,18 @@ public class GameController implements Observer {
         try {
             // Skier on top of the mountain
             addPlayer();
-        } catch (CellAlreadyOccupiedException e) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-        try {
+            
             // Start Flag
             addObstacle(new Decoration(Constants.INITIAL_PLAYER_X + 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartLeft));
             addObstacle(new Decoration(Constants.INITIAL_PLAYER_X - 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartRight));
-        } catch (CellAlreadyOccupiedException ex) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        // Create the two obstacles borders (chalets)
-        try {
+
+            // Finish Flags
+            for (int i = 0; i < 4; i++) {
+                addObstacle(new Decoration(7 + i * 8, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
+                addObstacle(new Decoration(5 + i * 8, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
+            }
+
+            // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
                 if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
                     addObstacle(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
@@ -104,11 +103,7 @@ public class GameController implements Observer {
                 addObstacle(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
                 addObstacle(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
-        } catch (CellAlreadyOccupiedException e) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-        try {
+            
             // Create the static obstacles
             for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
                 Random r = new Random();
