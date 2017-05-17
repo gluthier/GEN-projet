@@ -1,5 +1,11 @@
 package ch.heigvd.protocol;
 
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;
+
+import com.google.common.hash.Hashing;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -28,11 +34,13 @@ public class AppTest
         return new TestSuite( AppTest.class );
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
-    }
+    public void testFormatSendLogin() {
+		String message = Protocol.formatLoginSend("test", "1234");
+		System.out.println(message);
+		JSONObject test = new JSONObject(message);
+		assertEquals(test.getString("command"), "login");
+		JSONObject param = test.getJSONObject("param");
+		assertEquals(param.getString("user"), "test");
+		assertEquals(param.getString("password"), Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString());
+	}
 }

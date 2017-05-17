@@ -1,6 +1,14 @@
 package ch.heigvd.protocol;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import com.google.common.hash.Hashing;
 
 /**
  * Protocol
@@ -22,8 +30,13 @@ public class Protocol
 	}
 	
     public static String formatLoginSend(String user, String password) {
-    	
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("command", "login");
+    	JSONObject param = new JSONObject();
+    	param.put("user", user);
+    	param.put("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
+    	json.put("param", param);
+    	return json.toString();
     }
     
     public static String getFormatLoginUser(String message) {
