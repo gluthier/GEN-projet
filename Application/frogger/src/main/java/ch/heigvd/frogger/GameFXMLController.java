@@ -100,7 +100,7 @@ public class GameFXMLController implements Initializable {
                 // TODO: Avoid infinite loop
                 do {
                     sapin.setXGridCoordinate(r.nextInt(Constants.NUM_COLS - 4) + 2);
-                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y);
+                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y-1) + Constants.INITIAL_PLAYER_Y);
                 } while (sapin.collisionWithOtherNode());
             }
 
