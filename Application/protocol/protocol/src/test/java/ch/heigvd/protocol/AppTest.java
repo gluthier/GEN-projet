@@ -34,7 +34,7 @@ public class AppTest
         return new TestSuite( AppTest.class );
     }
 
-    public void testFormatSendLogin() {
+    public void testFormatLoginSend() {
 		String message = Protocol.formatLoginSend("test", "1234");
 		System.out.println(message);
 		JSONObject test = new JSONObject(message);
@@ -43,4 +43,14 @@ public class AppTest
 		assertEquals(param.getString("user"), "test");
 		assertEquals(param.getString("password"), Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString());
 	}
+    
+    public void testFormatLoginName() {
+    	String message = Protocol.formatLoginSend("test", "1234");
+    	assertEquals("test", Protocol.getFormatLoginUser(message));
+    }
+    
+    public void testFormatLoginPassword() {
+    	String message = Protocol.formatLoginSend("test", "1234");
+    	assertEquals(Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString(), Protocol.getFormatLoginPassword(message));
+    }
 }

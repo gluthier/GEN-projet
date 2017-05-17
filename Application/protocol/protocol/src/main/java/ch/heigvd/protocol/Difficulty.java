@@ -1,6 +1,8 @@
 package ch.heigvd.protocol;
 
-public class Difficulty {
+import org.json.JSONObject;
+
+public class Difficulty implements Sendable{
 	
 	private final int id;
 	private final String name;
@@ -17,6 +19,9 @@ public class Difficulty {
 		this.obstacleMoveSpeed = obstacleMoveSpeed;
 		this.obstacleWidth = obstacleWidth;
 	}
+	
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -35,7 +40,15 @@ public class Difficulty {
 	public int getObstacleWidth() {
 		return obstacleWidth;
 	}
-	
-	//TODO to JSON ?
-	
+	public JSONObject toJson() {
+		JSONObject json = new JSONObject();
+		json.put("id", id);
+		json.put("name", name);
+		json.put("manaRegenerationSpeed", manaRegenerationSpeed);
+		json.put("playerMoveSpeed", playerMoveSpeed);
+		json.put("obstacleMoveSpeed", obstacleMoveSpeed);
+		json.put("obstacleWidth", obstacleWidth);
+		
+		return json;
+	}
 }

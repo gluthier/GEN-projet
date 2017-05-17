@@ -1,6 +1,8 @@
 package ch.heigvd.protocol;
 
-public class MapSize {
+import org.json.JSONObject;
+
+public class MapSize implements Sendable{
 
 	private final int id;
 	private final String name;
@@ -28,5 +30,10 @@ public class MapSize {
 
 	public int getHeight() {
 		return height;
+	}
+
+	public JSONObject toJson() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

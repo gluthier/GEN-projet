@@ -40,15 +40,21 @@ public class Protocol
     }
     
     public static String getFormatLoginUser(String message) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject(message);
+		JSONObject param = json.getJSONObject("param");
+		return param.getString("user");
     }
     
     public static String getFormatLoginPassword(String message) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject(message);
+		JSONObject param = json.getJSONObject("param");
+		return param.getString("password");
     }
     
     public static String formatLoginAnswer(String token,Difficulty difficulty, MapSize map) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("token", token);
+    	
     }
     
     public static String getFormatLoginToken(String message) {
