@@ -35,9 +35,9 @@ public class ItemClock extends Observable implements Runnable {
     public void run() {
         while (running) {
             try {
-                Thread.sleep(Constants.ITEM_CLOCK_DELAY);
                 setChanged();
                 notifyObservers();
+                Thread.sleep(Constants.ITEM_CLOCK_DELAY);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ItemClock.class.getName()).log(Level.SEVERE, null, ex);
             }
