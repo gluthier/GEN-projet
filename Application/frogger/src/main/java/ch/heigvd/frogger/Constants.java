@@ -38,6 +38,7 @@ public class Constants {
     public static final String PLAYER_FOLDER = "ski-personnages/";
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
+    public static final String DECORATiON_FOLDER = "ski-obstacles/";
     public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
     
     public static final int ITEM_CLOCK_DELAY = 200;
@@ -103,6 +104,8 @@ public class Constants {
         SkierRight("skier-right1"),
         Sapin("sapin"),
     	Saucisson("saucisson_vaudois"),
+    	StartLeft("sign-start-left"),
+    	StartRight("sign-start-right"),
     	Row_0("ROW_0"),
     	Row_1("ROW_1"),
     	Row_2("ROW_2"),

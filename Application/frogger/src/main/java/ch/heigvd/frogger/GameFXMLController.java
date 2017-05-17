@@ -2,6 +2,7 @@ package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.Decoration;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
 import java.net.URL;
@@ -54,10 +55,17 @@ public class GameFXMLController implements Initializable {
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
+           
 
             // Skier on top of the mountain
             Player player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
             itemsGroup.getChildren().add(player);
+            
+            // Start Flag
+            Decoration leftStart = new Decoration(Constants.INITIAL_PLAYER_X+1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartLeft);
+            Decoration rightStart = new Decoration(Constants.INITIAL_PLAYER_X-1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartRight);
+            itemsGroup.getChildren().add(leftStart);
+            itemsGroup.getChildren().add(rightStart);
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
