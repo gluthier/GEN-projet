@@ -14,13 +14,14 @@ public class ItemClock extends Observable implements Runnable {
 
     private static ItemClock instance = null;
     private Thread thread;
+    private boolean running = false;
 
     private ItemClock() {
         thread = new Thread(this);
         /*
         Lancement de la clock dès le premier appelle à getInstance
          */
-        thread.start();
+        launch();
     }
 
     public static ItemClock getInstance() {
@@ -32,15 +33,30 @@ public class ItemClock extends Observable implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             try {
-                Thread.sleep(Constants.ITEM_CLOCK_DELAY);
                 setChanged();
                 notifyObservers();
+                Thread.sleep(Constants.ITEM_CLOCK_DELAY);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ItemClock.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+
+    /**
+     * To stop the thread and the timer
+     */
+    public void stop() {
+        running = false;
+    }
+    
+    /**
+     * Start the thread and te timer
+     */
+    public void launch() {
+        running = true;
+        thread.start();
     }
 
 }
