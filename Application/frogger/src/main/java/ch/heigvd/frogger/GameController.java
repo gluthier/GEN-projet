@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 public class GameController implements Observer {
 
     private class Cell {
+
         private List<Item> content = new LinkedList<Item>();
 
         public void add(Item item) {
@@ -40,7 +41,7 @@ public class GameController implements Observer {
             return false;
         }
     }
-    
+
     private List<Obstacle> obstacles;
     private Player player;
     private Cell[][] grid;
@@ -81,6 +82,14 @@ public class GameController implements Observer {
             addPlayer();
         } catch (CellAlreadyOccupiedException e) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        try {
+            // Start Flag
+            addObstacle(new Decoration(Constants.INITIAL_PLAYER_X + 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartLeft));
+            addObstacle(new Decoration(Constants.INITIAL_PLAYER_X - 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartRight));
+        } catch (CellAlreadyOccupiedException ex) {
+            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, ex);
         }
         // Create the two obstacles borders (chalets)
         try {
@@ -199,6 +208,7 @@ public class GameController implements Observer {
         }
         grid[player.getXGridCoordinate()][player.getYGridCoordinate()].add(player);
     }
+
     /**
      * Check collision between player and all obstacles
      *

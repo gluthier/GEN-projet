@@ -39,6 +39,7 @@ public class Constants {
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
     public static final String ICON_FOLDER = "icon/";
+    public static final String DECORATiON_FOLDER = "ski-obstacles/";
     public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
     public static final String ICON_PATH = IMG_FOLDER + ICON_FOLDER + "favicon.jpg";
 
@@ -112,17 +113,19 @@ public class Constants {
         Skier("skier-down"),
         SkierRight("skier-right1"),
         Sapin("sapin"),
-        Saucisson("saucisson_vaudois"),
-        Row_0("ROW_0"),
-        Row_1("ROW_1"),
-        Row_2("ROW_2"),
-        Row_3("ROW_3"),
-        Row_4("ROW_4"),
-        Row_5("ROW_5"),
-        Row_6("ROW_6"),
-        Row_7("ROW_7"),
-        Row_8("ROW_8"),
-        Row_9("ROW_9");
+    	Saucisson("saucisson_vaudois"),
+    	StartLeft("sign-start-left"),
+    	StartRight("sign-start-right"),
+    	Row_0("ROW_0"),
+    	Row_1("ROW_1"),
+    	Row_2("ROW_2"),
+    	Row_3("ROW_3"),
+    	Row_4("ROW_4"),
+    	Row_5("ROW_5"),
+    	Row_6("ROW_6"),
+    	Row_7("ROW_7"),
+    	Row_8("ROW_8"),
+    	Row_9("ROW_9");
 
         private String filename = "";
 

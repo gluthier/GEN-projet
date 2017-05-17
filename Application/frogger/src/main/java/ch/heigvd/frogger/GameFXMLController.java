@@ -3,6 +3,7 @@ package ch.heigvd.frogger;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Item;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.Decoration;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
 import java.net.URL;
@@ -71,7 +72,7 @@ public class GameFXMLController implements Initializable {
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
-
+           
             // ----- ONLY FOR DEBUG : draw lines -----
             // TODO : Remove
             // Draw the lines directly on the graphicContext
