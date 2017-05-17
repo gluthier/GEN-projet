@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.GameController;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -33,36 +34,26 @@ public class ActionAttack implements Actions {
     }
 
     @Override
-    public void act(Item i) {
-        if (!(i instanceof Player)) {
-            throw new IllegalArgumentException("Attack should be done with Player");
-        }
-        Player player = (Player) i;
+    public void act() {
+        GameController gc = null;
         try {
-            switch (move) {
-                case LEFT:
-                    player.setType(Constants.ItemType.SkierLeft);
-                    player.moveLeft();
-                    break;
-                case DOWN:
-                    player.setType(Constants.ItemType.Skier);
-                    player.moveBottom();
-                    break;
-                case RIGHT:
-                    player.setType(Constants.ItemType.SkierRight);
-                    player.moveRight();
-                    break;
-                default:
-                    break;
-            }
-        } catch (CellAlreadyOccupiedException e) {
-            Text lostText = new Text("Lost");
-            lostText.setX(Constants.GAME_WIDTH / 2 - lostText.getBoundsInLocal().getWidth() / 2);
-            lostText.setY(Constants.GAME_HEIGHT / 2 - lostText.getBoundsInLocal().getHeight() / 2);
-            lostText.setFill(Color.RED);
-            lostText.setFont(new Font(50));
-            // elementsGroup.getChildren().add(lostText);
-            System.out.println("CellAlreadyOccupiedException ! (obstacle collision)");
+            gc = GameController.getInstance();
+        } catch (Exception e) {
+            // TODO: manage exceptions
+            e.printStackTrace();
+        }
+        switch (move) {
+            case LEFT:
+                gc.movePlayerLeft();
+                break;
+            case DOWN:
+                gc.movePlayerDown();
+                break;
+            case RIGHT:
+                gc.movePlayerRight();
+                break;
+            default:
+                break;
         }
     }
 }

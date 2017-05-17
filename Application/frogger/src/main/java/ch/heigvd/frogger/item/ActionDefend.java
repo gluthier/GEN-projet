@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.GameController;
 
 /**
  * Define a Defensive Action for Player 2
@@ -21,8 +22,13 @@ public class ActionDefend implements Actions{
 	
 
 	@Override
-	public void act(Item i) {
-		i.setYGridCoordinate(Constants.OBSTACLE_ROW.get(row));
+	public void act() {
+		try {
+			GameController.getInstance().addDynamicObstacle(Constants.OBSTACLE_ROW.get(row));
+		} catch (Exception e) {
+			// TODO: manage exception
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.item.Item;
 import ch.heigvd.frogger.item.Obstacle;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
@@ -26,6 +27,8 @@ public class GameFXMLController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    private Player player;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create the canvas
@@ -41,7 +44,6 @@ public class GameFXMLController implements Initializable {
         anchorPane.getChildren().add(itemsGroup);
 
         try {
-
             // Load the background
             Image background = new Image(
                     getClass().getResource(Constants.BACKGROUND_PATH).toString(),
@@ -52,38 +54,6 @@ public class GameFXMLController implements Initializable {
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
-
-            // Skier on top of the mountain
-            Player player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
-            itemsGroup.getChildren().add(player);
-
-            // Create the two obstacles borders (chalets)
-            for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-                    staticObstacleGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
-                } else {
-                    staticObstacleGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
-                }
-                staticObstacleGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
-                staticObstacleGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
-                staticObstacleGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
-            }
-
-            // Create the static obstacles
-            for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
-                Random r = new Random();
-                int x = 0;
-                int y = 0;
-
-                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin); // sapin
-                staticObstacleGroup.getChildren().add(sapin);
-
-                // TODO: Avoid infinite loop
-                do {
-                    sapin.setXGridCoordinate(r.nextInt(Constants.NUM_COLS - 4) + 2);
-                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y);
-                } while (sapin.collisionWithOtherNode());
-            }
 
             // ----- ONLY FOR DEBUG : draw lines -----
             // TODO : Remove
@@ -105,22 +75,25 @@ public class GameFXMLController implements Initializable {
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
-                    System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
-                    Constants.ACTION_ATTACK.get(event.getCode()).act(player);
+                    // System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
+                    Constants.ACTION_ATTACK.get(event.getCode()).act();
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
-                    System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
-                    try {
-                        DynamicObstacle OD = new DynamicObstacle(Constants.ItemType.Saucisson);
-                        Constants.ACTION_DEFEND.get(event.getCode()).act(OD);
-                        dynamicObstacleGroup.getChildren().add(OD);
-                    } catch (CellAlreadyOccupiedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    // System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+                    Constants.ACTION_DEFEND.get(event.getCode()).act();
                 }
             });
+
         } catch (Exception e) {
-            System.out.println("Exception catch !!");
+            System.out.println("Exception catch !!" + e.getMessage());
         }
+    }
+
+    public void addItem(Item i) {
+        anchorPane.getChildren().add(i);
+    }
+
+    public void addPlayer(Player p) {
+        anchorPane.getChildren().add(p);
+        player = p;
     }
 }

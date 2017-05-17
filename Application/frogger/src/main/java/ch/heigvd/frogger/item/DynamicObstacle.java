@@ -18,17 +18,4 @@ public class DynamicObstacle extends Obstacle {
     public DynamicObstacle(ItemType type) throws CellAlreadyOccupiedException {
         super(2, 5, type);
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        try {
-            // TODO Implement moveRight(int);
-            moveRight();
-            moveRight();
-            moveRight();
-        } catch (CellAlreadyOccupiedException ex) {
-            Logger.getLogger(DynamicObstacle.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }

@@ -17,14 +17,12 @@ import javafx.scene.shape.Shape;
  * @author Maxime Guillod, Guillaume Milani, Gabriel Luthier
  * @date 02/05/17
  */
-public abstract class Item extends ImageView implements Observer {
+public abstract class Item extends ImageView {
 
     private Constants.ItemType type;
 
     public Item(int initPosX, int initPosY, Constants.ItemType type) {
         super();
-        
-        ItemClock.getInstance().addObserver(this);
 
         this.type = type;
 
@@ -95,7 +93,7 @@ public abstract class Item extends ImageView implements Observer {
      * @return the item's position in grid coordinate
      */
     public final int getXGridCoordinate() {
-        return (int) ((getX() - (Constants.CELL_WIDTH - getImage().getWidth()) / 2) / Constants.CELL_WIDTH);
+        return (int)Math.round((getX() - (Constants.CELL_WIDTH - getImage().getWidth()) / 2.) / Constants.CELL_WIDTH);
     }
 
     /**
@@ -104,43 +102,7 @@ public abstract class Item extends ImageView implements Observer {
      * @return the item's position in grid coordinate
      */
     public final int getYGridCoordinate() {
-        return (int) ((getY() - (Constants.CELL_HEIGHT - getImage().getHeight()) / 2) / Constants.CELL_HEIGHT);
-    }
-
-    private boolean checkCollision(Node n) {
-        return n != this && this.localToScene(getBoundsInLocal()).intersects(n.localToScene(n.getBoundsInLocal()));
-    }
-
-    /**
-     * Check if there is a collision with an other Node in the Group
-     *
-     * @return if there is a collision
-     */
-    public boolean collisionWithOtherNode() {
-        for (Node n : getParent().getChildrenUnmodifiable()) {
-            if (n instanceof Group) {
-                for (Node nChild : ((Group)n).getChildrenUnmodifiable()) {
-                    if (checkCollision(nChild)) {
-                        return true;
-                    }
-                }
-            } else {
-                return checkCollision(n);
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Check if there is a collision with the game corners
-     *
-     * @return if there is a collision with the game corners
-     */
-    private boolean collisionWithEdge() {
-        return getX() <= 0 || getY() <= 0 || getX() + getImage().getWidth() >= Constants.GAME_WIDTH || getY() + getImage().getHeight() >= Constants.GAME_HEIGHT;
-
-        // Old version
-        // this.getBoundsInParent().intersects(parent.getBoundsInLocal());
+        return (int)Math.round((getY() - (Constants.CELL_HEIGHT - getImage().getHeight()) / 2.) / Constants.CELL_HEIGHT);
     }
 
     /**
@@ -150,53 +112,60 @@ public abstract class Item extends ImageView implements Observer {
      * @param diffY the number of cells to move vertically (in grid coordinates)
      * @throws CellAlreadyOccupiedException if the cell is already occupied
      */
-    protected void move(int diffX, int diffY) throws CellAlreadyOccupiedException {
-        double oldX = getX();
-        double oldY = getY();
-
-        setX(getX() + diffX * Constants.PLAYER_SPEED);
-        setY(getY() + diffY * Constants.PLAYER_SPEED);
-
-        if (collisionWithOtherNode() || collisionWithEdge()) {
-            setX(oldX);
-            setY(oldY);
-            throw new CellAlreadyOccupiedException();
-        }
+    protected void move(int diffX, int diffY) {
+        setXGridCoordinate(getXGridCoordinate() + diffX);
+        setYGridCoordinate(getYGridCoordinate() + diffY);
     }
 
     /**
      * Move from one cell to the top
-     *
-     * @throws CellAlreadyOccupiedException
      */
-    public void moveTop() throws CellAlreadyOccupiedException {
-        move(0, -1);
+    public void moveTop() {
+        moveTop(1);
+    }
+
+    public void moveTop(int diff) {
+        move(0, -diff);
     }
 
     /**
      * Move from one cell to the right
-     *
-     * @throws CellAlreadyOccupiedException
      */
-    public void moveRight() throws CellAlreadyOccupiedException {
-        move(1, 0);
+    public void moveRight() {
+        moveRight(1);
+    }
+
+    public void moveRight(int diff) {
+        move(diff, 0);
     }
 
     /**
      * Move from one cell to the bottom
-     *
-     * @throws CellAlreadyOccupiedException
      */
-    public void moveBottom() throws CellAlreadyOccupiedException {
-        move(0, 1);
+    public void moveDown() {
+        moveDown(1);
+    }
+
+    public void moveDown(int diff) {
+        move(0, diff);
     }
 
     /**
      * Move from one cell to the left
-     *
-     * @throws CellAlreadyOccupiedException
      */
-    public void moveLeft() throws CellAlreadyOccupiedException {
-        move(-1, 0);
+    public void moveLeft(){
+        moveLeft(1);
+    }
+
+    public void moveLeft(int diff) {
+        move(-diff, 0);
+    }
+
+    public double getWidth() {
+        return getImage().getWidth();
+    }
+
+    public double getHeight() {
+        return getImage().getHeight();
     }
 }
