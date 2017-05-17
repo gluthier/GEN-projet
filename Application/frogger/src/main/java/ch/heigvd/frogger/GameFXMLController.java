@@ -15,7 +15,6 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -68,6 +67,7 @@ public class GameFXMLController implements Initializable {
             itemsGroup.getChildren().add(rightStart);
             
             // add Finish Flags
+            // TODO add rocks between finish ?
             for(int i = 0; i < 3; i++) {
             	itemsGroup.getChildren().add(new Decoration(7 + i * 10, Constants.NUM_ROWS-1, Constants.ItemType.FinishLeft));
                 itemsGroup.getChildren().add(new Decoration(5 + i * 10, Constants.NUM_ROWS-1, Constants.ItemType.FinishRight));
@@ -86,6 +86,9 @@ public class GameFXMLController implements Initializable {
             }
 
             // Create the static obstacles
+            // TODO improve the randomization so that
+            // 		it exist a path between the player and the finish line
+            //		there is no tree in the air
             for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
                 Random r = new Random();
                 int x = 0;
@@ -137,6 +140,7 @@ public class GameFXMLController implements Initializable {
         }
     }
     
+    // TODO add a somewhat timer when starting the game ( small movie ? )
     public void start() {
         // make the canvas focusable
     	Text startText = new Text("START");
@@ -149,6 +153,7 @@ public class GameFXMLController implements Initializable {
         canvas.setFocusTraversable(true);
     }
     
+    // TODO detect if the player has reach a finish part
     public void stop() {
         // make the canvas unfocusable
         canvas.setFocusTraversable(false);
