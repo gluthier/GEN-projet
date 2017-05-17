@@ -66,6 +66,12 @@ public class GameFXMLController implements Initializable {
             Decoration rightStart = new Decoration(Constants.INITIAL_PLAYER_X-1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartRight);
             itemsGroup.getChildren().add(leftStart);
             itemsGroup.getChildren().add(rightStart);
+            
+            // add Finish Flags
+            for(int i = 0; i < 3; i++) {
+            	itemsGroup.getChildren().add(new Decoration(7 + i * 10, Constants.NUM_ROWS-1, Constants.ItemType.FinishLeft));
+                itemsGroup.getChildren().add(new Decoration(5 + i * 10, Constants.NUM_ROWS-1, Constants.ItemType.FinishRight));
+            }
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {

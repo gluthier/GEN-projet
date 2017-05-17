@@ -106,6 +106,8 @@ public class Constants {
     	Saucisson("saucisson_vaudois"),
     	StartLeft("sign-start-left"),
     	StartRight("sign-start-right"),
+    	FinishLeft("sign-finish-left"),
+    	FinishRight("sign-finish-right"),
     	Row_0("ROW_0"),
     	Row_1("ROW_1"),
     	Row_2("ROW_2"),
