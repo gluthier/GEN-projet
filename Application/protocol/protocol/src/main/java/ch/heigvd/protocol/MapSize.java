@@ -15,6 +15,13 @@ public class MapSize implements Sendable{
 		this.width = width;
 		this.height = height;
 	}
+	
+	public MapSize(JSONObject json) {
+		this.id = json.getInt("id");
+		this.name = json.getString("name");
+		this.width = json.getInt("width");
+		this.height = json.getInt("height");	
+	}
 
 	public int getId() {
 		return id;
@@ -33,7 +40,11 @@ public class MapSize implements Sendable{
 	}
 
 	public JSONObject toJson() {
-		// TODO Auto-generated method stub
-		return null;
+		JSONObject json = new JSONObject();
+		json.put("id", id);
+		json.put("name", name);
+		json.put("width", width);
+		json.put("height", height);
+		return json;
 	}
 }

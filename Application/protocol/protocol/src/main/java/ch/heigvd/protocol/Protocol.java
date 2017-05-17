@@ -2,10 +2,9 @@ package ch.heigvd.protocol;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.google.common.hash.Hashing;
@@ -51,21 +50,32 @@ public class Protocol
 		return param.getString("password");
     }
     
-    public static String formatLoginAnswer(String token,Difficulty difficulty, MapSize map) {
+    public static String formatLoginAnswer(String token,List<Difficulty> difficulty, List<MapSize> map) {
     	JSONObject json = new JSONObject();
     	json.put("token", token);
+    	JSONArray difficultyArray = new JSONArray();
+    	for (Difficulty diff : difficulty) {
+			difficultyArray.put(diff.toJson());
+		}
+    	json.put("difficulties", difficultyArray);
+    	JSONArray mapArray = new JSONArray();
+    	for (MapSize m : map) {
+			difficultyArray.put(m.toJson());
+		}
+    	json.put("mapSizes", mapArray);
     	
+    	return json.toString();
     }
     
     public static String getFormatLoginToken(String message) {
     	return "not implemented yet";
     }
     
-    public static Difficulty getFormatLoginDifficulty(String message) {
+    public static List<Difficulty> getFormatLoginDifficulty(String message) {
     	return null;
     }
     
-    public static MapSize getFormatLoginMapSize(String message) {
+    public static List<MapSize> getFormatLoginMapSize(String message) {
     	return null;
     }
     

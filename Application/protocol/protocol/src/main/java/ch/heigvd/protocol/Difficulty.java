@@ -20,6 +20,15 @@ public class Difficulty implements Sendable{
 		this.obstacleWidth = obstacleWidth;
 	}
 	
+	public Difficulty(JSONObject json) {
+		this.id = json.getInt("id");
+		this.name = json.getString("name");
+		this.manaRegenerationSpeed = json.getInt("manaRegenerationSpeed");
+		this.playerMoveSpeed = json.getInt("playerMoveSpeed");
+		this.obstacleMoveSpeed = json.getInt("obstacleMoveSpeed");
+		this.obstacleWidth = json.getInt("obstacleWidth");
+	}
+	
 	
 	
 	public int getId() {
@@ -40,6 +49,7 @@ public class Difficulty implements Sendable{
 	public int getObstacleWidth() {
 		return obstacleWidth;
 	}
+	
 	public JSONObject toJson() {
 		JSONObject json = new JSONObject();
 		json.put("id", id);
