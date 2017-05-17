@@ -30,6 +30,9 @@ public class Constants {
     public static final int ITEM_CLOCK_DELAY = 200;
 
     public static final int NUM_OBSTACLES = 20;
+    
+    public static final int PLAYER_POS_START_X = 14;
+    public static final int PLAYER_POS_START_Y = 5;
 
     /**
      * Map between key pressed and action related for the attacker
