@@ -12,10 +12,12 @@ import com.google.common.hash.Hashing;
 /**
  * Protocol
  * @author Tony Clavien
+ * @author Maxime Guillod
  * Define the message exchanged between clients and server
  */
-public class Protocol 
-{
+public class Protocol {
+    
+    public static final int PORT = 1234;
 	
 	public static enum FreeRole {
 		skier,
