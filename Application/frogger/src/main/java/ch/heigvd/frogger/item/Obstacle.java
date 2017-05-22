@@ -20,9 +20,4 @@ public class Obstacle extends Item {
     public void changeImage() {
         changeImage(Constants.OBSTACLE_FOLDER);
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        // Do Nothing
-    }
 }

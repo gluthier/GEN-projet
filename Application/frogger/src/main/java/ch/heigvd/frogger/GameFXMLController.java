@@ -1,7 +1,9 @@
 package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.item.Item;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
@@ -13,6 +15,7 @@ import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -24,18 +27,23 @@ public class GameFXMLController implements Initializable {
     @FXML
     private AnchorPane anchorPane;
 
+    private Player player;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // Create the canvas
         Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        Group elementsGroup = new Group();
+        Group itemsGroup = new Group();
+        Group staticObstacleGroup = new Group();
+        Group dynamicObstacleGroup = new Group();
+        itemsGroup.getChildren().add(staticObstacleGroup);
+        itemsGroup.getChildren().add(dynamicObstacleGroup);
 
         AnchorPane.setTopAnchor(canvas, 0.);
         anchorPane.getChildren().add(canvas);
-        anchorPane.getChildren().add(elementsGroup);
+        anchorPane.getChildren().add(itemsGroup);
 
         try {
-
             // Load the background
             Image background = new Image(
                     getClass().getResource(Constants.BACKGROUND_PATH).toString(),
@@ -46,34 +54,6 @@ public class GameFXMLController implements Initializable {
             // Draw the background
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
-
-            // Skier on top of the mountain
-            Player player = new Player(14, 5, Constants.ItemType.Skier);
-            elementsGroup.getChildren().add(player);
-
-            // Create the two obstacles borders (chalets)
-            for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                elementsGroup.getChildren().add(new Obstacle(0, i, Constants.ItemType.Chalet));
-                elementsGroup.getChildren().add(new Obstacle(1, i, Constants.ItemType.Chalet));
-                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
-                elementsGroup.getChildren().add(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
-            }
-
-            // Create the static obstacles
-            for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
-                Random r = new Random();
-                int x = 0;
-                int y = 0;
-
-                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin); // sapin
-                elementsGroup.getChildren().add(sapin);
-
-                // TODO: Avoid infinite loop
-                do {
-                    sapin.setXGridCoordinate(r.nextInt(Constants.NUM_COLS - 4) + 2);
-                    sapin.setYGridCoordinate(r.nextInt(Constants.NUM_ROWS - 2) + 2);
-                } while (sapin.collisionWithOtherNode());
-            }
 
             // ----- ONLY FOR DEBUG : draw lines -----
             // TODO : Remove
@@ -95,38 +75,25 @@ public class GameFXMLController implements Initializable {
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
-                    try {
-                        switch (event.getCode()) {
-                            case LEFT:
-                                player.setType(Constants.ItemType.SkierLeft);
-                                player.moveLeft();
-                                break;
-                            case DOWN:
-                                player.setType(Constants.ItemType.Skier);
-                                player.moveBottom();
-                                break;
-                            case RIGHT:
-                                player.setType(Constants.ItemType.SkierRight);
-                                player.moveRight();
-                                break;
-                            default:
-                                break;
-                        }
-                    } catch (CellAlreadyOccupiedException e) {
-                        Text lostText = new Text("Lost");
-                        lostText.setX(Constants.GAME_WIDTH/2 - lostText.getBoundsInLocal().getWidth()/2);
-                        lostText.setY(Constants.GAME_HEIGHT/2 - lostText.getBoundsInLocal().getHeight()/2);
-                        lostText.setFill(Color.RED);
-                        lostText.setFont(new Font(50));
-                        elementsGroup.getChildren().add(lostText);
-                        System.out.println("CellAlreadyOccupiedException ! (obstacle collision)");
-                    }
+                    // System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
+                    Constants.ACTION_ATTACK.get(event.getCode()).act();
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
-                    System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+                    // System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
+                    Constants.ACTION_DEFEND.get(event.getCode()).act();
                 }
             });
+
         } catch (Exception e) {
-            System.out.println("Exception catch !!");
+            System.out.println("Exception catch !!" + e.getMessage());
         }
+    }
+
+    public void addItem(Item i) {
+        anchorPane.getChildren().add(i);
+    }
+
+    public void addPlayer(Player p) {
+        anchorPane.getChildren().add(p);
+        player = p;
     }
 }
