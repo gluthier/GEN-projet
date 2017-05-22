@@ -1,6 +1,8 @@
 package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.json.JSONObject;
 
@@ -53,4 +55,21 @@ public class AppTest
     	String message = Protocol.formatLoginSend("test", "1234");
     	assertEquals(Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString(), Protocol.getFormatLoginPassword(message));
     }
+    
+    //TODO more tests
+    
+    public void testLoginAnswer() {
+    	List<Difficulty> difficulty = new LinkedList<Difficulty>();
+    	List<MapSize> map = new LinkedList<MapSize>();
+    	
+    	difficulty.add(new Difficulty(1, "medium", 5, 4, 3, 20));
+    	map.add(new MapSize(1, "medium", 200, 100));
+    	System.out.println(Protocol.formatLoginAnswer("1234", difficulty, map));
+    }
+    
+    public void testGetLobbySend() {
+    	System.out.println(Protocol.formatLobbySend("asd"));
+    }
+    
+   
 }
