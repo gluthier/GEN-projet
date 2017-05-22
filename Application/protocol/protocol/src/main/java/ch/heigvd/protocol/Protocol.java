@@ -43,7 +43,22 @@ public class Protocol
 	
 	// TODO enum of all commands
 	public static enum command {
+		login("login"),
+		getlobby("get-lobby"),
+		join("join"),
+		moveSkier("move-skier"),
+		addObstacle("add-obstacle");
 		
+		private String value;
+		
+		private command(String val) {
+			value = val;
+		}
+		
+		@Override
+		public String toString() {
+			return value;
+		}
 	}
 	
 	public static String formatArraytoJson(List<Sendable> ls) {
@@ -68,7 +83,7 @@ public class Protocol
 	
     public static String formatLoginSend(String user, String password) {
     	JSONObject json = new JSONObject();
-    	json.put("command", "login");
+    	json.put("command", command.login);
     	JSONObject param = new JSONObject();
     	param.put("user", user);
     	param.put("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
@@ -127,7 +142,7 @@ public class Protocol
     
     public static String formatLobbySend(String token) {
     	JSONObject json = new JSONObject();
-    	json.put("command", "get-lobby");
+    	json.put("command", command.getlobby);
     	JSONObject param = new JSONObject();
     	param.put("token", token);
     	json.put("param", param);
@@ -163,11 +178,11 @@ public class Protocol
     }
     
     public static String getFormatJoinToken(String message) {
-    	return "not implemented yet";
+    	return getJsonParam(message, "param", "token");
     }
     
     public static String getFormatJoinId(String message) {
-    	return "not implemented yet";
+    	return getJsonParam(message, "param", "id");
     }
     
     public static String formatJoinAnswer(List<Sendable> ls) {
@@ -185,7 +200,7 @@ public class Protocol
     
     public static String formatMoveSend(Direction dir) {
     	JSONObject json = new JSONObject();
-    	json.put("command", "move-skier");
+    	json.put("command", command.moveSkier);
     	JSONObject param = new JSONObject();
     	param.put("direction", dir);
     	json.put("param", param);
@@ -198,7 +213,7 @@ public class Protocol
     
     public static String formatNewDynamicObstacle(int row) {
     	JSONObject json = new JSONObject();
-    	json.put("command", "add-obstacle");
+    	json.put("command", command.addObstacle);
     	JSONObject param = new JSONObject();
     	param.put("row", row);
     	json.put("param", param);
