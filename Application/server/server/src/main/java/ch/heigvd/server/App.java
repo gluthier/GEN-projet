@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author Maxime Guillod
  *
  */
-public class App extends Thread {
+public class App {
 
     private ServerSocket server;
 
@@ -34,14 +34,8 @@ public class App extends Thread {
         }
     }
 
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     public static void main(String[] args) {
         App app = new App();
-        app.start();
-
     }
 
 }
