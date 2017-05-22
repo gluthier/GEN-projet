@@ -1,7 +1,7 @@
 package ch.heigvd.protocol;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -17,15 +17,53 @@ import com.google.common.hash.Hashing;
 public class Protocol 
 {
 	
-	public static enum FreeRole {
-		skier,
-		defender
-	}
-	
+	//TODO constants for inside JSON i.e. param, difficulties, etc...
+
 	public static enum Direction {
 		right,
 		left,
-		bottom
+		bottom;
+		
+		public static Direction fromString(String in) {
+			if( in.equals("right")) {
+				return Direction.right;
+			}
+			else if (in.equals("left")) {
+				return Direction.left;
+			}
+			else if(in.equals("bottom")) {
+				return Direction.bottom;
+			}
+			else {
+				// throw exepction ?
+				return null;
+			}
+		}
+	}
+	
+	// TODO enum of all commands
+	public static enum command {
+		
+	}
+	
+	public static String formatArraytoJson(List<Sendable> ls) {
+		JSONArray array = new JSONArray();
+    	for (Sendable s : ls) {
+    		array.put(s.toJson());
+		}
+    	
+    	return array.toString();
+	}
+	
+	public static String getJsonParam(String message, String object, String param) {
+		JSONObject json = new JSONObject(message);
+		if(object != null) {
+		JSONObject ret = json.getJSONObject(object);
+		return ret.getString(param);
+		}
+		else {
+			return json.getString(param);
+		}
 	}
 	
     public static String formatLoginSend(String user, String password) {
@@ -39,15 +77,11 @@ public class Protocol
     }
     
     public static String getFormatLoginUser(String message) {
-    	JSONObject json = new JSONObject(message);
-		JSONObject param = json.getJSONObject("param");
-		return param.getString("user");
+		return getJsonParam(message, "param", "user");
     }
     
     public static String getFormatLoginPassword(String message) {
-    	JSONObject json = new JSONObject(message);
-		JSONObject param = json.getJSONObject("param");
-		return param.getString("password");
+		return getJsonParam(message, "param", "password");
     }
     
     public static String formatLoginAnswer(String token,List<Difficulty> difficulty, List<MapSize> map) {
@@ -68,51 +102,64 @@ public class Protocol
     }
     
     public static String getFormatLoginToken(String message) {
-    	return "not implemented yet";
+	  return getJsonParam(message, null, "token");
     }
     
     public static List<Difficulty> getFormatLoginDifficulty(String message) {
-    	return null;
+    	JSONObject json = new JSONObject(message);
+		JSONArray difficulties = json.getJSONArray("difficulties");
+		List<Difficulty> diff = new LinkedList<Difficulty>();
+		for (int i = 0; i < difficulties.length(); i++) {
+			diff.add(new Difficulty(difficulties.getJSONObject(i)));
+		}
+		return diff;
     }
     
     public static List<MapSize> getFormatLoginMapSize(String message) {
-    	return null;
+    	JSONObject json = new JSONObject(message);
+		JSONArray mapSizes = json.getJSONArray("mapSizes");
+		List<MapSize> sizes = new LinkedList<MapSize>();
+		for (int i = 0; i < mapSizes.length(); i++) {
+			sizes.add(new MapSize(mapSizes.getJSONObject(i)));
+		}
+		return sizes;
     }
     
     public static String formatLobbySend(String token) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("command", "get-lobby");
+    	JSONObject param = new JSONObject();
+    	param.put("token", token);
+    	json.put("param", param);
+    	return json.toString();
     }
     
     public static String getFormatLobbyToken(String message) {
-    	return "not implemented yet";
+    	return getJsonParam(message, "param", "token");
     }
     
-    public static String formatLobbyAnswer(int id, String name, String difficulty, String mapSize, FreeRole free) {
-    	return "not implemented yet";
+    public static String formatLobbyAnswer(List<Sendable> parties) {
+    	return formatArraytoJson(parties);
     }
     
-    public static String getFormatLobbyId(String message) {
-    	return "not implemented yet";
-    }
-    
-    public static String getFormatLobbyName(String message) {
-    	return "not implemented yet";
-    }
-    
-    public static String getFormatLobbyDifficulty(String message) {
-    	return "not implemented yet";
-    }
-    
-    public static String getFormatLobbyMapSize(String message) {
-    	return "not implemented yet";
-    }
-    
-    public static FreeRole getFormatLobbyFreeRole(String message) {
-    	return null;
+    public static List<Party> getFormatLobbyParties(String message) {
+    	JSONArray array = new JSONArray(message);
+    	List<Party> parties = new LinkedList<Party>();
+    	for(int i = 0; i < array.length(); i++) {
+    		parties.add(new Party(array.getJSONObject(i)));
+    	}
+    	return parties;
+    	
     }
     
     public static String formatJoinSend(String token, int id) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("command", "join");
+    	JSONObject param = new JSONObject();
+    	param.put("token", token);
+    	param.put("id", id);
+    	json.put("param", param);
+    	return json.toString();
     }
     
     public static String getFormatJoinToken(String message) {
@@ -123,24 +170,39 @@ public class Protocol
     	return "not implemented yet";
     }
     
-    public static String formatJoinAnswer(List<FixedObstacle> ls) {
-    	return "not implemented yet";
+    public static String formatJoinAnswer(List<Sendable> ls) {
+    	return formatArraytoJson(ls);
     }
     
-    public static List<FixedObstacle> getFormatJoinObstacle(String message) {
-    	return null;
+    public static List<Obstacle> getFormatJoinObstacle(String message) {
+    	JSONArray array = new JSONObject(message).getJSONArray("fixedObstacles");
+    	List<Obstacle> obstacles = new LinkedList<Obstacle>();
+    	for(int i = 0; i < array.length(); i++) {
+    		obstacles.add(new Obstacle(array.getJSONObject(i)));
+    	}
+    	return obstacles;
     }
     
     public static String formatMoveSend(Direction dir) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("command", "move-skier");
+    	JSONObject param = new JSONObject();
+    	param.put("direction", dir);
+    	json.put("param", param);
+    	return json.toString();
     }
     
     public static Direction getFormatMove(String message) {
-    	return null;
+    	return Direction.fromString(getJsonParam(message, "param", "direction"));
     }
     
     public static String formatNewDynamicObstacle(int row) {
-    	return "not implemented yet";
+    	JSONObject json = new JSONObject();
+    	json.put("command", "add-obstacle");
+    	JSONObject param = new JSONObject();
+    	param.put("row", row);
+    	json.put("param", param);
+    	return json.toString();
     }
     
     // TODO send skier coordinate
