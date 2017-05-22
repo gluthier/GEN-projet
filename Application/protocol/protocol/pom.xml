@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>ch.heigvd</groupId>
-  <artifactId>server</artifactId>
+  <artifactId>protocol</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>server</name>
+  <name>protocol</name>
   <url>http://maven.apache.org</url>
 
   <properties>
@@ -22,9 +22,14 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>${project.groupId}</groupId>
-      <artifactId>protocol</artifactId>
-      <version>${project.version}</version>
+    	<groupId>org.json</groupId>
+    	<artifactId>json</artifactId>
+    	<version>20160810</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.google.guava</groupId>
+    	<artifactId>guava</artifactId>
+    	<version>21.0</version>
     </dependency>
   </dependencies>
 </project>
