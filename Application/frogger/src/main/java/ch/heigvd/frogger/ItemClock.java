@@ -9,12 +9,16 @@ import java.util.logging.Logger;
  * Clock pour le mouvement des obstacles
  *
  * @author Maxime Guillod
+ * @author Gabriel Luthier
  */
 public class ItemClock extends Observable implements Runnable {
 
     private static ItemClock instance = null;
     private Thread thread;
-    private boolean running = false;
+    private volatile boolean running = false;
+    
+    private volatile boolean paused = false;
+    private final Object pauseLock = new Object();
 
     private ItemClock() {
         thread = new Thread(this);
@@ -30,10 +34,22 @@ public class ItemClock extends Observable implements Runnable {
         }
         return instance;
     }
-
+    
     @Override
     public void run() {
         while (running) {
+            synchronized (pauseLock) {
+                if (!running) {
+                    break;
+                }
+                if (paused) {
+                    try {
+                        pauseLock.wait();
+                    } catch (InterruptedException ex) {
+                        break;
+                    }
+                }
+            }
             try {
                 setChanged();
                 notifyObservers();
@@ -53,17 +69,29 @@ public class ItemClock extends Observable implements Runnable {
     }
     
     /**
-     * To pause the timer
+     * Pause the timer
      */
     public void pause() {
-        running = false;
+        synchronized (pauseLock) {
+            paused = true;
+        }
     }
     
     /**
-     * To restart the timer
+     * Resume the timer
      */
-    public void restart() {
-        running = true;
+    public void resume() {
+        synchronized (pauseLock) {
+            paused = false;
+            pauseLock.notifyAll();
+        }
+    }
+    /**
+     * To pause the timer
+     */
+    public void stop() {
+        this.deleteObservers();
+        running = false;
     }
     
     /**

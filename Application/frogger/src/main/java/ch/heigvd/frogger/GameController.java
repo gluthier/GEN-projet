@@ -64,9 +64,6 @@ public class GameController implements Observer {
     private GameController() {
         // Initialize the game
         initializeGame();
-
-        // Observe the clock (tick)
-        ItemClock.getInstance().addObserver(this);
     }
 
     private void initializeGame() {
@@ -120,12 +117,15 @@ public class GameController implements Observer {
         } catch (CellAlreadyOccupiedException e) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
         }
+
+        // Observe the clock (tick)
+        ItemClock.getInstance().addObserver(this);
     }
 
     public void restartGame() {
         view.reset();
         initializeGame();
-        ItemClock.getInstance().restart();
+        ItemClock.getInstance().resume();
     }
 
     public void addDynamicObstacle(int row) {
@@ -154,7 +154,6 @@ public class GameController implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        System.out.println("update");
         for (Obstacle ob : obstacles) {
             if (!checkCollisionWithEdge(ob)) {
                 grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
