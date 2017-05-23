@@ -10,8 +10,8 @@ import java.rmi.server.UID;
 public class Game extends Thread implements ILog {
 
     private final Socket socket;
-    private UID uid;
-    private BDD bdd;
+    private final UID uid;
+    private final BDD bdd;
 
     public Game(Socket socket) {
         this.socket = socket;
@@ -23,7 +23,7 @@ public class Game extends Thread implements ILog {
     public void run() {
         bdd.logInfo(this, "START NEW GAME THREAD");
         // Try to login
-        Login login = new Login(socket);
+        Login login = new Login(socket, uid);
         do {
             login.tryConnect();
         } while (!login.isLogged());

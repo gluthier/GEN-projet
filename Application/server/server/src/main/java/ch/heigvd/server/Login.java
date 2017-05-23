@@ -1,19 +1,24 @@
 package ch.heigvd.server;
 
 import java.net.Socket;
+import java.rmi.server.UID;
 
 /**
  *
  * @author Maxime Guillod
  */
-public class Login {
+public class Login implements ILog {
 
     private final Socket socket;
     private boolean logged;
+    private final UID uid;
+    private final BDD bdd;
 
-    public Login(Socket socket) {
+    public Login(Socket socket, UID uid) {
         this.socket = socket;
         this.logged = false;
+        this.uid = uid;
+        this.bdd = BDD.getInstance();
     }
 
     boolean isLogged() {
@@ -22,12 +27,16 @@ public class Login {
 
     public void tryConnect() {
         /*
-        Wait for login information from client, and return spesific message (login OK, login failled, ...)
-         */
- /*
-        Connection with the database to verifiy login information
-         */
-        throw new UnsupportedOperationException("Not supported yet.");
+        Wait login information from client
+        */
+        
+        /*
+        Test client information
+        */
+    }
+
+    public UID getUid() {
+        return uid;
     }
 
 }
