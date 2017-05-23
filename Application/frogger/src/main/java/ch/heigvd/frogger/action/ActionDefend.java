@@ -3,6 +3,8 @@ package ch.heigvd.frogger.action;
 import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.GameController;
 import ch.heigvd.frogger.ItemClock;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Define a Defensive Action for Player 2
@@ -28,7 +30,7 @@ public class ActionDefend implements Actions {
             try {
                 GameController.getInstance().addDynamicObstacle(Constants.OBSTACLE_ROW.get(row));
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.getLogger(ActionDefend.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }

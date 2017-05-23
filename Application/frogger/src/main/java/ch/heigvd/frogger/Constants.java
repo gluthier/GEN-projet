@@ -10,14 +10,15 @@ import com.google.common.collect.ImmutableBiMap;
 
 import ch.heigvd.frogger.action.ActionAttack;
 import ch.heigvd.frogger.action.ActionDefend;
+import ch.heigvd.frogger.action.ActionGame;
 import ch.heigvd.frogger.action.Actions;
 import javafx.scene.input.KeyCode;
 
 /**
- *
  * @author lognaume
  * @author Maxime Guillod
  * @author Tony Clavien
+ * @author Gabriel Luthier
  */
 public class Constants {
 
@@ -80,6 +81,14 @@ public class Constants {
                 }
             });
 
+    public static final Map<KeyCode, Actions> ACTION_GAME
+            = Collections.unmodifiableMap(
+                    new EnumMap<KeyCode, Actions>(KeyCode.class) {
+                {
+                    put(KeyCode.R, new ActionGame(ActionGame.ActionGameType.RESTART));
+                }
+            });
+    
     /**
      * Map between obstacle row number and grid row number
      */

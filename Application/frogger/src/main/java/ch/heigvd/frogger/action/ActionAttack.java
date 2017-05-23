@@ -4,6 +4,8 @@ import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.GameController;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -39,7 +41,7 @@ public class ActionAttack implements Actions {
             try {
                 gc = GameController.getInstance();
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.getLogger(ActionAttack.class.getName()).log(Level.SEVERE, null, e);
             }
             switch (move) {
                 case LEFT:

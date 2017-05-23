@@ -38,8 +38,8 @@ public class ItemClock extends Observable implements Runnable {
                 setChanged();
                 notifyObservers();
                 Thread.sleep(Constants.ITEM_CLOCK_DELAY);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ItemClock.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException e) {
+                Logger.getLogger(ItemClock.class.getName()).log(Level.SEVERE, null, e);
             }
         }
     }
@@ -53,9 +53,9 @@ public class ItemClock extends Observable implements Runnable {
     }
     
     /**
-     * To stop the thread and the timer
+     * To pause the timer
      */
-    public void stop() {
+    public void pause() {
         running = false;
     }
     

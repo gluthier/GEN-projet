@@ -30,7 +30,7 @@ public class MainApp extends Application {
         // Fermeture de l'application
         stage.setOnCloseRequest((WindowEvent event) -> {
             // Stop ItemClock timer Thread
-            ItemClock.getInstance().stop();
+            ItemClock.getInstance().pause();
         });
     }
     

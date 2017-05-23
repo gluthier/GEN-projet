@@ -8,41 +8,53 @@ import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBuilder;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.LabelBuilder;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBoxBuilder;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 public class GameFXMLController implements Initializable {
 
     @FXML
     private AnchorPane anchorPane;
-
-    private Player player;
+    
+    private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Create the canvas
-        Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        Group itemsGroup = new Group();
-        Group staticObstacleGroup = new Group();
-        Group dynamicObstacleGroup = new Group();
-        itemsGroup.getChildren().add(staticObstacleGroup);
-        itemsGroup.getChildren().add(dynamicObstacleGroup);
+        setUpCanvas();
+    }
 
+    public void setUpCanvas() {
+        // Create the canvas
+        canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         AnchorPane.setTopAnchor(canvas, 0.);
         anchorPane.getChildren().add(canvas);
-        anchorPane.getChildren().add(itemsGroup);
-
+        
         try {
             // Load the background
             Image background = new Image(
@@ -75,16 +87,15 @@ public class GameFXMLController implements Initializable {
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
-                    // System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
                     Constants.ACTION_ATTACK.get(event.getCode()).act();
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
-                    // System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
                     Constants.ACTION_DEFEND.get(event.getCode()).act();
+                } else if (Constants.ACTION_GAME.containsKey(event.getCode())) {
+                    Constants.ACTION_GAME.get(event.getCode()).act();
                 }
             });
-
         } catch (Exception e) {
-            System.out.println("Exception catch !!" + e.getMessage());
+            Logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -94,6 +105,10 @@ public class GameFXMLController implements Initializable {
 
     public void addPlayer(Player p) {
         anchorPane.getChildren().add(p);
-        player = p;
+    }
+
+    public void reset() {
+        anchorPane.getChildren().clear();
+        setUpCanvas();
     }
 }
