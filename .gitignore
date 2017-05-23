@@ -56,3 +56,4 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+/Application/server/server/nbproject/
