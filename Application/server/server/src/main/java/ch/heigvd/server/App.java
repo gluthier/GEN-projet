@@ -1,5 +1,7 @@
 package ch.heigvd.server;
 
+import ch.heigvd.server.bdd.ILog;
+import ch.heigvd.server.bdd.BDD;
 import ch.heigvd.protocol.Protocol;
 import java.io.IOException;
 import java.net.ServerSocket;
