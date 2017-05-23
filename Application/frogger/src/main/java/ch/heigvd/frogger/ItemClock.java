@@ -99,6 +99,6 @@ public class ItemClock extends Observable implements Runnable {
      * @return If the clock is running
      */
     public boolean isRunning() {
-        return running;
+        return !paused;
     }
 }

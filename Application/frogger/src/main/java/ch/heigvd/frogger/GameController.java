@@ -240,6 +240,6 @@ public class GameController implements Observer {
 
     private void collisionDetected() {
         ItemClock.getInstance().pause();
-        restartGame();
+        view.showLooserMessage();
     }
 }

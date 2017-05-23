@@ -24,11 +24,13 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBuilder;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.LabelBuilder;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBoxBuilder;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -36,11 +38,12 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class GameFXMLController implements Initializable {
 
     @FXML
-    private AnchorPane anchorPane;
+    private BorderPane borderPane;
     
     private Canvas canvas;
 
@@ -53,7 +56,9 @@ public class GameFXMLController implements Initializable {
         // Create the canvas
         canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         AnchorPane.setTopAnchor(canvas, 0.);
-        anchorPane.getChildren().add(canvas);
+        borderPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        borderPane.getChildren().add(canvas);
+        
         
         try {
             // Load the background
@@ -100,15 +105,32 @@ public class GameFXMLController implements Initializable {
     }
 
     public void addItem(Item i) {
-        anchorPane.getChildren().add(i);
+        borderPane.getChildren().add(i);
     }
 
     public void addPlayer(Player p) {
-        anchorPane.getChildren().add(p);
+        borderPane.getChildren().add(p);
+    }
+    
+    public void showLooserMessage() {
+        Text tLost = new Text();
+        tLost.setText("YOU LOST !");
+        tLost.setId("lostText");
+        
+        Text tRestart = new Text();
+        tRestart.setText("Press 'r' to restart.");
+        tRestart.setId("restartText");
+        
+        VBox vbox = new VBox();
+        vbox.getChildren().addAll(tLost, tRestart);
+        vbox.setAlignment(Pos.CENTER);
+        
+        borderPane.setCenter(null);
+        borderPane.setCenter(vbox);
     }
 
     public void reset() {
-        anchorPane.getChildren().clear();
+        borderPane.getChildren().clear();
         setUpCanvas();
     }
 }
