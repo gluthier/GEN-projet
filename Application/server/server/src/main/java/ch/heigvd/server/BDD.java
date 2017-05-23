@@ -16,29 +16,28 @@ import java.util.logging.Logger;
  * @author Maxime Guillod
  */
 public class BDD {
-    
+
     private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://proteck.ch:3306/HEIG_GEN";
     private static final String USERNAME = "GEN";
     private static final String PASSWORD = "Jm0y2x1&";
     private static final String MAX_POOL = "250";
-    
+
     private static BDD instance = null;
-    
+
     private Connection connection = null;
-    
+
     private BDD() {
         connect();
     }
-    
+
     public static BDD getInstance() {
-        System.out.println("ch.heigvd.server.BDD.getInstance()");
         if (instance == null) {
             instance = new BDD();
         }
         return instance;
     }
-    
+
     public Connection connect() {
         if (connection == null) {
             try {
@@ -52,7 +51,7 @@ public class BDD {
         }
         return connection;
     }
-    
+
     private Properties getProperties() {
         Properties properties = new Properties();
         properties.setProperty("user", USERNAME);
@@ -60,7 +59,7 @@ public class BDD {
         properties.setProperty("MaxPooledStatements", MAX_POOL);
         return properties;
     }
-    
+
     public void disconnect() {
         if (connection != null) {
             try {
@@ -71,9 +70,8 @@ public class BDD {
             }
         }
     }
-    
+
     public boolean isClosed() {
-        System.out.println("ch.heigvd.server.BDD.isClosed()");
         try {
             return connection.isClosed();
         } catch (SQLException ex) {
@@ -81,25 +79,38 @@ public class BDD {
         }
         return true;
     }
-    
+
     public boolean testLogin(String login, String pwd) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
-    
+
     public void insertLog(String uid, String content) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Log"
                     + " (uid, content) VALUES "
                     + " (\"" + uid + "\",\"" + content + "\");");
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void insertLog(UID uid, String content) {
         insertLog(Integer.toString(uid.hashCode()), content);
     }
-    
+
+    public String getLastLogContent() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 1;");
+            if (result.next()) {
+                return result.getNString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
 }
