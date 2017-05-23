@@ -15,11 +15,15 @@ import java.util.logging.Logger;
  *
  */
 public class App {
-
+    
     private ServerSocket server;
-
+    private BDD bdd;
+    private final String uid = "MAIN_APP";
+    
     public App() {
         try {
+            bdd = BDD.getInstance();
+            bdd.insertLog(uid, "Launch");
             server = new ServerSocket(Protocol.PORT);
             Socket socket;
             while ((socket = server.accept()) != null) {
@@ -30,12 +34,13 @@ public class App {
                 new Game(socket).start();
             }
         } catch (IOException ex) {
+            bdd.insertLog(uid, ex.getMessage());
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public static void main(String[] args) {
         App app = new App();
     }
-
+    
 }
