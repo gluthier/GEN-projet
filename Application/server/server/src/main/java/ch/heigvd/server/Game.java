@@ -7,7 +7,7 @@ import java.rmi.server.UID;
  *
  * @author Maxime Guillod
  */
-public class Game extends Thread {
+public class Game extends Thread implements ILog {
 
     private final Socket socket;
     private UID uid;
@@ -16,15 +16,12 @@ public class Game extends Thread {
     public Game(Socket socket) {
         this.socket = socket;
         this.bdd = BDD.getInstance();
-        /*
-        Create a unique id to identify the connection and for log
-         */
-        uid = new UID();
-        bdd.insertLog(uid, "NEW GAME");
+        this.uid = new UID();
     }
 
     @Override
     public void run() {
+        bdd.logInfo(this, "START NEW GAME THREAD");
         // Try to login
         Login login = new Login(socket);
         do {
@@ -33,8 +30,8 @@ public class Game extends Thread {
 
     }
 
-    public int getUid() {
-        return uid.hashCode();
+    public UID getUid() {
+        return uid;
     }
 
 }

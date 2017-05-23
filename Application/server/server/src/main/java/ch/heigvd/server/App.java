@@ -4,26 +4,31 @@ import ch.heigvd.protocol.Protocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.rmi.server.UID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Hello world!
  *
  * @author Tony Clavien
  * @author Maxime Guillod
  *
  */
-public class App {
-    
+public class App implements ILog {
+
     private ServerSocket server;
     private BDD bdd;
-    private final String uid = "MAIN_APP";
-    
+    private final UID uid;
+
     public App() {
+        this.bdd = BDD.getInstance();
+        this.uid = new UID();
+        launch();
+    }
+
+    public void launch() {
         try {
-            bdd = BDD.getInstance();
-            bdd.insertLog(uid, "Launch");
+            bdd.logInfo(this, "START NEW MAIN_APP");
             server = new ServerSocket(Protocol.PORT);
             Socket socket;
             while ((socket = server.accept()) != null) {
@@ -34,13 +39,19 @@ public class App {
                 new Game(socket).start();
             }
         } catch (IOException ex) {
-            bdd.insertLog(uid, ex.getMessage());
+            bdd.logError(this, ex);
             Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            bdd.disconnect();
         }
     }
-    
+
+    public UID getUid() {
+        return uid;
+    }
+
     public static void main(String[] args) {
         App app = new App();
     }
-    
+
 }

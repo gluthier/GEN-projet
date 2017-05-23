@@ -17,6 +17,11 @@ import java.util.logging.Logger;
  */
 public class BDD {
 
+    static enum Type {
+        INFO,
+        ERROR
+    }
+
     private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
     private static final String DATABASE_URL = "jdbc:mysql://proteck.ch:3306/HEIG_GEN";
     private static final String USERNAME = "GEN";
@@ -28,6 +33,9 @@ public class BDD {
     private Connection connection = null;
 
     private BDD() {
+        /*
+        Connect the database on the first call of getInsatnce()
+         */
         connect();
     }
 
@@ -38,7 +46,7 @@ public class BDD {
         return instance;
     }
 
-    public Connection connect() {
+    public void connect() {
         if (connection == null) {
             try {
                 Class.forName(DATABASE_DRIVER);
@@ -49,7 +57,6 @@ public class BDD {
                 Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, e);
             }
         }
-        return connection;
     }
 
     private Properties getProperties() {
@@ -84,22 +91,29 @@ public class BDD {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
-    public void insertLog(String uid, String content) {
+    private void log(Class c, UID uid, BDD.Type type, String content) {
         try {
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Log"
-                    + " (uid, content) VALUES "
-                    + " (\"" + uid + "\",\"" + content + "\");");
+                    + " (class, uid, type, content) VALUES "
+                    + " (\"" + c.getName() + "\","
+                    + "\"" + uid.hashCode() + "\","
+                    + "\"" + type + "\","
+                    + "\"" + content + "\");");
 
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public void insertLog(UID uid, String content) {
-        insertLog(Integer.toString(uid.hashCode()), content);
+    public void logError(ILog object, Exception e) {
+        log(object.getClass(), object.getUid(), BDD.Type.ERROR, e.getMessage());
     }
 
+    public void logInfo(ILog obj, String content) {
+        log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
+    }
+    
     public String getLastLogContent() {
         try {
             Statement statement = connection.createStatement();

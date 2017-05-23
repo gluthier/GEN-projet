@@ -1,18 +1,21 @@
 package ch.heigvd.server;
 
+import java.rmi.server.UID;
 import junit.framework.TestCase;
 
 /**
  *
  * @author Maxime Guillod
  */
-public class BDDTest extends TestCase {
-    
-    private final BDD bdd ;
+public class BDDTest extends TestCase implements ILog {
+
+    private final BDD bdd;
+    private final UID uid;
 
     public BDDTest(String testName) {
         super(testName);
         bdd = BDD.getInstance();
+        uid = new UID();
     }
 
     /**
@@ -24,10 +27,20 @@ public class BDDTest extends TestCase {
         }
     }
 
-    public void testInsertLog() {
+    public void testLogInfo() {
         String content = "Plein de contenu";
-        bdd.insertLog("TEST", content);
+        bdd.logInfo(this, content);
         assertEquals(content, bdd.getLastLogContent());
+    }
+
+    public void testLogError() {
+        Exception e = new UnsupportedOperationException("Test");
+        bdd.logError(this, e);
+        assertEquals("Test", bdd.getLastLogContent());
+    }
+
+    public UID getUid() {
+        return uid;
     }
 
 }

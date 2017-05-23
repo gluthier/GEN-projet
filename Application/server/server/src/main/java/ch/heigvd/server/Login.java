@@ -8,12 +8,12 @@ import java.net.Socket;
  */
 public class Login {
 
-    private Socket socket;
+    private final Socket socket;
     private boolean logged;
 
     public Login(Socket socket) {
         this.socket = socket;
-        logged = false;
+        this.logged = false;
     }
 
     boolean isLogged() {
