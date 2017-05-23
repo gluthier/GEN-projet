@@ -1,4 +1,4 @@
-package ch.heigvd.frogger.item;
+package ch.heigvd.frogger.action;
 
 /**
  * Define the basic actions doable in the game

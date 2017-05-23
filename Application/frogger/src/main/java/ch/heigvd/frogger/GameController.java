@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 
 /**
  * Created by lognaume on 5/17/17.
+ * @author Gabriel Luthier
  */
 public class GameController implements Observer {
     private List<Obstacle> obstacles;
-    private List<DynamicObstacle> dynamicObstacles;
     private Player player;
     private static GameFXMLController view;
     private static GameController instance;
@@ -34,7 +34,6 @@ public class GameController implements Observer {
 
     private GameController() {
         obstacles = new LinkedList<>();
-        dynamicObstacles = new LinkedList<>();
         grid = new Item[Constants.NUM_COLS][Constants.NUM_ROWS];
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[0].length; j++) {
@@ -46,7 +45,7 @@ public class GameController implements Observer {
             // Skier on top of the mountain
             addPlayer();
         } catch (CellAlreadyOccupiedException e) {
-            // TODO: manage exceptions
+            e.printStackTrace();
         }
         // Create the two obstacles borders (chalets)
         try {
@@ -62,7 +61,7 @@ public class GameController implements Observer {
                 addObstacle(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
         } catch (CellAlreadyOccupiedException e) {
-            // TODO: manage exceptions
+            e.printStackTrace();
         }
 
         try {
@@ -82,7 +81,7 @@ public class GameController implements Observer {
                 } while (checkCollision(sapin));
             }
         } catch (CellAlreadyOccupiedException e) {
-            // TODO: manage exceptions
+            e.printStackTrace();
         }
 
         // Observe the clock (tick)
@@ -94,12 +93,11 @@ public class GameController implements Observer {
             DynamicObstacle o = new DynamicObstacle(Constants.ItemType.Saucisson);
             o.setYGridCoordinate(row);
             view.addItem(o);
-            dynamicObstacles.add(o);
+            obstacles.add(o);
             grid[o.getXGridCoordinate()][o.getYGridCoordinate()] = o;
         } catch (CellAlreadyOccupiedException e) {
-            //TODO: manage exceptions
+            e.printStackTrace();
         }
-
     }
 
     public void addObstacle(Obstacle o) {
@@ -116,7 +114,7 @@ public class GameController implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        for (DynamicObstacle ob : dynamicObstacles) {
+        for (Obstacle ob : obstacles) {
             grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()] = null;
             if (!checkCollisionWithEdge(ob)) {
                 ob.moveRight();
@@ -165,20 +163,6 @@ public class GameController implements Observer {
      */
     private boolean checkCollision(Player p) {
         return grid[p.getXGridCoordinate()][p.getYGridCoordinate()] != null;
-
-        /*
-        for (Obstacle o : obstacles) {
-            if (checkCollision(p, o)) {
-                return true;
-            }
-        }
-        for (DynamicObstacle o : dynamicObstacles) {
-            if (checkCollision(p, o)) {
-                return true;
-            }
-        }
-        return false; // checkCollisionWithEdge(p);
-        */
     }
 
     /**
@@ -188,7 +172,6 @@ public class GameController implements Observer {
      */
 
     private boolean checkCollision(Obstacle o) {
-        // return checkCollision(o, player);
         return grid[o.getXGridCoordinate()][o.getYGridCoordinate()] != null && grid[o.getXGridCoordinate()][o.getYGridCoordinate()] instanceof Player;
     }
 
@@ -213,5 +196,7 @@ public class GameController implements Observer {
 
     private void collisionDetected() {
         System.out.println("Collision !!!");
+        ItemClock.getInstance().stop();
+        System.out.println("Clock stopped");
     }
 }

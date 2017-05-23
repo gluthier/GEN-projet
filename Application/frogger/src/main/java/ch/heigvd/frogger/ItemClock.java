@@ -1,4 +1,4 @@
-package ch.heigvd.frogger.item;
+package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.Constants;
 import java.util.Observable;
@@ -45,6 +45,14 @@ public class ItemClock extends Observable implements Runnable {
     }
 
     /**
+     * Start the thread and the timer
+     */
+    public void launch() {
+        running = true;
+        thread.start();
+    }
+    
+    /**
      * To stop the thread and the timer
      */
     public void stop() {
@@ -52,11 +60,17 @@ public class ItemClock extends Observable implements Runnable {
     }
     
     /**
-     * Start the thread and te timer
+     * To restart the timer
      */
-    public void launch() {
+    public void restart() {
         running = true;
-        thread.start();
     }
-
+    
+    /**
+     * Check whether the clock is running
+     * @return If the clock is running
+     */
+    public boolean isRunning() {
+        return running;
+    }
 }
