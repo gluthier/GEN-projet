@@ -1,5 +1,6 @@
 package ch.heigvd.frogger.item;
 
+import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.Constants.ItemType;
 import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
@@ -20,14 +21,14 @@ public class DynamicObstacle extends Obstacle {
     public DynamicObstacle(ItemType type) throws CellAlreadyOccupiedException {
         super(2, 5, type);
     }
-    
-    public void removeObstacleFromView(GameFXMLController view) {
-        view.removeItem(this);
+
+    @Override
+    public void changeImage() {
+        changeImage(Constants.OBSTACLE_FOLDER);
     }
 
-    protected void move(int diffX, int diffY) {
-        setXGridCoordinate(getXGridCoordinate() + diffX);
-        setYGridCoordinate(getYGridCoordinate() + diffY);
+    public void removeObstacleFromView(GameFXMLController view) {
+        view.removeItem(this);
     }
 
     public void moveTop() {

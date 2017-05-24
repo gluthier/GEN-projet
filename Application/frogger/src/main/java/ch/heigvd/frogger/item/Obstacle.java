@@ -12,46 +12,50 @@ import java.util.Observable;
  * @author Gabriel Luthier
  * @date 25/04/17
  */
-public class Obstacle extends Item {
+public abstract class Obstacle extends Item {
 
     public Obstacle(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
         super(getPosX, getPosY, type);
     }
 
-    @Override
-    public void changeImage() {
-        changeImage(Constants.OBSTACLE_FOLDER);
+    public void removeObstacleFromView(GameFXMLController view) {
+        // Do nothing
     }
 
     protected void move(int diffX, int diffY) {
         setXGridCoordinate(getXGridCoordinate() + diffX);
         setYGridCoordinate(getYGridCoordinate() + diffY);
     }
-    
-    public void removeObstacleFromView(GameFXMLController view) {
-    }
 
     public void moveTop() {
+        // Do nothing
     }
 
     public void moveTop(int diff) {
+        // Do nothing
     }
 
     public void moveRight() {
+        // Do nothing
     }
 
     public void moveRight(int diff) {
+        // Do nothing
     }
 
     public void moveDown() {
+        // Do nothing
     }
 
     public void moveDown(int diff) {
+        // Do nothing
     }
 
     public void moveLeft() {
+        // Do nothing
     }
 
     public void moveLeft(int diff) {
+        // Do nothing
     }
 }

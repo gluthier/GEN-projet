@@ -99,14 +99,14 @@ public class GameController implements Observer {
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
                 if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-                    addObstacle(new Obstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
+                    addObstacle(new FixedObstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
                 } else {
-                    addObstacle(new Obstacle(0, i, Constants.ItemType.Chalet));
+                    addObstacle(new FixedObstacle(0, i, Constants.ItemType.Chalet));
                 }
 
-                addObstacle(new Obstacle(1, i, Constants.ItemType.Chalet));
-                addObstacle(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
-                addObstacle(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
+                addObstacle(new FixedObstacle(1, i, Constants.ItemType.Chalet));
+                addObstacle(new FixedObstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
+                addObstacle(new FixedObstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
 
             // Create the static obstacles
@@ -115,7 +115,7 @@ public class GameController implements Observer {
                 int x = 0;
                 int y = 0;
 
-                Obstacle sapin = new Obstacle(x, y, Constants.ItemType.Sapin); // sapin
+                Obstacle sapin = new FixedObstacle(x, y, Constants.ItemType.Sapin); // sapin
                 addObstacle(sapin);
 
                 do {
