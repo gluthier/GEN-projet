@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 public class App implements ILog {
 
     private ServerSocket server;
-    private BDD bdd;
+    private final BDD bdd;
     private final UID uid;
 
     public App() {

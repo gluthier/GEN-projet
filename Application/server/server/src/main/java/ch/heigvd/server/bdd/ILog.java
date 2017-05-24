@@ -3,6 +3,7 @@ package ch.heigvd.server.bdd;
 import java.rmi.server.UID;
 
 /**
+ * Interface for log into our database
  *
  * @author Maxime Guillod
  */

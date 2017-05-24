@@ -6,6 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,6 +95,9 @@ public class BDD {
 
     private void log(Class c, UID uid, BDD.Type type, String content) {
         try {
+            /*
+            Log into our database
+             */
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Log"
                     + " (class, uid, type, content) VALUES "
@@ -100,7 +105,15 @@ public class BDD {
                     + "\"" + uid.hashCode() + "\","
                     + "\"" + type + "\","
                     + "\"" + content + "\");");
-
+            /*
+            Output the log into the consol
+             */
+            System.out.println(Time.valueOf(LocalTime.now()));
+            System.out.println(" - " + c.getName());
+            System.out.println(" - " + uid.hashCode());
+            System.out.println(" - " + type);
+            System.out.println(" - " + content);
+            System.out.println("");
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -113,7 +126,7 @@ public class BDD {
     public void logInfo(ILog obj, String content) {
         log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
     }
-    
+
     public String getLastLogContent() {
         try {
             Statement statement = connection.createStatement();
