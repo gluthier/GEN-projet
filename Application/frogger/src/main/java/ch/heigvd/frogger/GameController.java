@@ -282,6 +282,7 @@ public class GameController implements Observer {
     }
 
     private void collisionDetected() {
+        player.setType(Constants.ItemType.SkierDownFall);
         gameIsLost();
     }
 

@@ -121,6 +121,7 @@ public class Constants {
         SkierLeft("skier-left1"),
         Skier("skier-down"),
         SkierRight("skier-right1"),
+        SkierDownFall("skier-down-fall1"),
         Sapin("sapin"),
     	Saucisson("saucisson_vaudois"),
     	StartLeft("sign-start-left"),
