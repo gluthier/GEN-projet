@@ -1,5 +1,6 @@
 package ch.heigvd.server.bdd;
 
+import ch.heigvd.server.Game;
 import java.rmi.server.UID;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -89,8 +90,23 @@ public class BDD {
         return true;
     }
 
-    public boolean testLogin(String login, String pwd) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public boolean testLogin(String login, String password, Game game) {
+        try {
+            logInfo(game, "Try connect : " + login);
+            Statement s = connection.createStatement();
+            ResultSet res = s.executeQuery("SELECT * FROM Login WHERE login=\"" + login + "\"");
+
+            if (res.next()) {
+                System.out.println(res.getString("password"));
+                if (res.getString("password").equals(password)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     private void log(Class c, UID uid, BDD.Type type, String content) {

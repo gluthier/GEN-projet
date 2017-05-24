@@ -13,11 +13,13 @@ public class BDDTest extends TestCase implements ILog {
 
     private final BDD bdd;
     private final UID uid;
+    private final Game game;
 
     public BDDTest(String testName) {
         super(testName);
         bdd = BDD.getInstance();
         uid = new UID();
+        game = new Game(null);
     }
 
     /**
@@ -39,6 +41,23 @@ public class BDDTest extends TestCase implements ILog {
         Exception e = new UnsupportedOperationException("Test");
         bdd.logError(this, e);
         assertEquals("Test", bdd.getLastLogContent());
+    }
+
+    /**
+     * *****************************
+     * LOGIN
+     *********************************
+     */
+    public void testCorrectLogin() {
+        assertTrue(bdd.testLogin("test", "1234", game));
+    }
+    
+    public void testCorrectLoginWronPassword() {
+        assertFalse(bdd.testLogin("test", "1212", game));
+    }
+    
+    public void testIncorrectLogin() {
+        assertFalse(bdd.testLogin("nope", "1234", game));
     }
 
     public UID getUid() {
