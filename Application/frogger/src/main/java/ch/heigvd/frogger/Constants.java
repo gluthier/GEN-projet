@@ -31,6 +31,15 @@ public class Constants {
 
     public static final int INITIAL_PLAYER_X = 14;
     public static final int INITIAL_PLAYER_Y = 5;
+    
+    public static final int FIRST_FINISH_TO_RIGHT = 4;
+    public static final int FIRST_FINISH_TO_LEFT = 8;
+    public static final int SECOND_FINISH_TO_RIGHT = 12;
+    public static final int SECOND_FINISH_TO_LEFT = 16;
+    public static final int THIRD_FINISH_TO_RIGHT= 20;
+    public static final int THIRD_FINISH_TO_LEFT = 24;
+    public static final int FOURTH_FINISH_TO_RIGHT = 28;
+    public static final int FOURTH_FINISH_TO_LEFT = 32;
 
     public static final int PLAYER_SPEED = 10;
 

@@ -1,6 +1,7 @@
 package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.exception.ViewNotSetException;
 import ch.heigvd.frogger.item.*;
 import javafx.scene.control.Cell;
 
@@ -18,7 +19,7 @@ public class GameController implements Observer {
 
     private class Cell {
 
-        private List<Item> content = new LinkedList<Item>();
+        private List<Item> content = new LinkedList<>();
 
         public void add(Item item) {
             content.add(item);
@@ -49,9 +50,9 @@ public class GameController implements Observer {
     private static GameFXMLController view;
     private static GameController instance;
 
-    public static GameController getInstance() throws Exception {
+    public static GameController getInstance() throws ViewNotSetException {
         if (view == null) {
-            throw new Exception("Can't get the game controller before setting the view");
+            throw new ViewNotSetException();
         } else if (instance == null) {
             instance = new GameController();
         }
@@ -80,16 +81,20 @@ public class GameController implements Observer {
         try {
             // Skier on top of the mountain
             addPlayer();
-            
+
             // Start Flag
             addObstacle(new Decoration(Constants.INITIAL_PLAYER_X + 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartLeft));
             addObstacle(new Decoration(Constants.INITIAL_PLAYER_X - 1, Constants.INITIAL_PLAYER_Y, Constants.ItemType.StartRight));
 
             // Finish Flags
-            for (int i = 0; i < 4; i++) {
-                addObstacle(new Decoration(7 + i * 8, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
-                addObstacle(new Decoration(5 + i * 8, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
-            }
+            addObstacle(new Decoration(Constants.FIRST_FINISH_TO_RIGHT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
+            addObstacle(new Decoration(Constants.FIRST_FINISH_TO_LEFT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
+            addObstacle(new Decoration(Constants.SECOND_FINISH_TO_RIGHT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
+            addObstacle(new Decoration(Constants.SECOND_FINISH_TO_LEFT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
+            addObstacle(new Decoration(Constants.THIRD_FINISH_TO_RIGHT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
+            addObstacle(new Decoration(Constants.THIRD_FINISH_TO_LEFT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
+            addObstacle(new Decoration(Constants.FOURTH_FINISH_TO_RIGHT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishRight));
+            addObstacle(new Decoration(Constants.FOURTH_FINISH_TO_LEFT, Constants.NUM_ROWS - 1, Constants.ItemType.FinishLeft));
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
@@ -103,7 +108,7 @@ public class GameController implements Observer {
                 addObstacle(new Obstacle(Constants.NUM_COLS - 2, i, Constants.ItemType.ChaletVS));
                 addObstacle(new Obstacle(Constants.NUM_COLS - 1, i, Constants.ItemType.ChaletVS));
             }
-            
+
             // Create the static obstacles
             for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
                 Random r = new Random();
@@ -158,15 +163,19 @@ public class GameController implements Observer {
 
     @Override
     public void update(Observable observable, Object o) {
-        for (Obstacle ob : obstacles) {
-            if (!checkCollisionWithEdge(ob)) {
+        // We use an iterator to avoid an error when removing an Obstacle while iterating over the list
+        Iterator<Obstacle> iter = obstacles.iterator();
+        while (iter.hasNext()) {
+            Obstacle ob = iter.next();
+            
+            if (!isItemAtRightEdge(ob)) {
                 grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
                 ob.moveRight();
                 grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].add(ob);
             } else {
-                // TODO: remove obstacle
-                //grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()] = null;
-                //obstacles.remove(ob);
+                // TODO: remove the Obstacle
+                //grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
+                //iter.remove();
             }
         }
         if (checkCollision()) {
@@ -201,7 +210,32 @@ public class GameController implements Observer {
         if (checkCollision()) {
             collisionDetected();
         }
+        if (hasReachedTheEnd()) {
+            checkIfWon();
+        }
         grid[player.getXGridCoordinate()][player.getYGridCoordinate()].add(player);
+    }
+
+    /**
+     * Check if player has reached the end
+     *
+     * @return
+     */
+    private boolean hasReachedTheEnd() {
+        return player.getYGridCoordinate() == Constants.NUM_ROWS - 1;
+    }
+
+    private void checkIfWon() {
+        int x = player.getXGridCoordinate();
+
+        if ((x > Constants.FIRST_FINISH_TO_RIGHT && x < Constants.FIRST_FINISH_TO_LEFT)
+                || (x > Constants.SECOND_FINISH_TO_RIGHT && x < Constants.SECOND_FINISH_TO_LEFT)
+                || (x > Constants.THIRD_FINISH_TO_RIGHT && x < Constants.THIRD_FINISH_TO_LEFT)
+                || (x > Constants.FOURTH_FINISH_TO_RIGHT && x < Constants.FOURTH_FINISH_TO_LEFT)) {
+            gameIsWon();
+        } else {
+            gameIsLost();
+        }
     }
 
     /**
@@ -243,7 +277,20 @@ public class GameController implements Observer {
         return (i.getXGridCoordinate() < 0 || i.getXGridCoordinate() >= Constants.NUM_COLS - 1 || i.getYGridCoordinate() < 0 || i.getYGridCoordinate() >= Constants.NUM_ROWS - 1);
     }
 
+    private boolean isItemAtRightEdge(Item i) {
+        return i.getXGridCoordinate() >= Constants.NUM_COLS - 1;
+    }
+
     private void collisionDetected() {
+        gameIsLost();
+    }
+
+    private void gameIsWon() {
+        ItemClock.getInstance().pause();
+        view.showWinnerMessage();
+    }
+
+    private void gameIsLost() {
         ItemClock.getInstance().pause();
         view.showLooserMessage();
     }

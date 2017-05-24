@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
@@ -46,6 +47,9 @@ public class GameFXMLController implements Initializable {
     @FXML
     private BorderPane borderPane;
 
+    @FXML
+    private VBox vbox;
+
     private Canvas canvas;
 
     @Override
@@ -59,6 +63,10 @@ public class GameFXMLController implements Initializable {
         AnchorPane.setTopAnchor(canvas, 0.);
         borderPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         borderPane.getChildren().add(canvas);
+
+        vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        borderPane.setCenter(vbox);
 
         try {
             // Load the background
@@ -96,6 +104,7 @@ public class GameFXMLController implements Initializable {
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
                     Constants.ACTION_DEFEND.get(event.getCode()).act();
                 } else if (Constants.ACTION_GAME.containsKey(event.getCode())) {
+                    this.clearMessages();
                     Constants.ACTION_GAME.get(event.getCode()).act();
                 }
             });
@@ -121,12 +130,35 @@ public class GameFXMLController implements Initializable {
         tRestart.setText("Press 'r' to restart.");
         tRestart.setId("restartText");
 
-        VBox vbox = new VBox();
-        vbox.getChildren().addAll(tLost, tRestart);
-        vbox.setAlignment(Pos.CENTER);
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    vbox.getChildren().clear();
+                    vbox.getChildren().addAll(tLost, tRestart);
+                }
+        );
+    }
 
-        borderPane.setCenter(null);
-        borderPane.setCenter(vbox);
+    public void showWinnerMessage() {
+        Text tWon = new Text();
+        tWon.setText("YOU WON !");
+        tWon.setId("wonText");
+
+        Text tRestart = new Text();
+        tRestart.setText("Press 'r' to restart.");
+        tRestart.setId("restartText");
+
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    vbox.getChildren().clear();
+                    vbox.getChildren().addAll(tWon, tRestart);
+                }
+        );
+    }
+
+    public void clearMessages() {
+        vbox.getChildren().clear();
     }
 
     public void reset() {
