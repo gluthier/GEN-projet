@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import java.util.Observable;
 
@@ -25,6 +26,9 @@ public class Obstacle extends Item {
     protected void move(int diffX, int diffY) {
         setXGridCoordinate(getXGridCoordinate() + diffX);
         setYGridCoordinate(getYGridCoordinate() + diffY);
+    }
+    
+    public void removeObstacleFromView(GameFXMLController view) {
     }
 
     public void moveTop() {

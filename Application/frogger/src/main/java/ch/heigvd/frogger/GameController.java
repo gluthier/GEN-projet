@@ -173,9 +173,9 @@ public class GameController implements Observer {
                 ob.moveRight();
                 grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].add(ob);
             } else {
-                // TODO: remove the Obstacle
-                //grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
-                //iter.remove();
+                grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
+                ob.removeObstacleFromView(view);
+                iter.remove();
             }
         }
         if (checkCollision()) {

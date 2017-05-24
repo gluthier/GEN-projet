@@ -117,6 +117,15 @@ public class GameFXMLController implements Initializable {
         borderPane.getChildren().add(i);
     }
 
+    public void removeItem(Item i) {
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    borderPane.getChildren().remove(i);
+                }
+        );
+    }
+
     public void addPlayer(Player p) {
         borderPane.getChildren().add(p);
     }

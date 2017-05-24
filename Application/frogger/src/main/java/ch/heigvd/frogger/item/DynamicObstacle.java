@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.item;
 
 import ch.heigvd.frogger.Constants.ItemType;
+import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import java.util.Observable;
 import java.util.logging.Level;
@@ -18,6 +19,10 @@ public class DynamicObstacle extends Obstacle {
     // TODO remove magic number
     public DynamicObstacle(ItemType type) throws CellAlreadyOccupiedException {
         super(2, 5, type);
+    }
+    
+    public void removeObstacleFromView(GameFXMLController view) {
+        view.removeItem(this);
     }
 
     protected void move(int diffX, int diffY) {
