@@ -90,6 +90,11 @@ public class ItemClock extends Observable implements Runnable {
      * To pause the timer
      */
     public void stop() {
+        synchronized (pauseLock) {
+            if(paused) {
+                pauseLock.notifyAll();
+            }
+        }
         this.deleteObservers();
         running = false;
     }
