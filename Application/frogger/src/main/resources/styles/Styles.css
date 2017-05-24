@@ -1,1 +1,20 @@
+#wonText {
+    -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, red 0%, aqua 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
 
+#lostText {
+    -fx-font: 100px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, orange 0%, green 50%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}
+
+#restartText {
+    -fx-font: 30px Tahoma;
+    -fx-fill: white;
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}

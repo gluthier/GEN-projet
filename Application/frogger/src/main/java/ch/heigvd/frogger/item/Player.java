@@ -27,7 +27,8 @@ public class Player extends Item {
         String folder;
         if (getType() == Constants.ItemType.SkierLeft
                 || getType() == Constants.ItemType.Skier
-                || getType() == Constants.ItemType.SkierRight) {
+                || getType() == Constants.ItemType.SkierRight
+                || getType() == Constants.ItemType.SkierDownFall) {
             folder = Constants.PLAYER_FOLDER;
         } else {
             folder = Constants.OBSTACLE_FOLDER;

@@ -3,45 +3,70 @@ package ch.heigvd.frogger;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Item;
 import ch.heigvd.frogger.item.Obstacle;
+import ch.heigvd.frogger.item.Decoration;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.Player;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBuilder;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
+import javafx.scene.control.LabelBuilder;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBoxBuilder;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 public class GameFXMLController implements Initializable {
 
     @FXML
-    private AnchorPane anchorPane;
+    private BorderPane borderPane;
 
-    private Player player;
+    @FXML
+    private VBox vbox;
+
+    private Canvas canvas;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // Create the canvas
-        Canvas canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        Group itemsGroup = new Group();
-        Group staticObstacleGroup = new Group();
-        Group dynamicObstacleGroup = new Group();
-        itemsGroup.getChildren().add(staticObstacleGroup);
-        itemsGroup.getChildren().add(dynamicObstacleGroup);
+        setUpCanvas();
+    }
 
+    public void setUpCanvas() {
+        // Create the canvas
+        canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         AnchorPane.setTopAnchor(canvas, 0.);
-        anchorPane.getChildren().add(canvas);
-        anchorPane.getChildren().add(itemsGroup);
+        borderPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
+        borderPane.getChildren().add(canvas);
+
+        vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
+        borderPane.setCenter(vbox);
 
         try {
             // Load the background
@@ -75,25 +100,78 @@ public class GameFXMLController implements Initializable {
             // keyboard handler
             canvas.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
                 if (Constants.ACTION_ATTACK.containsKey(event.getCode())) {
-                    // System.out.println("Attacker's action : " + Constants.ACTION_ATTACK.get(event.getCode()) + " on " + event.getCode());
                     Constants.ACTION_ATTACK.get(event.getCode()).act();
                 } else if (Constants.ACTION_DEFEND.containsKey(event.getCode())) {
-                    // System.out.println("Defender's action : " + Constants.ACTION_DEFEND.get(event.getCode()) + " on " + event.getCode());
                     Constants.ACTION_DEFEND.get(event.getCode()).act();
+                } else if (Constants.ACTION_GAME.containsKey(event.getCode())) {
+                    this.clearMessages();
+                    Constants.ACTION_GAME.get(event.getCode()).act();
                 }
             });
-
         } catch (Exception e) {
-            System.out.println("Exception catch !!" + e.getMessage());
+            Logger.getLogger(GameFXMLController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
     public void addItem(Item i) {
-        anchorPane.getChildren().add(i);
+        borderPane.getChildren().add(i);
+    }
+
+    public void removeItem(Item i) {
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    borderPane.getChildren().remove(i);
+                }
+        );
     }
 
     public void addPlayer(Player p) {
-        anchorPane.getChildren().add(p);
-        player = p;
+        borderPane.getChildren().add(p);
+    }
+
+    public void showLooserMessage() {
+        Text tLost = new Text();
+        tLost.setText("YOU LOST !");
+        tLost.setId("lostText");
+
+        Text tRestart = new Text();
+        tRestart.setText("Press 'r' to restart.");
+        tRestart.setId("restartText");
+
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    vbox.getChildren().clear();
+                    vbox.getChildren().addAll(tLost, tRestart);
+                }
+        );
+    }
+
+    public void showWinnerMessage() {
+        Text tWon = new Text();
+        tWon.setText("YOU WON !");
+        tWon.setId("wonText");
+
+        Text tRestart = new Text();
+        tRestart.setText("Press 'r' to restart.");
+        tRestart.setId("restartText");
+
+        // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+        Platform.runLater(
+                () -> {
+                    vbox.getChildren().clear();
+                    vbox.getChildren().addAll(tWon, tRestart);
+                }
+        );
+    }
+
+    public void clearMessages() {
+        vbox.getChildren().clear();
+    }
+
+    public void reset() {
+        borderPane.getChildren().clear();
+        setUpCanvas();
     }
 }

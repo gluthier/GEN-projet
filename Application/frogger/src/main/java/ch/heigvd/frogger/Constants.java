@@ -8,28 +8,38 @@ import java.util.Map;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
-import ch.heigvd.frogger.item.ActionAttack;
-import ch.heigvd.frogger.item.ActionDefend;
-import ch.heigvd.frogger.item.Actions;
+import ch.heigvd.frogger.action.ActionAttack;
+import ch.heigvd.frogger.action.ActionDefend;
+import ch.heigvd.frogger.action.ActionGame;
+import ch.heigvd.frogger.action.Actions;
 import javafx.scene.input.KeyCode;
 
 /**
- *
  * @author lognaume
  * @author Maxime Guillod
  * @author Tony Clavien
+ * @author Gabriel Luthier
  */
 public class Constants {
 
-    public static final int GAME_WIDTH = 1368;
-    public static final int GAME_HEIGHT = 1026;
+    public static final int GAME_WIDTH = 1280;
+    public static final int GAME_HEIGHT = 960;
     public static final int NUM_COLS = 36;
     public static final int NUM_ROWS = 27;
     public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
     public static final double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
-    
+
     public static final int INITIAL_PLAYER_X = 14;
     public static final int INITIAL_PLAYER_Y = 5;
+    
+    public static final int FIRST_FINISH_TO_RIGHT = 4;
+    public static final int FIRST_FINISH_TO_LEFT = 8;
+    public static final int SECOND_FINISH_TO_RIGHT = 12;
+    public static final int SECOND_FINISH_TO_LEFT = 16;
+    public static final int THIRD_FINISH_TO_RIGHT= 20;
+    public static final int THIRD_FINISH_TO_LEFT = 24;
+    public static final int FOURTH_FINISH_TO_RIGHT = 28;
+    public static final int FOURTH_FINISH_TO_LEFT = 32;
 
     public static final int PLAYER_SPEED = 10;
 
@@ -38,6 +48,7 @@ public class Constants {
     public static final String OBSTACLE_FOLDER = "background/";
     public static final String BACKGROUND_FOLDER = "background/";
     public static final String ICON_FOLDER = "icon/";
+    public static final String DECORATiON_FOLDER = "ski-obstacles/";
     public static final String BACKGROUND_PATH = IMG_FOLDER + BACKGROUND_FOLDER + "fond.jpg";
     public static final String ICON_PATH = IMG_FOLDER + ICON_FOLDER + "favicon.jpg";
 
@@ -49,7 +60,7 @@ public class Constants {
      * Map between key pressed and action related for the attacker
      */
     @SuppressWarnings("serial")
-	public static final Map<KeyCode, Actions> ACTION_ATTACK
+    public static final Map<KeyCode, Actions> ACTION_ATTACK
             = Collections.unmodifiableMap(
                     new EnumMap<KeyCode, Actions>(KeyCode.class) {
                 {
@@ -63,7 +74,7 @@ public class Constants {
      * Map between key pressed and action related for the defender
      */
     @SuppressWarnings("serial")
-	public static final Map<KeyCode, Actions> ACTION_DEFEND
+    public static final Map<KeyCode, Actions> ACTION_DEFEND
             = Collections.unmodifiableMap(
                     new EnumMap<KeyCode, Actions>(KeyCode.class) {
                 {
@@ -79,22 +90,30 @@ public class Constants {
                     put(KeyCode.DIGIT0, new ActionDefend(0));
                 }
             });
+
+    public static final Map<KeyCode, Actions> ACTION_GAME
+            = Collections.unmodifiableMap(
+                    new EnumMap<KeyCode, Actions>(KeyCode.class) {
+                {
+                    put(KeyCode.R, new ActionGame(ActionGame.ActionGameType.RESTART));
+                }
+            });
     
     /**
      * Map between obstacle row number and grid row number
      */
-    public static final BiMap<Integer, Integer> OBSTACLE_ROW 
-    	= new ImmutableBiMap.Builder<Integer,Integer>().put(1,7)
-													.put(2,9)
-													.put(3,11)
-													.put(4,13)
-													.put(5,15)
-													.put(6,17)
-													.put(7,19)
-													.put(8,21)
-													.put(9,23)
-													.put(0,25)
-													.build();
+    public static final BiMap<Integer, Integer> OBSTACLE_ROW
+            = new ImmutableBiMap.Builder<Integer, Integer>().put(1, 7)
+                    .put(2, 9)
+                    .put(3, 11)
+                    .put(4, 13)
+                    .put(5, 15)
+                    .put(6, 17)
+                    .put(7, 19)
+                    .put(8, 21)
+                    .put(9, 23)
+                    .put(0, 25)
+                    .build();
 
     public static enum ItemType {
         Chalet("chalet"),
@@ -102,8 +121,13 @@ public class Constants {
         SkierLeft("skier-left1"),
         Skier("skier-down"),
         SkierRight("skier-right1"),
+        SkierDownFall("skier-down-fall1"),
         Sapin("sapin"),
     	Saucisson("saucisson_vaudois"),
+    	StartLeft("sign-start-left"),
+    	StartRight("sign-start-right"),
+    	FinishLeft("sign-finish-left"),
+    	FinishRight("sign-finish-right"),
     	Row_0("ROW_0"),
     	Row_1("ROW_1"),
     	Row_2("ROW_2"),
@@ -120,22 +144,33 @@ public class Constants {
         ItemType(String filename) {
             this.filename = filename;
         }
-        
+
         public static ItemType getRow(int i) {
-			switch (i) {
-			case 0 : return ItemType.Row_0;
-			case 1 : return ItemType.Row_1;
-			case 2 : return ItemType.Row_2;
-			case 3 : return ItemType.Row_3;
-			case 4 : return ItemType.Row_4;
-			case 5 : return ItemType.Row_5;
-			case 6 : return ItemType.Row_6;
-			case 7 : return ItemType.Row_7;
-			case 8 : return ItemType.Row_8;
-			case 9 : return ItemType.Row_9;
-			default : throw new IllegalArgumentException("Wrong row number");
-			}
-		}
+            switch (i) {
+                case 0:
+                    return ItemType.Row_0;
+                case 1:
+                    return ItemType.Row_1;
+                case 2:
+                    return ItemType.Row_2;
+                case 3:
+                    return ItemType.Row_3;
+                case 4:
+                    return ItemType.Row_4;
+                case 5:
+                    return ItemType.Row_5;
+                case 6:
+                    return ItemType.Row_6;
+                case 7:
+                    return ItemType.Row_7;
+                case 8:
+                    return ItemType.Row_8;
+                case 9:
+                    return ItemType.Row_9;
+                default:
+                    throw new IllegalArgumentException("Wrong row number");
+            }
+        }
 
         public String toString() {
             return filename;
