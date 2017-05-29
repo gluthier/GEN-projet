@@ -22,13 +22,12 @@ public class Game extends Thread implements ILog {
     }
 
     @Override
+    @SuppressWarnings("empty-statement")
     public void run() {
         bdd.logInfo(this, "START NEW GAME THREAD");
         // Try to login
         Login login = new Login(socket, uid);
-        do {
-            login.tryConnect();
-        } while (!login.isLogged());
+        while (!login.connect()) ;
 
     }
 

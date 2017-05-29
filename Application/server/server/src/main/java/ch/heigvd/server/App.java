@@ -20,32 +20,19 @@ public class App implements ILog {
 
     private ServerSocket server;
     private final BDD bdd;
+    private final Thread threadListenClient;
     private final UID uid;
 
     public App() {
         this.bdd = BDD.getInstance();
         this.uid = new UID();
-        launch();
-    }
-
-    public void launch() {
-        try {
-            bdd.logInfo(this, "START NEW MAIN_APP");
-            server = new ServerSocket(Protocol.PORT);
-            Socket socket;
-            while ((socket = server.accept()) != null) {
-                /*
-                Start a new thread for the communication. 
-                We will have a thread (this) which listen for new communication, and one thread for every game
-                 */
-                new Game(socket).start();
-            }
-        } catch (IOException ex) {
-            bdd.logError(this, ex);
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            bdd.disconnect();
-        }
+        bdd.logInfo(this, "START MAIN APP");
+        
+        /*
+        We start the thread which listen for new connection
+        */
+        threadListenClient = new Thread(new ListenClient());
+        threadListenClient.start();
     }
 
     public UID getUid() {
