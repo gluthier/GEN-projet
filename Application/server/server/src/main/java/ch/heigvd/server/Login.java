@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.rmi.server.UID;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -59,8 +60,14 @@ public class Login implements ILog {
             TODO
             test is in.readLine() is a well formated json
              */
-            JSONObject json = new JSONObject(in.readLine());
-            System.out.println(json.toString());
+            JSONObject json = null;
+            try {
+                json = new JSONObject(in.readLine());
+            } catch (JSONException e) {
+                bdd.logError(this, e);
+                return false;
+            }
+
         }
 
         return false;
