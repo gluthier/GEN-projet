@@ -1,7 +1,7 @@
 package ch.heigvd.server;
 
-import ch.heigvd.server.bdd.ILog;
-import ch.heigvd.server.bdd.BDD;
+import ch.heig.bdd.BDD;
+import ch.heig.bdd.ILog;
 import java.net.ServerSocket;
 import java.rmi.server.UID;
 

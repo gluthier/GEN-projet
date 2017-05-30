@@ -27,11 +27,10 @@
             <artifactId>protocol</artifactId>
             <version>${project.version}</version>
         </dependency>
-        
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
+            <groupId>ch.heig</groupId>
+            <artifactId>GEN-BDD</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
