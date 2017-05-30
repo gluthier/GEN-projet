@@ -100,8 +100,14 @@ public class Protocol {
     public static String getFormatLoginPassword(String message) {
 		return getJsonParam(message, "param", "password");
     }
+
+    public static String formatWrongLoginAnswer() {
+		JSONObject json = new JSONObject();
+		json.put("token", "");
+		return json.toString();
+	}
     
-    public static String formatLoginAnswer(String token,List<Difficulty> difficulty, List<MapSize> map) {
+    public static String formatLoginAnswer(String token, List<Difficulty> difficulty, List<MapSize> map) {
     	JSONObject json = new JSONObject();
     	json.put("token", token);
     	JSONArray difficultyArray = new JSONArray();

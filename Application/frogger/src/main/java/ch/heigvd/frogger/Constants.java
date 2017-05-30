@@ -181,4 +181,7 @@ public class Constants {
         SendObstacle,
         MovePlayer;
     };
+
+    public static String SERVER_ADDRESS = "localhost";
+    public static int SERVER_PORT = 1234;
 }
