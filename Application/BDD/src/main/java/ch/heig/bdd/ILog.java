@@ -1,4 +1,4 @@
-package ch.heigvd.server.bdd;
+package ch.heig.bdd;
 
 import java.rmi.server.UID;
 
