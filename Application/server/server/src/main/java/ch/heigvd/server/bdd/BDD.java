@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -146,6 +148,21 @@ public class BDD {
 
     public void logInfo(ILog obj, String content) {
         log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
+    }
+    
+    public List<String> getLog() {
+        List list = new ArrayList<String>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM log ORDER BY id DESC LIMIT 20;");
+            while(result.next()) {
+                list.add(result.getString("content"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return list;
     }
 
     public String getLastLogContent() {
