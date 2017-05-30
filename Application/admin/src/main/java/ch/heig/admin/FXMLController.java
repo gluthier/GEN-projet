@@ -1,6 +1,6 @@
 package ch.heig.admin;
 
-import ch.heigvd.server.bdd.BDD;
+import ch.heig.bdd.BDD;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
