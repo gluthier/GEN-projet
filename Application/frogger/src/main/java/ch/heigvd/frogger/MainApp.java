@@ -13,14 +13,6 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        /*
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
-        Parent root = loader.load();
-
-        GameController.setView(loader.getController());
-        // Force GameController to load
-        GameController.getInstance();
-        */
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         Parent root = loader.load();
         
