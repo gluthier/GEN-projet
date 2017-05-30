@@ -27,7 +27,8 @@ public class Player extends Item {
         String folder;
         if (getType() == Constants.ItemType.SkierLeft
                 || getType() == Constants.ItemType.Skier
-                || getType() == Constants.ItemType.SkierRight) {
+                || getType() == Constants.ItemType.SkierRight
+                || getType() == Constants.ItemType.SkierDownFall) {
             folder = Constants.PLAYER_FOLDER;
         } else {
             folder = Constants.OBSTACLE_FOLDER;
@@ -35,14 +36,4 @@ public class Player extends Item {
 
         changeImage(folder);
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        try {
-            moveBottom();
-        } catch (CellAlreadyOccupiedException ex) {
-            Logger.getLogger(Player.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
 }
