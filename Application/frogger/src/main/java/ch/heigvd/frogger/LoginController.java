@@ -19,6 +19,7 @@ public class LoginController implements Initializable {
     
     @FXML
     private PasswordField password;
+    
     /**
      * Initializes the controller class.
      */
