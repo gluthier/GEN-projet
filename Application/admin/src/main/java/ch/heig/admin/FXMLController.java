@@ -21,12 +21,7 @@ public class FXMLController implements Initializable {
     
     @FXML
     private void handleButtonAction(ActionEvent event) {
-        String retour = "";
-        for (int i = 0; i < 10; i++) {
-            retour += bdd.getLog().get(i);
-            retour += "\n";
-        }
-        label.setText(retour);
+        label.setText(bdd.getLog());
     }
     
     @Override

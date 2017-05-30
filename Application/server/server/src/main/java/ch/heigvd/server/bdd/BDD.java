@@ -141,7 +141,7 @@ public class BDD {
     public void logError(ILog object, Exception e) {
         log(object.getClass(), object.getUid(), BDD.Type.ERROR, e.getMessage());
     }
-    
+
     public void logWarning(ILog object, String message) {
         log(object.getClass(), object.getUid(), BDD.Type.WARNING, message);
     }
@@ -149,26 +149,30 @@ public class BDD {
     public void logInfo(ILog obj, String content) {
         log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
     }
-    
-    public List<String> getLog() {
-        List list = new ArrayList<String>();
+
+    public String getLog() {
+        String retour = "";
         try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM log ORDER BY id DESC LIMIT 20;");
-            while(result.next()) {
-                list.add(result.getString("content"));
+            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT 20;");
+            while (result.next()) {
+                retour += result.getString("date") + "\n";
+                retour += " " + result.getString("class") + "\n";
+                retour += " " + result.getString("uid") + "\n";
+                retour += " " + result.getString("type") + "\n";
+                retour += " " + result.getString("content") + "\n";
+                retour += "\n";
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        return list;
+        return retour;
     }
 
     public String getLastLogContent() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 1;");
+            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
             if (result.next()) {
                 return result.getNString(1);
             }

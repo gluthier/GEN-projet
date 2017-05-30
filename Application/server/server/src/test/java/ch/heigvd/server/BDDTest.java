@@ -59,6 +59,12 @@ public class BDDTest extends TestCase implements ILog {
     public void testIncorrectLogin() {
         assertFalse(bdd.testLogin("nope", "1234", game));
     }
+    
+    public void testgetLog() {
+        String retour = bdd.getLog();
+        System.out.println(retour);
+        assertFalse(retour.equals(""));
+    }
 
     public UID getUid() {
         return uid;
