@@ -2,8 +2,11 @@ package ch.heigvd.server;
 
 import ch.heigvd.server.bdd.ILog;
 import ch.heigvd.server.bdd.BDD;
+import java.io.IOException;
 import java.net.Socket;
 import java.rmi.server.UID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,11 +27,14 @@ public class Game extends Thread implements ILog {
     @Override
     @SuppressWarnings("empty-statement")
     public void run() {
-        bdd.logInfo(this, "START NEW GAME THREAD");
-        // Try to login
-        Login login = new Login(socket, uid);
-        while (!login.connect()) ;
-
+        try {
+            bdd.logInfo(this, "START NEW GAME THREAD");
+            // Try to login
+            Login login = new Login(socket, uid);
+            while (!login.connect()) ;
+        } catch (IOException ex) {
+            Logger.getLogger(Game.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public UID getUid() {

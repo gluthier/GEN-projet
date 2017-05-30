@@ -104,6 +104,9 @@ public class Protocol {
         }
     }
 
+    /*
+    {"command":"login","param":{"user":"maxime","password":"coucou"}}
+    */
     public static String formatLoginSend(String user, String password) {
         JSONObject json = new JSONObject();
         json.put("command", command.login);

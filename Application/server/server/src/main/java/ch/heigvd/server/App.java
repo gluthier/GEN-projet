@@ -2,13 +2,8 @@ package ch.heigvd.server;
 
 import ch.heigvd.server.bdd.ILog;
 import ch.heigvd.server.bdd.BDD;
-import ch.heigvd.protocol.Protocol;
-import java.io.IOException;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.server.UID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

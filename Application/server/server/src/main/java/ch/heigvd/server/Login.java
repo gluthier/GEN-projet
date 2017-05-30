@@ -1,5 +1,6 @@
 package ch.heigvd.server;
 
+import ch.heigvd.protocol.Protocol;
 import ch.heigvd.server.bdd.ILog;
 import ch.heigvd.server.bdd.BDD;
 import java.io.BufferedReader;
@@ -9,8 +10,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.rmi.server.UID;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -19,7 +18,6 @@ import org.json.JSONObject;
 public class Login implements ILog {
 
     private final Socket socket;
-    private boolean logged;
     private final UID uid;
     private final BDD bdd;
     private int nbTry;
@@ -33,7 +31,6 @@ public class Login implements ILog {
         in = new BufferedReader(
                 new InputStreamReader(socket.getInputStream()));
 
-        this.logged = false;
         this.uid = uid;
         this.bdd = BDD.getInstance();
         this.nbTry = 0;
@@ -49,27 +46,26 @@ public class Login implements ILog {
         TODO
         Add a timer with the nbTry to avoid brute force
          */
-        {
-            JSONObject json = new JSONObject();
-            json.put("ack", "login");
-            out.write(json.toString());
+        out.write(Protocol.formatRequestLogin(false));
+        out.flush();
+
+        String answer = in.readLine();
+
+        String user = Protocol.getFormatLoginUser(answer);
+        String password = Protocol.getFormatLoginPassword(answer);
+
+        /*
+        TODO
+        test login information with the bdd
+         */
+        boolean logged = bdd.testLogin(user, password, this);
+        if (logged) {
+            bdd.logInfo(this, "Login OK");
+            out.write(Protocol.formatRequestLogin(true));
             out.flush();
+            return true;
         }
-        {
-            /*
-            TODO
-            test is in.readLine() is a well formated json
-             */
-            JSONObject json = null;
-            try {
-                json = new JSONObject(in.readLine());
-            } catch (JSONException e) {
-                bdd.logError(this, e);
-                return false;
-            }
-
-        }
-
+        bdd.logWarning(this, "Login Error");
         return false;
     }
 

@@ -22,7 +22,8 @@ public class BDD {
 
     static enum Type {
         INFO,
-        ERROR
+        ERROR,
+        WARNING
     }
 
     private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
@@ -90,9 +91,9 @@ public class BDD {
         return true;
     }
 
-    public boolean testLogin(String login, String password, Game game) {
+    public boolean testLogin(String login, String password, ILog obj) {
         try {
-            logInfo(game, "Try connect : " + login);
+            logInfo(obj, "Try connect : " + login);
             Statement s = connection.createStatement();
             ResultSet res = s.executeQuery("SELECT * FROM Login WHERE login=\"" + login + "\"");
 
@@ -137,6 +138,10 @@ public class BDD {
 
     public void logError(ILog object, Exception e) {
         log(object.getClass(), object.getUid(), BDD.Type.ERROR, e.getMessage());
+    }
+    
+    public void logWarning(ILog object, String message) {
+        log(object.getClass(), object.getUid(), BDD.Type.WARNING, message);
     }
 
     public void logInfo(ILog obj, String content) {
