@@ -63,7 +63,7 @@ public class BDDTest extends TestCase implements ILog {
     }
     
     public void testgetLog() {
-        String retour = bdd.getLog();
+        String retour = bdd.getLogString();
         System.out.println(retour);
         assertFalse(retour.equals(""));
     }

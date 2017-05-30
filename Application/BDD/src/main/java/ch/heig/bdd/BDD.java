@@ -153,23 +153,41 @@ public class BDD {
         log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
     }
 
-    public String getLog() {
+    public String getLogString() {
         String retour = "";
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT 20;");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT 20;");
             while (result.next()) {
                 retour += result.getString("date") + "\n";
-                retour += " " + result.getString("class") + "\n";
-                retour += " " + result.getString("uid") + "\n";
-                retour += " " + result.getString("type") + "\n";
-                retour += " " + result.getString("content") + "\n";
+                retour += " - " + result.getString("class") + "\n";
+                retour += " - " + result.getString("uid") + "\n";
+                retour += " - " + result.getString("type") + "\n";
+                retour += " - " + result.getString("content") + "\n";
                 retour += "\n";
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retour;
+    }
+
+    public List<Log> getLog() {
+        return getLog(20);
+    }
+
+    public List<Log> getLog(int limit) {
+        List<Log> list = new ArrayList();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
+            while (result.next()) {
+                list.add(new Log(result));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
     public String getLastLogContent() {
