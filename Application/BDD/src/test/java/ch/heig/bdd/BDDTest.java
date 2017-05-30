@@ -1,7 +1,5 @@
-package ch.heigvd.server;
+package ch.heig.bdd;
 
-import ch.heigvd.server.bdd.ILog;
-import ch.heigvd.server.bdd.BDD;
 import java.rmi.server.UID;
 import junit.framework.TestCase;
 
@@ -13,13 +11,18 @@ public class BDDTest extends TestCase implements ILog {
 
     private final BDD bdd;
     private final UID uid;
-    private final Game game;
+    private final ILog ilog;
 
     public BDDTest(String testName) {
         super(testName);
         bdd = BDD.getInstance();
         uid = new UID();
-        game = new Game(null);
+        ilog = new ILog() {
+            @Override
+            public UID getUid() {
+                return new UID();
+            }
+        };
     }
 
     /**
@@ -45,19 +48,18 @@ public class BDDTest extends TestCase implements ILog {
 
     /**
      * *****************************
-     * LOGIN
-     *********************************
+     * LOGIN ********************************
      */
     public void testCorrectLogin() {
-        assertTrue(bdd.testLogin("test", "1234", game));
+        assertTrue(bdd.testLogin("test", "1234", ilog));
     }
-    
+
     public void testCorrectLoginWronPassword() {
-        assertFalse(bdd.testLogin("test", "1212", game));
+        assertFalse(bdd.testLogin("test", "1212", ilog));
     }
-    
+
     public void testIncorrectLogin() {
-        assertFalse(bdd.testLogin("nope", "1234", game));
+        assertFalse(bdd.testLogin("nope", "1234", ilog));
     }
     
     public void testgetLog() {

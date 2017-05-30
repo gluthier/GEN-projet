@@ -1,6 +1,5 @@
-package ch.heigvd.server.bdd;
+package ch.heig.bdd;
 
-import ch.heigvd.server.Game;
 import java.rmi.server.UID;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -48,11 +47,12 @@ public class BDD {
     public static BDD getInstance() {
         if (instance == null) {
             instance = new BDD();
+            instance.connect();
         }
         return instance;
     }
 
-    public void connect() {
+    private void connect() {
         if (connection == null) {
             try {
                 Class.forName(DATABASE_DRIVER);
@@ -117,6 +117,9 @@ public class BDD {
             /*
             Log into our database
              */
+            if (connection == null) {
+                connect();
+            }
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Log"
                     + " (class, uid, type, content) VALUES "
