@@ -41,6 +41,11 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         tcpClient = new TCPClient(Constants.SERVER_ADDRESS, Constants.SERVER_PORT);
+        try {
+            tcpClient.connect();
+        } catch (IOException ex) {
+            Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         username.requestFocus();
     }
 
