@@ -57,8 +57,7 @@ dist/
 nbdist/
 .nb-gradle/
 
-## IntelliJ
-
+# INTELLIJ
 .idea/
 
 # User-specific stuff:

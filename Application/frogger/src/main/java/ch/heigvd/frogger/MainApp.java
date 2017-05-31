@@ -13,12 +13,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         Parent root = loader.load();
-
-        GameController.setView(loader.getController());
-        GameController controller = GameController.getInstance();
-
+        
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
 

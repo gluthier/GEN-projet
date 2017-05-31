@@ -13,7 +13,8 @@ import com.google.common.hash.Hashing;
  * Protocol
  *
  * @author Tony Clavien
- * @author Maxime Guillod Define the message exchanged between clients and server
+ * @author Maxime Guillod Define the message exchanged between clients and
+ * server
  */
 public class Protocol {
 
@@ -106,7 +107,7 @@ public class Protocol {
 
     /*
     {"command":"login","param":{"user":"maxime","password":"coucou"}}
-    */
+     */
     public static String formatLoginSend(String user, String password) {
         JSONObject json = new JSONObject();
         json.put("command", command.login);
@@ -123,6 +124,12 @@ public class Protocol {
 
     public static String getFormatLoginPassword(String message) {
         return getJsonParam(message, "param", "password");
+    }
+
+    public static String formatWrongLoginAnswer() {
+        JSONObject json = new JSONObject();
+        json.put("token", "");
+        return json.toString();
     }
 
     public static String formatLoginAnswer(String token, List<Difficulty> difficulty, List<MapSize> map) {

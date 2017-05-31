@@ -167,7 +167,7 @@ public class GameController implements Observer {
         Iterator<Obstacle> iter = obstacles.iterator();
         while (iter.hasNext()) {
             Obstacle ob = iter.next();
-            
+
             if (!isItemAtRightEdge(ob)) {
                 grid[ob.getXGridCoordinate()][ob.getYGridCoordinate()].remove(ob);
                 ob.moveRight();
