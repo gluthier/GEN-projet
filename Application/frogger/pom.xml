@@ -139,5 +139,10 @@
 		<artifactId>guava</artifactId>
 		<version>21.0</version>
 	</dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>protocol</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 </project>
