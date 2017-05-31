@@ -193,7 +193,7 @@ public class BDD {
     public String getLastLogContent() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 1;");
+            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
             if (result.next()) {
                 return result.getNString(1);
             }
