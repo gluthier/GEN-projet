@@ -13,7 +13,7 @@ import javafx.scene.text.Text;
 
 public class FXMLController implements Initializable {
 
-    private static final int NB_LOG = 20;
+    private static final int NB_LOG = 100;
     private static final String SPACE = "      ";
 
     @FXML
