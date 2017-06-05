@@ -1,14 +1,9 @@
 package ch.heigvd.server;
 
-import ch.heigvd.server.bdd.ILog;
-import ch.heigvd.server.bdd.BDD;
-import ch.heigvd.protocol.Protocol;
-import java.io.IOException;
+import ch.heig.bdd.BDD;
+import ch.heig.bdd.ILog;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.server.UID;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,33 +14,20 @@ import java.util.logging.Logger;
 public class App implements ILog {
 
     private ServerSocket server;
-    private BDD bdd;
+    private final BDD bdd;
+    private final Thread threadListenClient;
     private final UID uid;
 
     public App() {
         this.bdd = BDD.getInstance();
         this.uid = new UID();
-        launch();
-    }
-
-    public void launch() {
-        try {
-            bdd.logInfo(this, "START NEW MAIN_APP");
-            server = new ServerSocket(Protocol.PORT);
-            Socket socket;
-            while ((socket = server.accept()) != null) {
-                /*
-                Start a new thread for the communication. 
-                We will have a thread (this) which listen for new communication, and one thread for every game
-                 */
-                new Game(socket).start();
-            }
-        } catch (IOException ex) {
-            bdd.logError(this, ex);
-            Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            bdd.disconnect();
-        }
+        bdd.logInfo(this, "START MAIN APP");
+        
+        /*
+        We start the thread which listen for new connection
+        */
+        threadListenClient = new Thread(new ListenClient());
+        threadListenClient.start();
     }
 
     public UID getUid() {

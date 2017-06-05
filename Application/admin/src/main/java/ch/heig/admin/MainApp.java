@@ -1,37 +1,26 @@
-package ch.heigvd.frogger;
+package ch.heig.admin;
 
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-        Parent root = loader.load();
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
         
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
-
-        stage.setTitle("Walliser Frogger");
-        stage.setScene(scene);
-        stage.getIcons().add(new Image(Constants.ICON_PATH));
-        stage.show();
         
-        // Fermeture de l'application
-        stage.setOnCloseRequest((WindowEvent event) -> {
-            // Stop ItemClock timer Thread
-            ItemClock.getInstance().stop();
-        });
+        stage.setTitle("Frogger Administration");
+        stage.setScene(scene);
+        stage.show();
     }
-    
-    
 
     /**
      * The main() method is ignored in correctly deployed JavaFX application.

@@ -1,4 +1,4 @@
-package ch.heigvd.server.bdd;
+package ch.heig.bdd;
 
 import java.rmi.server.UID;
 import java.sql.Connection;
@@ -6,6 +6,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,7 +23,8 @@ public class BDD {
 
     static enum Type {
         INFO,
-        ERROR
+        ERROR,
+        WARNING
     }
 
     private static final String DATABASE_DRIVER = "com.mysql.jdbc.Driver";
@@ -42,11 +47,12 @@ public class BDD {
     public static BDD getInstance() {
         if (instance == null) {
             instance = new BDD();
+            instance.connect();
         }
         return instance;
     }
 
-    public void connect() {
+    private void connect() {
         if (connection == null) {
             try {
                 Class.forName(DATABASE_DRIVER);
@@ -87,12 +93,33 @@ public class BDD {
         return true;
     }
 
-    public boolean testLogin(String login, String pwd) {
-        throw new UnsupportedOperationException("Not implemented yet");
+    public boolean testLogin(String login, String password, ILog obj) {
+        try {
+            logInfo(obj, "Try connect : " + login);
+            Statement s = connection.createStatement();
+            ResultSet res = s.executeQuery("SELECT * FROM Login WHERE login=\"" + login + "\"");
+
+            if (res.next()) {
+                System.out.println(res.getString("password"));
+                if (res.getString("password").equals(password)) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     private void log(Class c, UID uid, BDD.Type type, String content) {
         try {
+            /*
+            Log into our database
+             */
+            if (connection == null) {
+                connect();
+            }
             Statement statement = connection.createStatement();
             statement.executeUpdate("INSERT INTO Log"
                     + " (class, uid, type, content) VALUES "
@@ -100,7 +127,15 @@ public class BDD {
                     + "\"" + uid.hashCode() + "\","
                     + "\"" + type + "\","
                     + "\"" + content + "\");");
-
+            /*
+            Output the log into the consol
+             */
+            System.out.println(Time.valueOf(LocalTime.now()));
+            System.out.println(" - " + c.getName());
+            System.out.println(" - " + uid.hashCode());
+            System.out.println(" - " + type);
+            System.out.println(" - " + content);
+            System.out.println("");
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -110,14 +145,55 @@ public class BDD {
         log(object.getClass(), object.getUid(), BDD.Type.ERROR, e.getMessage());
     }
 
+    public void logWarning(ILog object, String message) {
+        log(object.getClass(), object.getUid(), BDD.Type.WARNING, message);
+    }
+
     public void logInfo(ILog obj, String content) {
         log(obj.getClass(), obj.getUid(), BDD.Type.INFO, content);
     }
-    
+
+    public String getLogString() {
+        String retour = "";
+        try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT 20;");
+            while (result.next()) {
+                retour += result.getString("date") + "\n";
+                retour += " - " + result.getString("class") + "\n";
+                retour += " - " + result.getString("uid") + "\n";
+                retour += " - " + result.getString("type") + "\n";
+                retour += " - " + result.getString("content") + "\n";
+                retour += "\n";
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return retour;
+    }
+
+    public List<Log> getLog() {
+        return getLog(20);
+    }
+
+    public List<Log> getLog(int limit) {
+        List<Log> list = new ArrayList();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
+            while (result.next()) {
+                list.add(new Log(result));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
     public String getLastLogContent() {
         try {
             Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 1;");
+            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
             if (result.next()) {
                 return result.getNString(1);
             }
