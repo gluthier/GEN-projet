@@ -18,71 +18,99 @@ import com.google.common.hash.Hashing;
 public class Protocol {
     
     public static final int PORT = 1234;
-	
-	//TODO constants for inside JSON i.e. param, difficulties, etc...
 
-	public static enum Direction {
-		right,
-		left,
-		bottom;
-		
-		public static Direction fromString(String in) {
-			if( in.equals("right")) {
-				return Direction.right;
-			}
-			else if (in.equals("left")) {
-				return Direction.left;
-			}
-			else if(in.equals("bottom")) {
-				return Direction.bottom;
-			}
-			else {
-				// throw exepction ?
-				return null;
-			}
-		}
-	}
-	
-	// TODO enum of all commands
-	public static enum command {
-		login("login"),
-		getlobby("get-lobby"),
-		join("join"),
-		moveSkier("move-skier"),
-		addObstacle("add-obstacle");
-		
-		private String value;
-		
-		private command(String val) {
-			value = val;
-		}
-		
-		@Override
-		public String toString() {
-			return value;
-		}
-	}
-	
-	public static String formatArraytoJson(List<Sendable> ls) {
-		JSONArray array = new JSONArray();
-    	for (Sendable s : ls) {
-    		array.put(s.toJson());
-		}
-    	
-    	return array.toString();
-	}
-	
-	public static String getJsonParam(String message, String object, String param) {
-		JSONObject json = new JSONObject(message);
-		if(object != null) {
-		JSONObject ret = json.getJSONObject(object);
-		return ret.getString(param);
-		}
-		else {
-			return json.getString(param);
-		}
-	}
-	
+    //TODO constants for inside JSON i.e. param, difficulties, etc...
+    public static enum Direction {
+        right,
+        left,
+        bottom;
+
+        public static Direction fromString(String in) {
+            if (in.equals("right")) {
+                return Direction.right;
+            } else if (in.equals("left")) {
+                return Direction.left;
+            } else if (in.equals("bottom")) {
+                return Direction.bottom;
+            } else {
+                // throw exepction ?
+                return null;
+            }
+        }
+    }
+
+    // TODO enum of all commands
+    public static enum command {
+        login("login"),
+        getlobby("get-lobby"),
+        join("join"),
+        moveSkier("move-skier"),
+        addObstacle("add-obstacle"),
+        skierWon("skier-won"),
+        vaudoisWon("vaudois-won"),
+        skierPosition("skier-position"),
+        newObstacle("new-obstacle");
+
+        private String value;
+
+        private command(String val) {
+            value = val;
+        }
+
+        @Override
+        public String toString() {
+            return value;
+        }
+    }
+
+    /**
+     * Prepare the request to ask the client to login
+     *
+     * @param isLogged
+     * @return
+     */
+    public static String formatRequestLogin(boolean isLogged) {
+        JSONObject json = new JSONObject();
+        json.put("logged", isLogged);
+        return json.toString();
+    }
+
+    /**
+     * Get the server response if the login is correct
+     *
+     * @param message
+     * @return
+     */
+    public static boolean getRequestLogin(String message) {
+        JSONObject json = new JSONObject(message);
+        if ("true".equals(getJsonParam(message, "param", "logged"))) {
+            return true;
+        }
+        return false;
+    }
+
+    public static String formatArraytoJson(List<Sendable> ls) {
+        JSONArray array = new JSONArray();
+        for (Sendable s : ls) {
+            array.put(s.toJson());
+        }
+
+        return array.toString();
+    }
+
+    public static String getJsonParam(String message, String object, String param) {
+        JSONObject json = new JSONObject(message);
+        if (object != null) {
+            JSONObject ret = json.getJSONObject(object);
+            return ret.getString(param);
+        } else {
+            return json.getString(param);
+        }
+    }
+
+    /*
+    {"command":"login","param":{"user":"maxime","password":"coucou"}}
+     */
     public static String formatLoginSend(String user, String password) {
     	JSONObject json = new JSONObject();
     	json.put("command", command.login);

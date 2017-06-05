@@ -14,7 +14,7 @@ import java.util.Observable;
  */
 public abstract class Obstacle extends Item {
 
-    public Obstacle(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
+    public Obstacle(int getPosX, int getPosY, Constants.ItemType type) {
         super(getPosX, getPosY, type);
     }
 
