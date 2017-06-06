@@ -95,7 +95,7 @@ public class Protocol {
         return false;
     }
 
-    public static String formatArraytoJson(List<Sendable> ls) {
+    public static <T extends Sendable> String formatArraytoJson(List<T> ls) {
         JSONArray array = new JSONArray();
         for (Sendable s : ls) {
             array.put(s.toJson());
@@ -195,7 +195,7 @@ public class Protocol {
         return getJsonParam(message, "param", "token");
     }
 
-    public static String formatLobbyAnswer(List<Sendable> parties) {
+    public static String formatLobbyAnswer(List<Party> parties) {
         return formatArraytoJson(parties);
     }
 
@@ -227,7 +227,7 @@ public class Protocol {
         return getJsonParam(message, "param", "id");
     }
 
-    public static String formatJoinAnswer(List<Sendable> ls) {
+    public static String formatJoinAnswer(List<Party> ls) {
         return formatArraytoJson(ls);
     }
 

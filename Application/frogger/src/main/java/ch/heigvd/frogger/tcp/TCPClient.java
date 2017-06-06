@@ -78,26 +78,26 @@ public class TCPClient {
         difficultyList = Protocol.getFormatLoginDifficulty(line);
         mapSizeList = Protocol.getFormatLoginMapSize(line);
 
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Connected to server "+Constants.SERVER_ADDRESS+":"+Constants.SERVER_PORT);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to server "+Constants.SERVER_ADDRESS+":"+Constants.SERVER_PORT);
 
         return true;
     }
 
     public List<Party> connectToLobby() throws IOException {
         String command = Protocol.formatLobbySend(token);
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Connecting to lobby...");
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connecting to lobby...");
         writer.write(command);
         writer.flush();
 
         String line = reader.readLine();
         List<Party> lobby = Protocol.getFormatLobbyParties(line);
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Connected to lobby");
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to lobby");
         return lobby;
     }
 
     public List<FixedObstacle> joinParty(Party party) throws IOException {
         String command = Protocol.formatJoinSend(token, party.getId());
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Joining party #"+party.getId());
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
         writer.write(command);
         writer.flush();
 
@@ -107,7 +107,7 @@ public class TCPClient {
         List<FixedObstacle> fixedObstacles = new LinkedList<>();
         obstacles.forEach(o -> fixedObstacles.add(new FixedObstacle(o.getX(), o.getY(), Constants.ItemType.Sapin)));
 
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Joined party #"+party.getId());
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joined party #"+party.getId());
         return fixedObstacles;
     }
 
@@ -125,7 +125,7 @@ public class TCPClient {
 
     private void move(Protocol.Direction direction) {
         String command = Protocol.formatMoveSend(direction);
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, null, "Trying to move "+direction);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Trying to move "+direction);
         writer.write(command);
         writer.flush();
     }

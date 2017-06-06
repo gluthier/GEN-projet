@@ -2,7 +2,7 @@ package ch.heigvd.protocol;
 
 import org.json.JSONObject;
 
-public class Party implements Sendable{
+public class Party implements Sendable {
 	
 	public static enum FreeRole {
 		skier,
@@ -71,8 +71,13 @@ public class Party implements Sendable{
 		
 		return json;
 	}
-	
-	
-	
 
+	@Override
+	public boolean equals(Object o) {
+		Party other = (Party)o;
+		return other.getId() == getId() && other.getDifficultyName().equals(getDifficultyName())
+				&& other.getPlayerName().equals(getPlayerName()) && other.getMapSizeId() == getMapSizeId()
+				&& other.getFreeRole() == getFreeRole();
+
+	}
 }
