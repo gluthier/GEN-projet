@@ -130,6 +130,13 @@ public class TCPClient {
         writer.flush();
     }
 
+    public void addDynamicObstacle(int row) {
+        String command = Protocol.formatNewDynamicObstacle(row);
+
+        writer.write(command);
+        writer.flush();
+    }
+
     /**
      * Try to fetch info from server
      * @return true if at least one command has been read
