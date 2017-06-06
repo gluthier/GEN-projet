@@ -138,15 +138,10 @@ public class GameController implements Observer {
     }
 
     public void addDynamicObstacle(int row) {
-        try {
-            DynamicObstacle o = new DynamicObstacle(Constants.ItemType.Saucisson);
-            o.setYGridCoordinate(row);
-            view.addItem(o);
-            obstacles.add(o);
-            grid[o.getXGridCoordinate()][o.getYGridCoordinate()].add(o);
-        } catch (CellAlreadyOccupiedException e) {
-            Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        DynamicObstacle o = new DynamicObstacle(row, Constants.ItemType.Saucisson);
+        view.addItem(o);
+        obstacles.add(o);
+        grid[o.getXGridCoordinate()][o.getYGridCoordinate()].add(o);
     }
 
     public void addObstacle(Obstacle o) {

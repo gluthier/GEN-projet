@@ -41,7 +41,7 @@ public class Protocol {
     }
 
     // TODO enum of all commands
-    public static enum command {
+    public static enum command implements Sendable {
         login("login"),
         getlobby("get-lobby"),
         join("join"),
@@ -49,7 +49,8 @@ public class Protocol {
         addObstacle("add-obstacle"),
         skierWon("skier-won"),
         vaudoisWon("vaudois-won"),
-        skierPosition("skier-position");
+        skierPosition("skier-position"),
+        obstaclesPositions("obstacles-positions");
 
         private String value;
 
@@ -60,6 +61,11 @@ public class Protocol {
         @Override
         public String toString() {
             return value;
+        }
+
+        @Override
+        public JSONObject toJson() {
+            return null;
         }
     }
 
@@ -227,11 +233,30 @@ public class Protocol {
 
     public static List<Obstacle> getFormatJoinObstacle(String message) {
         JSONArray array = new JSONObject(message).getJSONArray("fixedObstacles");
+        return getObstacles(array);
+    }
+
+    public static List<Obstacle> getFormatDynamicObstacles(String message) {
+        JSONArray array = new JSONObject(message).getJSONArray("dynamicObstacles");
+        return getObstacles(array);
+    }
+
+    private static List<Obstacle> getObstacles(JSONArray array) {
         List<Obstacle> obstacles = new LinkedList<Obstacle>();
         for (int i = 0; i < array.length(); i++) {
             obstacles.add(new Obstacle(array.getJSONObject(i)));
         }
         return obstacles;
+    }
+
+    public static command getFormatCommand(String message) {
+        JSONObject json = new JSONObject(message);
+        return command.valueOf(json.getString("command"));
+    }
+
+    public static Skier getFormatSkier(String message) {
+        JSONObject json = new JSONObject(message);
+        return (Skier)json.get("skier");
     }
 
     public static String formatMoveSend(Direction dir) {
@@ -257,5 +282,5 @@ public class Protocol {
     }
 
     // TODO send skier coordinate
-    // TODO send new Dynamic obstacle coordinate
+    // TODO send Dynamic obstacle coordinate
 }
