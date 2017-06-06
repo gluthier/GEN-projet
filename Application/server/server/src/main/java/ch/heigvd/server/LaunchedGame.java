@@ -6,6 +6,11 @@ import java.util.List;
 import ch.heigvd.protocol.Obstacle;
 import ch.heigvd.protocol.Protocol.Direction;
 
+/**
+ * Handle a game that has been launched
+ * @author Tony
+ *
+ */
 public class LaunchedGame {
 	private List<Obstacle> fixedObstacle;
 	private List<Obstacle> dynamicObstacle;
@@ -23,6 +28,8 @@ public class LaunchedGame {
 		this.mapWidth = mapWidth;
 		skierX = initialX;
 		skierY = initialY;
+		
+		// launch the timer
 	}
 	
 	public void move(Direction d) {

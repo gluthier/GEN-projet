@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author Maxime Guillod
+ * @author Tony Clavien
  */
 public class Game extends Thread implements ILog {
 
