@@ -82,8 +82,10 @@ public class Game extends Thread implements ILog {
     	// TODO Do global variable
     	for (int i = 0; i < 10; i++) {
     		//TODO get width and height via MapSizeId
-			ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+    		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
 		}
+    
+    	//TODO link that with App.Current_GAMES
     	String message = Protocol.formatJoinAnswer(ls)
     }
     

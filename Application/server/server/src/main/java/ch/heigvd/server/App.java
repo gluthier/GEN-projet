@@ -24,6 +24,7 @@ public class App implements ILog {
     private final UID uid;
     public static Map<String, String> CONNECTED_USER;
     public static Map<Integer,Party> CURRENT_LOBBIES;
+    public static Map<Integer,LaunchedGame> CURRENT_GAMES;
 
     public App() {
         this.bdd = BDD.getInstance();
