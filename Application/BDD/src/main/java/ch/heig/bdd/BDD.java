@@ -175,6 +175,11 @@ public class BDD {
     public List<Log> getLog() {
         return getLog(20);
     }
+    
+    private List get(String request) {
+        // TODO
+        return null;
+    }
 
     public List<Log> getLog(int limit) {
         List<Log> list = new ArrayList();
@@ -201,6 +206,20 @@ public class BDD {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+    
+    public List<User> getUsers(int limit) {
+        List<User> list = new ArrayList();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet result = statement.executeQuery("SELECT * FROM Login ORDER BY id ASC LIMIT " + limit + ";");
+            while (result.next()) {
+                list.add(new User(result));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
     }
 
 }

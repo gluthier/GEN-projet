@@ -2,6 +2,7 @@ package ch.heig.admin;
 
 import ch.heig.bdd.BDD;
 import ch.heig.bdd.Log;
+import ch.heig.bdd.User;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -12,16 +13,23 @@ import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
+/**
+ *
+ * @author Maxime Guillod
+ */
 public class FXMLController implements Initializable {
 
     private static final int NB_LOG = 100;
+    private static final int NB_USER = 100;
     private static final String SPACE = "      ";
 
+    private BDD bdd;
     @FXML
     private GridPane logGrid;
     @FXML
     private ProgressIndicator logProgress;
-    private BDD bdd;
+    @FXML
+    private GridPane userGrid;
 
     public FXMLController() {
         bdd = BDD.getInstance();
@@ -48,8 +56,19 @@ public class FXMLController implements Initializable {
         logProgress.setProgress(1);
     }
 
+    @FXML
+    private void userUpdate(ActionEvent event) {
+        userGrid.getChildren().clear();
+
+        List<User> list = bdd.getUsers(NB_USER);
+        for (int i = 0; i < list.size(); i++) {
+            userGrid.add(new Text(list.get(i).getUsername() + SPACE), 0, i);
+            userGrid.add(new Text(list.get(i).getPassword() + SPACE), 1, i);
+            userGrid.add(new Text(list.get(i).getLastLogin() + SPACE), 2, i);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
     }
 }
