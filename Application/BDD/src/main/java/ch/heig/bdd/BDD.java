@@ -19,6 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Maxime Guillod
  */
+//TODO add method to get Difficulties and mapSizes from the DB
 public class BDD {
 
     static enum Type {

@@ -4,6 +4,11 @@ import ch.heig.bdd.BDD;
 import ch.heig.bdd.ILog;
 import java.net.ServerSocket;
 import java.rmi.server.UID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import ch.heigvd.protocol.*;
 
 /**
  *
@@ -17,6 +22,8 @@ public class App implements ILog {
     private final BDD bdd;
     private final Thread threadListenClient;
     private final UID uid;
+    public static Map<String, String> CONNECTED_USER;
+    public static List<Party> CURRENT_LOBBIES;
 
     public App() {
         this.bdd = BDD.getInstance();
@@ -35,7 +42,9 @@ public class App implements ILog {
     }
 
     public static void main(String[] args) {
-        App app = new App();
+    	CONNECTED_USER = new HashMap<String, String>();
+    	CURRENT_LOBBIES = new ArrayList<Party>();
+        App app = new App();   
     }
 
 }
