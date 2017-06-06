@@ -2,6 +2,7 @@ package ch.heigvd.server;
 
 import ch.heig.bdd.BDD;
 import ch.heig.bdd.ILog;
+import ch.heigvd.protocol.Obstacle;
 import ch.heigvd.protocol.Protocol;
 
 import java.io.IOException;
@@ -9,6 +10,9 @@ import java.math.BigInteger;
 import java.net.Socket;
 import java.rmi.server.UID;
 import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,11 +72,19 @@ public class Game extends Thread implements ILog {
     }
     
     private void getLobbies() {
-    	String message = Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES);
+    	String message = Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values());
     }
     
-    private void initGame() {
-    	
+    private void startGame(int id) {
+    	// generate all fixedObstacle
+    	List<Obstacle> ls = new ArrayList<Obstacle>();
+    	Random rand = new Random();
+    	// TODO Do global variable
+    	for (int i = 0; i < 10; i++) {
+    		//TODO get width and height via MapSizeId
+			ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+		}
+    	String message = Protocol.formatJoinAnswer(ls)
     }
     
     private static String generateToken() {

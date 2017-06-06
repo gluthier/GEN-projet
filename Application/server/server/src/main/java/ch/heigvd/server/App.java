@@ -23,7 +23,7 @@ public class App implements ILog {
     private final Thread threadListenClient;
     private final UID uid;
     public static Map<String, String> CONNECTED_USER;
-    public static List<Party> CURRENT_LOBBIES;
+    public static Map<Integer,Party> CURRENT_LOBBIES;
 
     public App() {
         this.bdd = BDD.getInstance();
@@ -43,7 +43,7 @@ public class App implements ILog {
 
     public static void main(String[] args) {
     	CONNECTED_USER = new HashMap<String, String>();
-    	CURRENT_LOBBIES = new ArrayList<Party>();
+    	CURRENT_LOBBIES = new HashMap<Integer, Party>();
         App app = new App();   
     }
 
