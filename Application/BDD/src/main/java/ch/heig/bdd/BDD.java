@@ -175,7 +175,7 @@ public class BDD {
     public List<Log> getLog() {
         return getLog(20);
     }
-    
+
     private List get(String request) {
         // TODO
         return null;
@@ -184,8 +184,8 @@ public class BDD {
     public List<Log> getLog(int limit) {
         List<Log> list = new ArrayList();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
             while (result.next()) {
                 list.add(new Log(result));
             }
@@ -197,8 +197,8 @@ public class BDD {
 
     public String getLastLogContent() {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
             if (result.next()) {
                 return result.getNString(1);
             }
@@ -207,12 +207,12 @@ public class BDD {
         }
         return null;
     }
-    
+
     public List<User> getUsers(int limit) {
         List<User> list = new ArrayList();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM Login ORDER BY id ASC LIMIT " + limit + ";");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Login ORDER BY id ASC LIMIT " + limit + ";");
             while (result.next()) {
                 list.add(new User(result));
             }
@@ -220,6 +220,19 @@ public class BDD {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return list;
+    }
+
+    public Config getConfig() {
+        try {
+            int retour = -1;
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Config ORDER BY id DESC LIMIT 1");
+            result.next();
+            return new Config(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

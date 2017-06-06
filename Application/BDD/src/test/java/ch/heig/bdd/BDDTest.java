@@ -25,6 +25,11 @@ public class BDDTest extends TestCase implements ILog {
         };
     }
 
+    @Override
+    public UID getUid() {
+        return uid;
+    }
+
     /**
      * Test of getInstance method, of class BDD.
      */
@@ -47,13 +52,8 @@ public class BDDTest extends TestCase implements ILog {
     }
 
     /**
-     * *****************************
-     * LOGIN ********************************
+     * LOGIN
      */
-    public void testCorrectLogin() {
-        assertTrue(bdd.testLogin("test", "1234", ilog));
-    }
-
     public void testCorrectLoginWronPassword() {
         assertFalse(bdd.testLogin("test", "1212", ilog));
     }
@@ -61,15 +61,20 @@ public class BDDTest extends TestCase implements ILog {
     public void testIncorrectLogin() {
         assertFalse(bdd.testLogin("nope", "1234", ilog));
     }
-    
+
     public void testgetLog() {
         String retour = bdd.getLogString();
         System.out.println(retour);
         assertFalse(retour.equals(""));
     }
 
-    public UID getUid() {
-        return uid;
+    /**
+     * Config
+     */
+    public void testConfig() {
+        Config config = bdd.getConfig();
+        assertEquals(config.getCarteHeight(), 12);
+        assertEquals(config.getCarteWidth(), 41);
     }
 
 }

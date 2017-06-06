@@ -1,6 +1,7 @@
 package ch.heig.admin;
 
 import ch.heig.bdd.BDD;
+import ch.heig.bdd.Config;
 import ch.heig.bdd.Log;
 import ch.heig.bdd.User;
 import java.net.URL;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -30,6 +32,10 @@ public class FXMLController implements Initializable {
     private ProgressIndicator logProgress;
     @FXML
     private GridPane userGrid;
+    @FXML
+    private TextField carteHeight;
+    @FXML
+    private TextField carteWidth;
 
     public FXMLController() {
         bdd = BDD.getInstance();
@@ -66,6 +72,13 @@ public class FXMLController implements Initializable {
             userGrid.add(new Text(list.get(i).getPassword() + SPACE), 1, i);
             userGrid.add(new Text(list.get(i).getLastLogin() + SPACE), 2, i);
         }
+    }
+    
+    @FXML
+    private void updateConfigDiff(ActionEvent event) {
+        Config config = bdd.getConfig();
+        carteHeight.setText(Integer.toString(config.getCarteHeight()));
+        carteWidth.setText(Integer.toString(config.getCarteWidth()));
     }
 
     @Override
