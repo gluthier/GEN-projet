@@ -235,4 +235,16 @@ public class BDD {
         return null;
     }
 
+    public void setConfig(Config config) {
+        try {
+            Statement s = connection.createStatement();
+            s.executeUpdate("UPDATE Config SET "
+                    + " carteHeight=" + config.getCarteHeight()
+                    + ", carteWidth=" + config.getCarteWidth()
+                    + " WHERE id = 1;");
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

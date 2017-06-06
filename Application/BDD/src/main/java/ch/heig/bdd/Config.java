@@ -17,6 +17,11 @@ public class Config {
         this.carteWidth = result.getInt("carteWidth");
     }
 
+    public Config(int carteHeight, int carteWidth) {
+        this.carteHeight = carteHeight;
+        this.carteWidth = carteWidth;
+    }
+
     public int getCarteHeight() {
         return carteHeight;
     }
