@@ -73,8 +73,8 @@ public class BDDTest extends TestCase implements ILog {
      */
     public void testConfig() {
         Config config = bdd.getConfig();
-        assertEquals(config.getCarteHeight(), 12);
-        assertEquals(config.getCarteWidth(), 41);
+        assertEquals(config.getNumRows(), 12);
+        assertEquals(config.getNumCols(), 41);
     }
 
 }

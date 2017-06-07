@@ -239,8 +239,11 @@ public class BDD {
         try {
             Statement s = connection.createStatement();
             s.executeUpdate("UPDATE Config SET "
-                    + " carteHeight=" + config.getCarteHeight()
-                    + ", carteWidth=" + config.getCarteWidth()
+                    + " num_raws=" + config.getNumRows()
+                    + ", num_cols=" + config.getNumCols()
+                    + ", player_speed=" + config.getPlayerSpeed()
+                    + ", initial_player_x=" + config.getIntitialPlayerX()
+                    + ", initial_player_y=" + config.getIntitialPlayerY()
                     + " WHERE id = 1;");
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);

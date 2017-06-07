@@ -9,25 +9,48 @@ import java.sql.SQLException;
  */
 public class Config {
 
-    private int carteHeight;
-    private int carteWidth;
+    private int numCols;
+    private int numRows;
+    private int playerSpeed;
+    private int intitialPlayerX;
+    private int intitialPlayerY;
 
     public Config(ResultSet result) throws SQLException {
-        this.carteHeight = result.getInt("carteHeight");
-        this.carteWidth = result.getInt("carteWidth");
+        this.numCols = result.getInt("num_cols");
+        this.numRows = result.getInt("num_raws");
+        this.playerSpeed = result.getInt("player_speed");
+        this.intitialPlayerX = result.getInt("initial_player_x");
+        this.intitialPlayerY = result.getInt("initial_player_y");
     }
 
-    public Config(int carteHeight, int carteWidth) {
-        this.carteHeight = carteHeight;
-        this.carteWidth = carteWidth;
+    public Config(int numCols, int numRaws, int playerSpeed, int initialPlayerX, int initialPlayerY) {
+        this.numCols = numCols;
+        this.numRows = numRaws;
+        this.playerSpeed = playerSpeed;
+        this.intitialPlayerX = initialPlayerX;
+        this.intitialPlayerY = initialPlayerY;
     }
 
-    public int getCarteHeight() {
-        return carteHeight;
+    public int getNumRows() {
+        return numCols;
     }
 
-    public int getCarteWidth() {
-        return carteWidth;
+    public int getNumCols() {
+        return numRows;
     }
+
+    public int getPlayerSpeed() {
+        return playerSpeed;
+    }
+
+    public int getIntitialPlayerX() {
+        return intitialPlayerX;
+    }
+
+    public int getIntitialPlayerY() {
+        return intitialPlayerY;
+    }
+    
+    
 
 }

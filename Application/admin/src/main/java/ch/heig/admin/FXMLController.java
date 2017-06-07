@@ -20,12 +20,12 @@ import javafx.scene.text.Text;
  * @author Maxime Guillod
  */
 public class FXMLController implements Initializable {
-    
+
     private static final int NB_LOG = 100;
     private static final int NB_USER = 100;
     private static final String SPACE = "      ";
-    
-    private BDD bdd;
+
+    private final BDD bdd;
     @FXML
     private GridPane logGrid;
     @FXML
@@ -33,14 +33,20 @@ public class FXMLController implements Initializable {
     @FXML
     private GridPane userGrid;
     @FXML
-    private TextField carteHeight;
+    private TextField numRaws;
     @FXML
-    private TextField carteWidth;
-    
+    private TextField numCols;
+    @FXML
+    private TextField playerSpeed;
+    @FXML
+    private TextField initialPlayerX;
+    @FXML
+    private TextField initialPlayerY;
+
     public FXMLController() {
         bdd = BDD.getInstance();
     }
-    
+
     @FXML
     private void logUpdate(ActionEvent event) {
         logProgress.setProgress(0.0f);
@@ -56,16 +62,16 @@ public class FXMLController implements Initializable {
             logGrid.add(new Text(list.get(i).getType() + SPACE), 2, i);
             logGrid.add(new Text(list.get(i).getContent() + SPACE), 3, i);
             logGrid.add(new Text(list.get(i).getDate() + SPACE), 4, i);
-            
+
             logProgress.setProgress(i / list.size());
         }
         logProgress.setProgress(1);
     }
-    
+
     @FXML
     private void userUpdate(ActionEvent event) {
         userGrid.getChildren().clear();
-        
+
         List<User> list = bdd.getUsers(NB_USER);
         for (int i = 0; i < list.size(); i++) {
             userGrid.add(new Text(list.get(i).getUsername() + SPACE), 0, i);
@@ -73,23 +79,31 @@ public class FXMLController implements Initializable {
             userGrid.add(new Text(list.get(i).getLastLogin() + SPACE), 2, i);
         }
     }
-    
+
     @FXML
     private void updateConfigDiff(ActionEvent event) {
         Config config = bdd.getConfig();
-        carteHeight.setText(Integer.toString(config.getCarteHeight()));
-        carteWidth.setText(Integer.toString(config.getCarteWidth()));
+        numRaws.setText(Integer.toString(config.getNumRows()));
+        numCols.setText(Integer.toString(config.getNumCols()));
+        playerSpeed.setText(Integer.toString(config.getPlayerSpeed()));
+        initialPlayerX.setText(Integer.toString(config.getIntitialPlayerX()));
+        initialPlayerY.setText(Integer.toString(config.getIntitialPlayerY()));
     }
-    
+
     @FXML
     private void applyConfig(ActionEvent event) throws NoSuchMethodException {
         Config config = new Config(
-                Integer.valueOf(carteHeight.getText()),
-                Integer.valueOf(carteWidth.getText()));
+                Integer.valueOf(numCols.getText()),
+                Integer.valueOf(numRaws.getText()),
+                Integer.valueOf(playerSpeed.getText()),
+                Integer.valueOf(initialPlayerX.getText()),
+                Integer.valueOf(initialPlayerY.getText())
+        );
         bdd.setConfig(config);
     }
-    
+
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL location, ResourceBundle resources) {
+        // Nothing
     }
 }
