@@ -134,7 +134,11 @@ public class LaunchedGame {
 	private void tick() {
 		// Move everything accordingly to the Timer tick
 		moveSkier();
-		
+		if(checkCollision())
+		{
+			// TODO send skier loose
+		}
+		//TODO check skier has read the end
 		lastMove= null;
 	}
 
