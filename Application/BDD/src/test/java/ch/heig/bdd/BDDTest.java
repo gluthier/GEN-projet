@@ -73,8 +73,21 @@ public class BDDTest extends TestCase implements ILog {
      */
     public void testConfig() {
         Config config = bdd.getConfig();
-        assertEquals(config.getNumRows(), 12);
-        assertEquals(config.getNumCols(), 41);
+
+        assertNotNull(config.getNumCols());
+        assertTrue(config.getNumCols() != 0);
+
+        assertNotNull(config.getNumRows());
+        assertTrue(config.getNumRows() != 0);
+
+        assertNotNull(config.getPlayerSpeed());
+        assertTrue(config.getPlayerSpeed() != 0);
+
+        assertNotNull(config.getIntitialPlayerX());
+        assertTrue(config.getIntitialPlayerX() != 0);
+
+        assertNotNull(config.getIntitialPlayerY());
+        assertTrue(config.getIntitialPlayerY() != 0);
     }
 
 }

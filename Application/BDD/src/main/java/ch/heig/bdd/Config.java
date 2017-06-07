@@ -9,11 +9,11 @@ import java.sql.SQLException;
  */
 public class Config {
 
-    private int numCols;
-    private int numRows;
-    private int playerSpeed;
-    private int intitialPlayerX;
-    private int intitialPlayerY;
+    private final int numCols;
+    private final int numRows;
+    private final int playerSpeed;
+    private final int intitialPlayerX;
+    private final int intitialPlayerY;
 
     public Config(ResultSet result) throws SQLException {
         this.numCols = result.getInt("num_cols");
@@ -50,7 +50,5 @@ public class Config {
     public int getIntitialPlayerY() {
         return intitialPlayerY;
     }
-    
-    
 
 }
