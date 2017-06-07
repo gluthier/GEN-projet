@@ -92,14 +92,14 @@ public class LaunchedGame {
 			// wait these seconds
 			// start the game
 			Timer timer = new Timer();
+			// TODO put timer time in variable
 			timer.schedule(new TimerTask() {
 				
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
-					
+					tick();
 				}
-			},Duration.between(LocalTime.now(), time).toMillis()) ;
+			},Duration.between(LocalTime.now(), time).toMillis(),1000) ;
 		}
 	}
 	
