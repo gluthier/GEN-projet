@@ -58,7 +58,7 @@ public class Game extends Thread implements ILog {
            in = new BufferedReader(
                     new InputStreamReader(client.getInputStream()));
            out = new BufferedWriter(
-                   new OutputStreamWriter(socket.getOutputStream()));
+                   new OutputStreamWriter(client.getOutputStream()));
            
            String line;
            while ((line = in.readLine()) != null) {
@@ -132,7 +132,7 @@ public class Game extends Thread implements ILog {
     	//TODO link mapWidth and mapHeight with the args key
     	//TODO get the difficulty as well
     	//TODO define the initial position
-		App.CURRENT_GAMES.put(id, new LaunchedGame(mapWidth, mapHeight, ls, initialX, initialY, this);
+		App.CURRENT_GAMES.put(id, new LaunchedGame(id,mapWidth, mapHeight, ls, initialX, initialY, this);
 	}
 
 	private boolean login(String message) {
