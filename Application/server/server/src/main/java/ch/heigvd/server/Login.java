@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.rmi.server.UID;
 
 /**
- *
+ * @deprecated retrieved in game
  * @author Maxime Guillod
  */
 public class Login implements ILog {
