@@ -97,7 +97,7 @@ public class Game extends Thread implements ILog {
 			}
 		case createParty : {
 			if(logged) {
-				//TODO
+				createParty(args);
 			}
 		}
 		case moveSkier :
@@ -115,7 +115,27 @@ public class Game extends Thread implements ILog {
 		}
     }
     
-    private boolean login(String message) {
+    private void createParty(String args) {
+    	// create new party key
+    	Random rand = new Random();
+    	int id;
+    	do {
+    	id = rand.nextInt(100);
+    	while(!App.CURRENT_GAMES.containsKey(id));
+    	// generate all fixedObstacle
+    	List<Obstacle> ls = new ArrayList<Obstacle>();
+    	// TODO Do global variable
+    	for (int i = 0; i < 10; i++) {
+    		//TODO get width and height via MapSizeId
+    		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+		}
+    	//TODO link mapWidth and mapHeight with the args key
+    	//TODO get the difficulty as well
+    	//TODO define the initial position
+		App.CURRENT_GAMES.put(id, new LaunchedGame(mapWidth, mapHeight, ls, initialX, initialY, this);
+	}
+
+	private boolean login(String message) {
     	connectNbTry++;
 
         String user = Protocol.getFormatLoginUser(message);
@@ -151,21 +171,13 @@ public class Game extends Thread implements ILog {
     	String id = Protocol.getFormatJoinId(message);
     	String token = Protocol.getFormatJoinToken(message);
     	// check token
-    	if(App.CONNECTED_USER.get(userName).equals(token)){
-	    	// generate all fixedObstacle
-	    	List<Obstacle> ls = new ArrayList<Obstacle>();
-	    	Random rand = new Random();
-	    	// TODO Do global variable
-	    	for (int i = 0; i < 10; i++) {
-	    		//TODO get width and height via MapSizeId
-	    		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
-			}
-	    
-	    	//TODO link that with App.Current_GAMES and launch one
-	    	String message = Protocol.formatJoinAnswer(ls);
+    	if(App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)){
+	    	out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
+	    	out.flush();
 	    	App.CURRENT_GAMES.get(id).addAnotherPlayer(client);
 	    	App.CURRENT_GAMES.get(id).start(3);
     	}
+    	//TODO if wrong
     }
     
     private static String generateToken() {

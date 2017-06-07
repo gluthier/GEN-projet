@@ -1,6 +1,7 @@
 package ch.heigvd.server;
 
 import java.net.Socket;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +36,10 @@ public class LaunchedGame {
 		
 	}
 	
+	public List<Obstacle> getFixedObstacle() {
+		return fixedObstacle;
+	}
+	
 	public void move(Direction d) {
 		lastMove = d;
 	}
@@ -47,6 +52,7 @@ public class LaunchedGame {
 	public void start(int s) {
 		if(client2 != null) {
 			// send that the party start in s seconds
+			LocalTime time = LocalTime.now();
 			// wait these seconds
 			// start the game
 		}
