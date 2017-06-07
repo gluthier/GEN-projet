@@ -35,12 +35,15 @@ public class Game extends Thread implements ILog {
     private BufferedWriter out;
     private BufferedReader in;
     private int connectNbTry;
+    private boolean logged;
+    private String userName;
 
     public Game(Socket socket) {
         this.client = socket;
         this.bdd = BDD.getInstance();
         this.uid = new UID();
         this.connectNbTry = 0;
+        this.logged = false;
     }
 
     @Override
@@ -81,9 +84,17 @@ public class Game extends Thread implements ILog {
     	// call the right function depending on the message
     	switch (command) {
 		case login:
-			login(args);
+			logged = login(args);
 			break;
-
+		case getlobby:
+			if(logged) {
+			getLobbies();
+			}
+			break;
+		case join :
+			if(logged) {
+				startGame(args);
+			}
 		default:
 			break;
 		}
@@ -104,6 +115,7 @@ public class Game extends Thread implements ILog {
             bdd.logInfo(this, "Login OK");
             String token = generateToken();
             
+            userName = user;
     		App.CONNECTED_USER.put(user, token);
     		//TODO need difficulty and mapSized from the DB
             out.write(Protocol.formatLoginAnswer(token, difficulty, map));
@@ -117,21 +129,29 @@ public class Game extends Thread implements ILog {
     }
     
     private void getLobbies() {
-    	String message = Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values());
+    	out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()));
+    	out.flush();
     }
     
-    private void startGame(int id) {
-    	// generate all fixedObstacle
-    	List<Obstacle> ls = new ArrayList<Obstacle>();
-    	Random rand = new Random();
-    	// TODO Do global variable
-    	for (int i = 0; i < 10; i++) {
-    		//TODO get width and height via MapSizeId
-    		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
-		}
-    
-    	//TODO link that with App.Current_GAMES and launch one
-    	String message = Protocol.formatJoinAnswer(ls)
+    private void startGame(String message) {
+    	String id = Protocol.getFormatJoinId(message);
+    	String token = Protocol.getFormatJoinToken(message);
+    	// check token
+    	if(App.CONNECTED_USER.get(userName).equals(token)){
+	    	// generate all fixedObstacle
+	    	List<Obstacle> ls = new ArrayList<Obstacle>();
+	    	Random rand = new Random();
+	    	// TODO Do global variable
+	    	for (int i = 0; i < 10; i++) {
+	    		//TODO get width and height via MapSizeId
+	    		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+			}
+	    
+	    	//TODO link that with App.Current_GAMES and launch one
+	    	String message = Protocol.formatJoinAnswer(ls);
+	    	App.CURRENT_GAMES.get(id).addAnotherPlayer(client);
+	    	App.CURRENT_GAMES.get(id).start(3);
+    	}
     }
     
     private static String generateToken() {

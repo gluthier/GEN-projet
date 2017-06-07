@@ -1,5 +1,6 @@
 package ch.heigvd.server;
 
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,21 +20,32 @@ public class LaunchedGame {
 	private int skierX;
 	private int skierY;
 	private Direction lastMove;
+	 private final Socket client1;
+	 private Socket client2;
 	//TODO put clients here
 	
-	public LaunchedGame(int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY) {
+	public LaunchedGame(int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY,Socket client1) {
 		fixedObstacle = obstacles;
 		dynamicObstacle = new ArrayList<Obstacle>();
 		this.mapHeight = mapHeight;
 		this.mapWidth = mapWidth;
 		skierX = initialX;
 		skierY = initialY;
+		this.client1 = client1;
 		
-		// launch the timer
 	}
 	
 	public void move(Direction d) {
 		lastMove = d;
+	}
+	
+	public void addAnotherPlayer(Socket client2) {
+		this.client2 = client2;
+	}
+	
+	// start the game in s seconds
+	public void start(int s) {
+		
 	}
 	
 	private void moveSkier() {
