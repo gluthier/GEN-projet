@@ -129,10 +129,10 @@ public class Game extends Thread implements ILog {
     		//TODO get width and height via MapSizeId
     		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
 		}
-    	//TODO link mapWidth and mapHeight with the args key
     	//TODO get the difficulty as well
     	//TODO define the initial position
-		App.CURRENT_GAMES.put(id, new LaunchedGame(id,mapWidth, mapHeight, ls, initialX, initialY, this);
+    	MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSize());
+		App.CURRENT_GAMES.put(id, new LaunchedGame(id,map.getWidth(), map.getHeight(), ls, 5, 5, this);
 	}
 
 	private boolean login(String message) {
