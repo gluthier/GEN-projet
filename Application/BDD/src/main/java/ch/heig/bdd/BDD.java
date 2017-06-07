@@ -14,10 +14,14 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import ch.heigvd.protocol.Difficulty;
+import ch.heigvd.protocol.MapSize;
+
 /**
  * Communicate with the database for loginInformation, stats and more
  *
  * @author Maxime Guillod
+ * @author Tony Clavien
  */
 //TODO add method to get Difficulties and mapSizes from the DB
 public class BDD {
@@ -171,6 +175,42 @@ public class BDD {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return retour;
+    }
+    
+    public List<Difficulty> getDifficulties() {
+    	List<Difficulty> ret = new ArrayList<>();
+    	try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel ORDER BY id;");
+            while (result.next()) {
+            	ret.add(new Difficulty(result.getString("id"),
+            			result.getString("name"),
+            			result.getString("manaRegenerationSpeed"),
+            			result.getString("playerMoveSpeed"),
+            			result.getString("obstacleMoveSpeed"),
+            			result.getString("obstacleWidth"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	return ret;
+    }
+    
+    public List<MapSize> getMapSizes() {
+    	List<MapSize> ret = new ArrayList<>();
+    	try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM MapSize ORDER BY id;");
+            while (result.next()) {
+            	ret.add(new MapSize(result.getString("id"),
+            			result.getString("name"),
+            			result.getString("width"),
+            			result.getString("height")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    	return ret;
     }
 
     public List<Log> getLog() {
