@@ -152,8 +152,8 @@ public class Game extends Thread implements ILog {
             
             userName = user;
     		App.CONNECTED_USER.put(user, token);
-    		//TODO need difficulty and mapSized from the DB
-            out.write(Protocol.formatLoginAnswer(token, difficulty, map));
+    	
+            out.write(Protocol.formatLoginAnswer(token, bdd.getDifficulties(), bdd.getMapSizes()));
             out.flush();
             return true;
         }

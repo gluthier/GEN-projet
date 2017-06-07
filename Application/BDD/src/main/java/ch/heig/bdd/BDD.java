@@ -196,6 +196,38 @@ public class BDD {
     	return ret;
     }
     
+    public Difficulty getDifficultyById(int id) {
+    	try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel WHERE id="+id+" ;");
+            while (result.next()) {
+            	return new Difficulty(result.getString("id"),
+            			result.getString("name"),
+            			result.getString("manaRegenerationSpeed"),
+            			result.getString("playerMoveSpeed"),
+            			result.getString("obstacleMoveSpeed"),
+            			result.getString("obstacleWidth"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public MapSize getMapSizeById(int id) {
+    	try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM MapSize WHERE id="+ id +";");
+            while (result.next()) {
+            	return new MapSize(result.getString("id"),
+            			result.getString("name"),
+            			result.getString("width"),
+            			result.getString("height")));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public List<MapSize> getMapSizes() {
     	List<MapSize> ret = new ArrayList<>();
     	try {
