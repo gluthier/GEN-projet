@@ -21,7 +21,7 @@ public class LaunchedGame {
 	private int skierY;
 	private Direction lastMove;
 	 private final Socket client1;
-	 private Socket client2;
+	 private Socket client2 = null;
 	//TODO put clients here
 	
 	public LaunchedGame(int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY,Socket client1) {
@@ -45,7 +45,11 @@ public class LaunchedGame {
 	
 	// start the game in s seconds
 	public void start(int s) {
-		
+		if(client2 != null) {
+			// send that the party start in s seconds
+			// wait these seconds
+			// start the game
+		}
 	}
 	
 	private void moveSkier() {

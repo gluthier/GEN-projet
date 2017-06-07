@@ -1,6 +1,7 @@
 package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,7 +50,8 @@ public class Protocol {
         addObstacle("add-obstacle"),
         skierWon("skier-won"),
         vaudoisWon("vaudois-won"),
-        skierPosition("skier-position");
+        skierPosition("skier-position"),
+        createParty("create-party");
 
         private String value;
 
@@ -184,6 +186,37 @@ public class Protocol {
         param.put("token", token);
         json.put("param", param);
         return json.toString();
+    }
+    
+    public static String formatCreateParty(String token) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.createParty);
+        JSONObject param = new JSONObject();
+        param.put("token", token);
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String formatStartGame(String id, LocalTime time) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.createParty);
+        JSONObject param = new JSONObject();
+        param.put("id", id);
+        param.put("time", time.toString());
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String getFormatStartGameId(String message) {
+        return getJsonParam(message, "param", "id");
+    }
+    
+    public static String getFormatStartGameTime(String message) {
+        return getJsonParam(message, "param", "time");
+    }
+    
+    public static String getFormatCreatePartyToken(String message) {
+        return getJsonParam(message, "param", "token");
     }
 
     public static String getFormatLobbyToken(String message) {

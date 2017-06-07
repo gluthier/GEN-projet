@@ -95,16 +95,31 @@ public class Game extends Thread implements ILog {
 			if(logged) {
 				startGame(args);
 			}
+		case createParty : {
+			if(logged) {
+				//TODO
+			}
+		}
+		case moveSkier :
+			if(logged) {
+				//TODO
+			}
+			break;
+		case addObstacle :
+			if(logged) {
+				//TODO 
+				// should it be done here ?
+			}
 		default:
 			break;
 		}
     }
     
-    private boolean login(String args) {
+    private boolean login(String message) {
     	connectNbTry++;
 
-        String user = Protocol.getFormatLoginUser(answer);
-        String password = Protocol.getFormatLoginPassword(answer);
+        String user = Protocol.getFormatLoginUser(message);
+        String password = Protocol.getFormatLoginPassword(message);
 
         /*
         TODO
@@ -123,7 +138,6 @@ public class Game extends Thread implements ILog {
             return true;
         }
         bdd.logWarning(this, "Login Error");
-        String message = "{\"token\":null}";
         out.write(Protocol.formatWrongLoginAnswer());
         return false;
     }
