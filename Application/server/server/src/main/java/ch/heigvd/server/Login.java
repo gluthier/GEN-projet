@@ -1,8 +1,8 @@
 package ch.heigvd.server;
 
+import ch.heig.bdd.BDD;
+import ch.heig.bdd.ILog;
 import ch.heigvd.protocol.Protocol;
-import ch.heigvd.server.bdd.ILog;
-import ch.heigvd.server.bdd.BDD;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.rmi.server.UID;
 
 /**
- *
+ * @deprecated retrieved in game
  * @author Maxime Guillod
  */
 public class Login implements ILog {

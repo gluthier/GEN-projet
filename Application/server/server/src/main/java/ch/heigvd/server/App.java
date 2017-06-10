@@ -1,9 +1,14 @@
 package ch.heigvd.server;
 
-import ch.heigvd.server.bdd.ILog;
-import ch.heigvd.server.bdd.BDD;
+import ch.heig.bdd.BDD;
+import ch.heig.bdd.ILog;
 import java.net.ServerSocket;
 import java.rmi.server.UID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import ch.heigvd.protocol.*;
 
 /**
  *
@@ -17,6 +22,9 @@ public class App implements ILog {
     private final BDD bdd;
     private final Thread threadListenClient;
     private final UID uid;
+    public static Map<String, String> CONNECTED_USER;
+    public static Map<Integer,Party> CURRENT_LOBBIES;
+    public static Map<Integer,LaunchedGame> CURRENT_GAMES;
 
     public App() {
         this.bdd = BDD.getInstance();
@@ -35,7 +43,9 @@ public class App implements ILog {
     }
 
     public static void main(String[] args) {
-        App app = new App();
+    	CONNECTED_USER = new HashMap<String, String>();
+    	CURRENT_LOBBIES = new HashMap<Integer, Party>();
+        App app = new App();   
     }
 
 }

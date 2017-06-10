@@ -1,6 +1,7 @@
 package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,7 +14,8 @@ import com.google.common.hash.Hashing;
  * Protocol
  *
  * @author Tony Clavien
- * @author Maxime Guillod Define the message exchanged between clients and server
+ * @author Maxime Guillod Define the message exchanged between clients and
+ * server
  */
 public class Protocol {
 
@@ -45,7 +47,12 @@ public class Protocol {
         getlobby("get-lobby"),
         join("join"),
         moveSkier("move-skier"),
-        addObstacle("add-obstacle");
+        addObstacle("add-obstacle"),
+        skierWon("skier-won"),
+        vaudoisWon("vaudois-won"),
+        skierPosition("skier-position"),
+        createParty("create-party"),
+        startParty("start-party");
 
         private String value;
 
@@ -57,6 +64,7 @@ public class Protocol {
         public String toString() {
             return value;
         }
+        
     }
 
     /**
@@ -106,7 +114,7 @@ public class Protocol {
 
     /*
     {"command":"login","param":{"user":"maxime","password":"coucou"}}
-    */
+     */
     public static String formatLoginSend(String user, String password) {
         JSONObject json = new JSONObject();
         json.put("command", command.login);
@@ -123,6 +131,12 @@ public class Protocol {
 
     public static String getFormatLoginPassword(String message) {
         return getJsonParam(message, "param", "password");
+    }
+
+    public static String formatWrongLoginAnswer() {
+        JSONObject json = new JSONObject();
+        json.put("token", "");
+        return json.toString();
     }
 
     public static String formatLoginAnswer(String token, List<Difficulty> difficulty, List<MapSize> map) {
@@ -173,6 +187,47 @@ public class Protocol {
         param.put("token", token);
         json.put("param", param);
         return json.toString();
+    }
+    
+    public static String formatCreateParty(String token, Difficulty diff, MapSize map) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.createParty);
+        JSONObject param = new JSONObject();
+        param.put("token", token);
+        param.put("difficulty", diff.getName());
+        param.put("mapSize", map.getId());
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String formatStartGame(String id, LocalTime time) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.startParty);
+        JSONObject param = new JSONObject();
+        param.put("id", id);
+        param.put("time", time.toString());
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String getFormatStartGameId(String message) {
+        return getJsonParam(message, "param", "id");
+    }
+    
+    public static String getFormatStartGameTime(String message) {
+        return getJsonParam(message, "param", "time");
+    }
+    
+    public static String getFormatCreatePartyToken(String message) {
+        return getJsonParam(message, "param", "token");
+    }
+    
+    public static String getFormatCreatePartyDifficulty(String message) {
+        return getJsonParam(message, "param", "difficulty");
+    }
+    
+    public static String getFormatCreatePartyMapSize(String message) {
+        return getJsonParam(message, "param", "mapSize");
     }
 
     public static String getFormatLobbyToken(String message) {

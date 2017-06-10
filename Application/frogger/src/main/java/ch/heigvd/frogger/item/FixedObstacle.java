@@ -10,7 +10,7 @@ import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
  */
 public class FixedObstacle extends Obstacle {
 
-    public FixedObstacle(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
+    public FixedObstacle(int getPosX, int getPosY, Constants.ItemType type) {
         super(getPosX, getPosY, type);
     }
 

@@ -60,7 +60,6 @@ public class GameFXMLController implements Initializable {
     public void setUpCanvas() {
         // Create the canvas
         canvas = new Canvas(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
-        AnchorPane.setTopAnchor(canvas, 0.);
         borderPane.setPrefSize(Constants.GAME_WIDTH, Constants.GAME_HEIGHT);
         borderPane.getChildren().add(canvas);
 
