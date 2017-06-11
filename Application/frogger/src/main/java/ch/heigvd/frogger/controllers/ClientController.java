@@ -19,7 +19,6 @@ public class ClientController implements Observer {
     private Player player;
 
     private GameFXMLController view;
-    private ClientController instance;
     private TCPClient client;
 
     public ClientController(GameFXMLController view, TCPClient client, List<FixedObstacle> fixedObstacles) {
