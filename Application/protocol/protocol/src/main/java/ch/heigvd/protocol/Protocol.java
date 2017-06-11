@@ -1,6 +1,7 @@
 package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,7 +38,9 @@ public class Protocol {
         skierWon("skier-won"),
         vaudoisWon("vaudois-won"),
         skierPosition("skier-position"),
-        obstaclesPositions("obstacles-positions");
+        obstaclesPositions("obstacles-positions"),
+        createParty("create-party"),
+        startParty("start-party");
 
         private String value;
 
@@ -151,6 +154,47 @@ public class Protocol {
         param.put("token", token);
         json.put("param", param);
         return json.toString();
+    }
+    
+    public static String formatCreateParty(String token, Difficulty diff, MapSize map) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.createParty);
+        JSONObject param = new JSONObject();
+        param.put("token", token);
+        param.put("difficulty", diff.getName());
+        param.put("mapSize", map.getId());
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String formatStartGame(String id, LocalTime time) {
+        JSONObject json = new JSONObject();
+        json.put("command", command.startParty);
+        JSONObject param = new JSONObject();
+        param.put("id", id);
+        param.put("time", time.toString());
+        json.put("param", param);
+        return json.toString();
+    }
+    
+    public static String getFormatStartGameId(String message) {
+        return getJsonParam(message, "param", "id");
+    }
+    
+    public static String getFormatStartGameTime(String message) {
+        return getJsonParam(message, "param", "time");
+    }
+    
+    public static String getFormatCreatePartyToken(String message) {
+        return getJsonParam(message, "param", "token");
+    }
+    
+    public static String getFormatCreatePartyDifficulty(String message) {
+        return getJsonParam(message, "param", "difficulty");
+    }
+    
+    public static String getFormatCreatePartyMapSize(String message) {
+        return getJsonParam(message, "param", "mapSize");
     }
 
     public static String getFormatLobbyToken(String message) {
