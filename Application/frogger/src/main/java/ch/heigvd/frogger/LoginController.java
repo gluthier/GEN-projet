@@ -58,10 +58,12 @@ public class LoginController implements Initializable {
 
     public void loginUser() {
         try {
-            while (!tcpClient.login(username.getText(), password.getText())) {
-                System.out.println("not logged");
+            if (!tcpClient.login(username.getText(), password.getText())) {
+                System.out.println("Not logged");
+                password.getStyleClass().add("textFieldError");
+            } else {
+                openGame();
             }
-            openGame();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -82,6 +84,8 @@ public class LoginController implements Initializable {
 
             GameFXMLController view = loader.getController();
 
+
+            // TODO in lobby
             List<Party> parties = tcpClient.connectToLobby();
             List<FixedObstacle> obstacles = tcpClient.joinParty(parties.get(0));
             MainApp.setController(new ClientController(view, tcpClient, obstacles));

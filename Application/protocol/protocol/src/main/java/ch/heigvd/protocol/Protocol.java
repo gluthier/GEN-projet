@@ -2,6 +2,7 @@ package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class Protocol {
     }
 
 
-    public static <T extends Sendable> String formatArraytoJson(List<T> ls) {
+    public static <T extends Sendable> String formatArraytoJson(Collection<T> ls) {
         JSONArray array = new JSONArray();
         for (Sendable s : ls) {
             array.put(s.toJson());
@@ -156,13 +157,12 @@ public class Protocol {
         return json.toString();
     }
     
-    public static String formatCreateParty(String token, Difficulty diff, MapSize map) {
+    public static String formatCreateParty(String token, Party party) {
         JSONObject json = new JSONObject();
         json.put("command", command.createParty);
         JSONObject param = new JSONObject();
         param.put("token", token);
-        param.put("difficulty", diff.getName());
-        param.put("mapSize", map.getId());
+        param.put("party", party.toJson());
         json.put("param", param);
         return json.toString();
     }
@@ -189,19 +189,21 @@ public class Protocol {
         return getJsonParam(message, "param", "token");
     }
     
-    public static String getFormatCreatePartyDifficulty(String message) {
-        return getJsonParam(message, "param", "difficulty");
+    public static int getFormatCreatePartyDifficultyId(String message) {
+        JSONObject object = new JSONObject(message);
+        return Integer.valueOf(object.getJSONObject("param").getString("difficulty"));
     }
     
-    public static String getFormatCreatePartyMapSize(String message) {
-        return getJsonParam(message, "param", "mapSize");
+    public static int getFormatCreatePartyMapSizeId(String message) {
+        JSONObject object = new JSONObject(message);
+        return Integer.valueOf(object.getJSONObject("param").getString("mapSize"));
     }
 
     public static String getFormatLobbyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
 
-    public static String formatLobbyAnswer(List<Party> parties) {
+    public static String formatLobbyAnswer(Collection<Party> parties) {
         return formatArraytoJson(parties);
     }
 
@@ -233,7 +235,7 @@ public class Protocol {
         return getJsonParam(message, "param", "id");
     }
 
-    public static String formatJoinAnswer(List<Party> ls) {
+    public static String formatJoinAnswer(Collection<Obstacle> ls) {
         return formatArraytoJson(ls);
     }
 

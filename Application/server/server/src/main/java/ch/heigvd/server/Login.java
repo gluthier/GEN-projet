@@ -46,8 +46,10 @@ public class Login implements ILog {
         TODO
         Add a timer with the nbTry to avoid brute force
          */
-        out.write(Protocol.formatRequestLogin(false));
-        out.flush();
+
+        // Server just wait for login
+        // out.write(Protocol.formatRequestLogin(false));
+        // out.flush();
 
         String answer = in.readLine();
 
@@ -61,11 +63,12 @@ public class Login implements ILog {
         boolean logged = bdd.testLogin(user, password, this);
         if (logged) {
             bdd.logInfo(this, "Login OK");
-            out.write(Protocol.formatRequestLogin(true));
-            out.flush();
+            // out.write(Protocol.formatRequestLogin(true));
+            // out.flush();
             return true;
         }
         bdd.logWarning(this, "Login Error");
+
         return false;
     }
 

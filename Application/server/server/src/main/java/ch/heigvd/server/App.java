@@ -42,10 +42,12 @@ public class App implements ILog {
         return uid;
     }
 
+
+
     public static void main(String[] args) {
     	CONNECTED_USER = new HashMap<String, String>();
     	CURRENT_LOBBIES = new HashMap<Integer, Party>();
-        App app = new App();   
+        App app = new App();
     }
 
 }

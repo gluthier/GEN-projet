@@ -65,11 +65,14 @@ public class TCPClient {
     public boolean login(String user, String password) throws IOException {
         String command = Protocol.formatLoginSend(user, password);
 
-        writer.write(command);
+        writer.write(command+"\n");
         writer.flush();
 
-        String line = reader.readLine();
+        String line;
+
         // Read response
+        line = reader.readLine();
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Received" + line);
 
         token = Protocol.getFormatLoginToken(line);
         if (token.isEmpty()) {
@@ -86,7 +89,7 @@ public class TCPClient {
     public List<Party> connectToLobby() throws IOException {
         String command = Protocol.formatLobbySend(token);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connecting to lobby...");
-        writer.write(command);
+        writer.write(command+"\n");
         writer.flush();
 
         String line = reader.readLine();
@@ -98,7 +101,7 @@ public class TCPClient {
     public List<FixedObstacle> joinParty(Party party) throws IOException {
         String command = Protocol.formatJoinSend(token, party.getId());
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
-        writer.write(command);
+        writer.write(command+"\n");
         writer.flush();
 
         String line = reader.readLine();
@@ -109,6 +112,10 @@ public class TCPClient {
 
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joined party #"+party.getId());
         return fixedObstacles;
+    }
+
+    public void createParty(Party party) {
+        String command = Protocol.formatCreateParty(token, party);
     }
 
     public void moveLeft() {
@@ -126,14 +133,14 @@ public class TCPClient {
     private void move(Protocol.Direction direction) {
         String command = Protocol.formatMoveSend(direction);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Trying to move "+direction);
-        writer.write(command);
+        writer.write(command+"\n");
         writer.flush();
     }
 
     public void addDynamicObstacle(int row) {
         String command = Protocol.formatNewDynamicObstacle(row);
 
-        writer.write(command);
+        writer.write(command+"\n");
         writer.flush();
     }
 

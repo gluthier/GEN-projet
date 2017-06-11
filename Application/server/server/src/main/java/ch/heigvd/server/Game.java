@@ -2,6 +2,7 @@ package ch.heigvd.server;
 
 import ch.heig.bdd.BDD;
 import ch.heig.bdd.ILog;
+import ch.heigvd.protocol.MapSize;
 import ch.heigvd.protocol.Obstacle;
 import ch.heigvd.protocol.Protocol;
 
@@ -62,7 +63,6 @@ public class Game extends Thread implements ILog {
            
            String line;
            while ((line = in.readLine()) != null) {
-             System.out.println("Line: " + line);
              JSONObject json = new JSONObject(line);
             
              Protocol.command command = Protocol.command.valueOf((String) json.get("command"));
@@ -80,7 +80,7 @@ public class Game extends Thread implements ILog {
     /** 
      * Receive a command from the client
      */
-    private void receiveCommand(Protocol.command command,String args) {
+    private void receiveCommand(Protocol.command command,String args) throws IOException {
     	// call the right function depending on the message
     	switch (command) {
 		case login:
@@ -120,8 +120,10 @@ public class Game extends Thread implements ILog {
     	Random rand = new Random();
     	int id;
     	do {
-    	id = rand.nextInt(100);
-    	while(!App.CURRENT_GAMES.containsKey(id));
+            // TODO Remove hardcoded max ID
+            id = rand.nextInt(100);
+        } while(!App.CURRENT_GAMES.containsKey(id));
+
     	// generate all fixedObstacle
     	List<Obstacle> ls = new ArrayList<Obstacle>();
     	// TODO Do global variable
@@ -129,13 +131,14 @@ public class Game extends Thread implements ILog {
     		//TODO get width and height via MapSizeId
     		ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
 		}
+
     	//TODO get the difficulty as well
     	//TODO define the initial position
-    	MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSize());
-		App.CURRENT_GAMES.put(id, new LaunchedGame(id,map.getWidth(), map.getHeight(), ls, 5, 5, this);
+    	MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
+		App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), ls, 5, 5, client));
 	}
 
-	private boolean login(String message) {
+	private boolean login(String message) throws IOException {
     	connectNbTry++;
 
         String user = Protocol.getFormatLoginUser(message);
@@ -153,26 +156,27 @@ public class Game extends Thread implements ILog {
             userName = user;
     		App.CONNECTED_USER.put(user, token);
     	
-            out.write(Protocol.formatLoginAnswer(token, bdd.getDifficulties(), bdd.getMapSizes()));
+            out.write(Protocol.formatLoginAnswer(token, bdd.getDifficulties(), bdd.getMapSizes()) + "\n");
             out.flush();
             return true;
         }
         bdd.logWarning(this, "Login Error");
-        out.write(Protocol.formatWrongLoginAnswer());
+        out.write(Protocol.formatWrongLoginAnswer() + "\n");
+        out.flush();
         return false;
     }
     
-    private void getLobbies() {
-    	out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()));
+    private void getLobbies() throws IOException {
+    	out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()) + "\n");
     	out.flush();
     }
     
-    private void startGame(String message) {
+    private void startGame(String message) throws IOException {
     	String id = Protocol.getFormatJoinId(message);
     	String token = Protocol.getFormatJoinToken(message);
     	// check token
     	if(App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)){
-	    	out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
+	    	out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()) + "\n");
 	    	out.flush();
 	    	App.CURRENT_GAMES.get(id).addAnotherPlayer(client);
 	    	App.CURRENT_GAMES.get(id).start(3);
