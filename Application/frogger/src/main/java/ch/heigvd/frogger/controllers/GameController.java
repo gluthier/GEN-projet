@@ -1,23 +1,23 @@
-package ch.heigvd.frogger;
+package ch.heigvd.frogger.controllers;
 
+import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.GameFXMLController;
+import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import ch.heigvd.frogger.exception.ViewNotSetException;
 import ch.heigvd.frogger.item.*;
-import javafx.scene.control.Cell;
 
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.stage.Stage;
 
 /**
  * Created by lognaume on 5/17/17.
  *
  * @author Gabriel Luthier
  */
-public class GameController implements Observer {
+public class GameController implements IController {
 
-    private class Cell {
+    private class Cell implements ICell {
 
         private List<Item> content = new LinkedList<>();
 
@@ -47,23 +47,14 @@ public class GameController implements Observer {
     private Player player;
     private Cell[][] grid;
 
-    private static GameFXMLController view;
-    private static GameController instance;
+    private GameFXMLController view;
 
-    public static GameController getInstance() throws ViewNotSetException {
-        if (view == null) {
-            throw new ViewNotSetException();
-        } else if (instance == null) {
-            instance = new GameController();
-        }
-        return instance;
+    public void setView(GameFXMLController view) {
+        this.view = view;
     }
 
-    public static void setView(GameFXMLController view) {
-        GameController.view = view;
-    }
-
-    private GameController() {
+    public GameController(GameFXMLController view) {
+        setView(view);
         // Initialize the game
         initializeGame();
     }

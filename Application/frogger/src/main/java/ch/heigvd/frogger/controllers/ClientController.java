@@ -1,5 +1,8 @@
-package ch.heigvd.frogger;
+package ch.heigvd.frogger.controllers;
 
+import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.GameFXMLController;
+import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.item.*;
 import ch.heigvd.frogger.tcp.TCPClient;
 
@@ -13,7 +16,7 @@ import java.util.logging.Logger;
  * @author Gabriel Luthier
  * @author Guillaume Milani
  */
-public class ClientController implements Observer {
+public class ClientController implements IController {
 
     private List<DynamicObstacle> dynamicObstacles;
     private Player player;
@@ -67,6 +70,11 @@ public class ClientController implements Observer {
 
         // Observe the clock (tick)
         ItemClock.getInstance().addObserver(this);
+    }
+
+    @Override
+    public void setView(GameFXMLController gameFXMLController) {
+        this.view = gameFXMLController;
     }
 
     public void restartGame() {

@@ -131,6 +131,5 @@ public class TCPClientTest {
 
     @Test
     public void connectToPartyReturnsCorrectObstacleList() throws IOException {
-     
     }
 }
