@@ -40,16 +40,13 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField password;
 
-    private TCPClient tcpClient;
-
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        tcpClient = new TCPClient(Constants.SERVER_ADDRESS, Constants.SERVER_PORT);
         try {
-            tcpClient.connect();
+            MainApp.getTcpClient().connect();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,11 +55,10 @@ public class LoginController implements Initializable {
 
     public void loginUser() {
         try {
-            if (!tcpClient.login(username.getText(), password.getText())) {
-                System.out.println("Not logged");
+            if (!MainApp.getTcpClient().login(username.getText(), password.getText())) {
                 password.getStyleClass().add("textFieldError");
             } else {
-                openGame();
+                openLobby();
             }
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,47 +66,20 @@ public class LoginController implements Initializable {
     }
 
     public void createUser() {
-        openGame();
+
     }
 
     public void consultStats() {
 
     }
 
-    private void openGame() {
+    private void openLobby() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Lobby.fxml"));
             Parent root = loader.load();
 
-            GameFXMLController view = loader.getController();
-
-
-            // TODO in lobby
-            List<Party> parties = tcpClient.connectToLobby();
-            List<FixedObstacle> obstacles = tcpClient.joinParty(parties.get(0));
-            MainApp.setController(new ClientController(view, tcpClient, obstacles));
-
-            Stage stage = (Stage) username.getScene().getWindow();
             Scene scene = new Scene(root);
-            stage.setScene(scene);
-
-            scene.getStylesheets().add("/styles/Styles.css");
-            stage.setTitle("Walliser Frogger");
-            stage.setScene(scene);
-            stage.getIcons().add(new Image(Constants.ICON_PATH));
-
-            // Center stage
-            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
-
-            stage.show();
-
-            // Fermeture de l'application
-            stage.setOnCloseRequest((WindowEvent event) -> {
-                // Stop ItemClock timer Thread
-                ItemClock.getInstance().stop();
-            });
+            MainApp.getStage().setScene(scene);
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }

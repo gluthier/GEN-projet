@@ -116,6 +116,10 @@ public class TCPClient {
 
     public void createParty(Party party) {
         String command = Protocol.formatCreateParty(token, party);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Creating new party");
+
+        writer.write(command);
+        writer.flush();
     }
 
     public void moveLeft() {

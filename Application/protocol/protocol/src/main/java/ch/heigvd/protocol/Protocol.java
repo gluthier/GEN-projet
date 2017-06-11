@@ -58,6 +58,15 @@ public class Protocol {
         public JSONObject toJson() {
             return null;
         }
+
+        public static command fromString(String string) {
+            for (command c : values()) {
+                if (c.value.equals(string)) {
+                    return c;
+                }
+            }
+            return null;
+        }
     }
 
     public static <T extends Sendable> String formatArraytoJson(Collection<T> ls) {
@@ -258,7 +267,7 @@ public class Protocol {
 
     public static command getFormatCommand(String message) {
         JSONObject json = new JSONObject(message);
-        return command.valueOf(json.getString("command"));
+        return command.fromString(json.getString("command"));
     }
 
     public static Skier getFormatSkier(String message) {

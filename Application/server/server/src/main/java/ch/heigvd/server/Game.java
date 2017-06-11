@@ -2,9 +2,7 @@ package ch.heigvd.server;
 
 import ch.heig.bdd.BDD;
 import ch.heig.bdd.ILog;
-import ch.heigvd.protocol.MapSize;
-import ch.heigvd.protocol.Obstacle;
-import ch.heigvd.protocol.Protocol;
+import ch.heigvd.protocol.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -64,8 +62,7 @@ public class Game extends Thread implements ILog {
             String line;
             while ((line = in.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
-
-                Protocol.command command = Protocol.command.valueOf((String) json.get("command"));
+                Protocol.command command = Protocol.command.fromString((String) json.get("command"));
                 receiveCommand(command, line);
             }
         } catch (IOException ex) {
@@ -136,7 +133,10 @@ public class Game extends Thread implements ILog {
 
         //TODO get the difficulty as well
         //TODO define the initial position
-        MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
+        //TODO do it better
+        // MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
+        MapSize map = bdd.getMapSizeById(1);
+
         App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), ls, 5, 5, client));
     }
 
@@ -169,6 +169,7 @@ public class Game extends Thread implements ILog {
     }
 
     private void getLobbies() throws IOException {
+        App.CURRENT_LOBBIES.put(10, new Party(10, "Toto", new Difficulty(10, "Hardcore", 4, 5, 6, 7), new MapSize(10, "Infinite", 100, 200), Party.FreeRole.defender));
         out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()));
         out.flush();
     }
