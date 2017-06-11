@@ -74,10 +74,15 @@ public class Party implements Sendable {
 
 	@Override
 	public boolean equals(Object o) {
-		Party other = (Party)o;
-		return other.getId() == getId() && other.getDifficultyName().equals(getDifficultyName())
-				&& other.getPlayerName().equals(getPlayerName()) && other.getMapSizeId() == getMapSizeId()
-				&& other.getFreeRole() == getFreeRole();
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
+		Party party = (Party) o;
+
+		if (getId() != party.getId()) return false;
+		if (getMapSizeId() != party.getMapSizeId()) return false;
+		if (!getPlayerName().equals(party.getPlayerName())) return false;
+		if (!getDifficultyName().equals(party.getDifficultyName())) return false;
+		return getFreeRole() == party.getFreeRole();
 	}
 }

@@ -25,19 +25,6 @@ public class Protocol {
         right,
         left,
         bottom;
-
-        public static Direction fromString(String in) {
-            if (in.equals("right")) {
-                return Direction.right;
-            } else if (in.equals("left")) {
-                return Direction.left;
-            } else if (in.equals("bottom")) {
-                return Direction.bottom;
-            } else {
-                // throw exepction ?
-                return null;
-            }
-        }
     }
 
     // TODO enum of all commands
@@ -69,31 +56,6 @@ public class Protocol {
         }
     }
 
-    /**
-     * Prepare the request to ask the client to login
-     *
-     * @param isLogged
-     * @return
-     */
-    public static String formatRequestLogin(boolean isLogged) {
-        JSONObject json = new JSONObject();
-        json.put("logged", isLogged);
-        return json.toString();
-    }
-
-    /**
-     * Get the server response if the login is correct
-     *
-     * @param message
-     * @return
-     */
-    public static boolean getRequestLogin(String message) {
-        JSONObject json = new JSONObject(message);
-        if ("true".equals(getJsonParam(message, "param", "logged"))) {
-            return true;
-        }
-        return false;
-    }
 
     public static <T extends Sendable> String formatArraytoJson(List<T> ls) {
         JSONArray array = new JSONArray();
@@ -151,7 +113,7 @@ public class Protocol {
         json.put("difficulties", difficultyArray);
         JSONArray mapArray = new JSONArray();
         for (MapSize m : map) {
-            difficultyArray.put(m.toJson());
+            mapArray.put(m.toJson());
         }
         json.put("mapSizes", mapArray);
 
@@ -269,7 +231,7 @@ public class Protocol {
     }
 
     public static Direction getFormatMove(String message) {
-        return Direction.fromString(getJsonParam(message, "param", "direction"));
+        return Direction.valueOf(getJsonParam(message, "param", "direction"));
     }
 
     public static String formatNewDynamicObstacle(int row) {

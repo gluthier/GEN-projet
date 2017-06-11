@@ -29,4 +29,15 @@ public class Skier implements Sendable{
 		json.put("y", y);
 		return json;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Skier skier = (Skier) o;
+
+		if (getX() != skier.getX()) return false;
+		return getY() == skier.getY();
+	}
 }
