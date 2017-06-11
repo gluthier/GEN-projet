@@ -18,8 +18,12 @@ public class DynamicObstacle extends Obstacle {
 
     //TODO add a local Timer or a global one who update the position of the obstacle
     // TODO remove magic number
-    public DynamicObstacle(ItemType type) throws CellAlreadyOccupiedException {
-        super(2, 5, type);
+    public DynamicObstacle(int row, ItemType type) {
+        this(2, row, type);
+    }
+
+    public DynamicObstacle(int column, int row, ItemType type) {
+        super(column, row, type);
     }
 
     @Override

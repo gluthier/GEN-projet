@@ -13,7 +13,7 @@ import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
  */
 public class Decoration extends Obstacle {
 
-    public Decoration(int initPosX, int initPosY, ItemType type) throws CellAlreadyOccupiedException {
+    public Decoration(int initPosX, int initPosY, ItemType type) {
         super(initPosX, initPosY, type);
     }
 

@@ -24,10 +24,10 @@ public class Constants {
 
     public static final int GAME_WIDTH = 1280;
     public static final int GAME_HEIGHT = 960;
-    public static final int NUM_COLS = 36;
-    public static final int NUM_ROWS = 27;
-    public static final double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
-    public static final double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
+    public static int NUM_COLS = 36;
+    public static int NUM_ROWS = 27;
+    public static double CELL_WIDTH = (double) Constants.GAME_WIDTH / (double) Constants.NUM_COLS;
+    public static double CELL_HEIGHT = (double) Constants.GAME_HEIGHT / (double) Constants.NUM_ROWS;
 
     public static final int INITIAL_PLAYER_X = 14;
     public static final int INITIAL_PLAYER_Y = 5;
@@ -40,8 +40,6 @@ public class Constants {
     public static final int THIRD_FINISH_TO_LEFT = 24;
     public static final int FOURTH_FINISH_TO_RIGHT = 28;
     public static final int FOURTH_FINISH_TO_LEFT = 32;
-
-    public static final int PLAYER_SPEED = 10;
 
     public static final String IMG_FOLDER = "/images/";
     public static final String PLAYER_FOLDER = "ski-personnages/";

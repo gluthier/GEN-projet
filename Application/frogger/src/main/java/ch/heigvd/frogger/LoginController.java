@@ -1,12 +1,19 @@
 package ch.heigvd.frogger;
 
-import ch.heigvd.frogger.exception.ViewNotSetException;
+import ch.heigvd.frogger.controllers.ClientController;
+import ch.heigvd.frogger.controllers.GameController;
+import ch.heigvd.frogger.controllers.IController;
+import ch.heigvd.frogger.exception.ControllerNotSetException;
+import ch.heigvd.frogger.item.FixedObstacle;
 import ch.heigvd.frogger.tcp.TCPClient;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import ch.heigvd.protocol.Party;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -51,10 +58,12 @@ public class LoginController implements Initializable {
 
     public void loginUser() {
         try {
-            while (!tcpClient.login(username.getText(), password.getText())) {
-                System.out.println("not logged");
+            if (!tcpClient.login(username.getText(), password.getText())) {
+                System.out.println("Not logged");
+                password.getStyleClass().add("textFieldError");
+            } else {
+                openGame();
             }
-            openGame();
         } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -73,9 +82,13 @@ public class LoginController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
             Parent root = loader.load();
 
-            GameController.setView(loader.getController());
-            // Force GameController to load
-            GameController.getInstance();
+            GameFXMLController view = loader.getController();
+
+
+            // TODO in lobby
+            List<Party> parties = tcpClient.connectToLobby();
+            List<FixedObstacle> obstacles = tcpClient.joinParty(parties.get(0));
+            MainApp.setController(new ClientController(view, tcpClient, obstacles));
 
             Stage stage = (Stage) username.getScene().getWindow();
             Scene scene = new Scene(root);
@@ -98,7 +111,7 @@ public class LoginController implements Initializable {
                 // Stop ItemClock timer Thread
                 ItemClock.getInstance().stop();
             });
-        } catch (ViewNotSetException | IOException ex) {
+        } catch (IOException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

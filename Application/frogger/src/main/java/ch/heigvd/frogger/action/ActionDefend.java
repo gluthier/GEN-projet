@@ -1,8 +1,9 @@
 package ch.heigvd.frogger.action;
 
 import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.GameController;
 import ch.heigvd.frogger.ItemClock;
+import ch.heigvd.frogger.MainApp;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +29,7 @@ public class ActionDefend implements Actions {
     public void act() {
         if (ItemClock.getInstance().isRunning()) {
             try {
-                GameController.getInstance().addDynamicObstacle(Constants.OBSTACLE_ROW.get(row));
+                MainApp.getController().addDynamicObstacle(Constants.OBSTACLE_ROW.get(row));
             } catch (Exception e) {
                 Logger.getLogger(ActionDefend.class.getName()).log(Level.SEVERE, null, e);
             }

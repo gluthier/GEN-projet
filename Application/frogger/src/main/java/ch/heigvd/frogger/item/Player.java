@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class Player extends Item {
 
-    public Player(int getPosX, int getPosY, Constants.ItemType type) throws CellAlreadyOccupiedException {
+    public Player(int getPosX, int getPosY, Constants.ItemType type) {
         super(getPosX, getPosY, type);
     }
 
