@@ -65,7 +65,7 @@ public class TCPClient {
     public boolean login(String user, String password) throws IOException {
         String command = Protocol.formatLoginSend(user, password);
 
-        writer.write(command+"\n");
+        writer.write(command);
         writer.flush();
 
         String line;
@@ -89,7 +89,7 @@ public class TCPClient {
     public List<Party> connectToLobby() throws IOException {
         String command = Protocol.formatLobbySend(token);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connecting to lobby...");
-        writer.write(command+"\n");
+        writer.write(command);
         writer.flush();
 
         String line = reader.readLine();
@@ -101,7 +101,7 @@ public class TCPClient {
     public List<FixedObstacle> joinParty(Party party) throws IOException {
         String command = Protocol.formatJoinSend(token, party.getId());
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
-        writer.write(command+"\n");
+        writer.write(command);
         writer.flush();
 
         String line = reader.readLine();
@@ -133,14 +133,14 @@ public class TCPClient {
     private void move(Protocol.Direction direction) {
         String command = Protocol.formatMoveSend(direction);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Trying to move "+direction);
-        writer.write(command+"\n");
+        writer.write(command);
         writer.flush();
     }
 
     public void addDynamicObstacle(int row) {
         String command = Protocol.formatNewDynamicObstacle(row);
 
-        writer.write(command+"\n");
+        writer.write(command);
         writer.flush();
     }
 

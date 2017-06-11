@@ -60,14 +60,13 @@ public class Protocol {
         }
     }
 
-
     public static <T extends Sendable> String formatArraytoJson(Collection<T> ls) {
         JSONArray array = new JSONArray();
         for (Sendable s : ls) {
             array.put(s.toJson());
         }
 
-        return array.toString();
+        return array.toString() + "\n";
     }
 
     public static String getJsonParam(String message, String object, String param) {
@@ -90,7 +89,7 @@ public class Protocol {
         param.put("user", user);
         param.put("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatLoginUser(String message) {
@@ -104,7 +103,7 @@ public class Protocol {
     public static String formatWrongLoginAnswer() {
         JSONObject json = new JSONObject();
         json.put("token", "");
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String formatLoginAnswer(String token, List<Difficulty> difficulty, List<MapSize> map) {
@@ -121,7 +120,7 @@ public class Protocol {
         }
         json.put("mapSizes", mapArray);
 
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatLoginToken(String message) {
@@ -154,9 +153,9 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("token", token);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
-    
+
     public static String formatCreateParty(String token, Party party) {
         JSONObject json = new JSONObject();
         json.put("command", command.createParty);
@@ -166,7 +165,7 @@ public class Protocol {
         json.put("param", param);
         return json.toString();
     }
-    
+
     public static String formatStartGame(String id, LocalTime time) {
         JSONObject json = new JSONObject();
         json.put("command", command.startParty);
@@ -176,24 +175,24 @@ public class Protocol {
         json.put("param", param);
         return json.toString();
     }
-    
+
     public static String getFormatStartGameId(String message) {
         return getJsonParam(message, "param", "id");
     }
-    
+
     public static String getFormatStartGameTime(String message) {
         return getJsonParam(message, "param", "time");
     }
-    
+
     public static String getFormatCreatePartyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
-    
+
     public static int getFormatCreatePartyDifficultyId(String message) {
         JSONObject object = new JSONObject(message);
         return Integer.valueOf(object.getJSONObject("param").getString("difficulty"));
     }
-    
+
     public static int getFormatCreatePartyMapSizeId(String message) {
         JSONObject object = new JSONObject(message);
         return Integer.valueOf(object.getJSONObject("param").getString("mapSize"));
@@ -224,7 +223,7 @@ public class Protocol {
         param.put("token", token);
         param.put("id", id);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatJoinToken(String message) {
@@ -264,7 +263,7 @@ public class Protocol {
 
     public static Skier getFormatSkier(String message) {
         JSONObject json = new JSONObject(message);
-        return (Skier)json.get("skier");
+        return (Skier) json.get("skier");
     }
 
     public static String formatMoveSend(Direction dir) {
@@ -273,7 +272,7 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("direction", dir);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static Direction getFormatMove(String message) {
@@ -286,7 +285,7 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("row", row);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     // TODO send skier coordinate

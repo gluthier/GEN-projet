@@ -28,6 +28,7 @@ import static org.mockito.Mockito.mock;
  * Created by lognaume on 5/30/17.
  */
 public class TCPClientTest {
+
     private TCPClient client;
     private Socket socket;
     private ByteArrayOutputStream byteArrayOutputStream;
@@ -63,7 +64,7 @@ public class TCPClientTest {
         } catch (Exception e) {
         }
 
-        Assert.assertEquals(Protocol.formatLoginSend("toto","1234"), byteArrayOutputStream.toString());
+        Assert.assertEquals(Protocol.formatLoginSend("toto", "1234"), byteArrayOutputStream.toString());
     }
 
     @Test
@@ -121,19 +122,19 @@ public class TCPClientTest {
         MapSize ms = new MapSize(0, "Small", 800, 600);
 
         final List<Party> partyList = new LinkedList<>();
-        partyList.add(new Party(0, "Player1",diffEasy, ms, Party.FreeRole.defender));
-        partyList.add(new Party(1, "Player2",diffMedium, ms, Party.FreeRole.defender));
+        partyList.add(new Party(0, "Player1", diffEasy, ms, Party.FreeRole.defender));
+        partyList.add(new Party(1, "Player2", diffMedium, ms, Party.FreeRole.defender));
         partyList.add(new Party(2, "Player3", diffHard, ms, Party.FreeRole.skier));
 
         // Build server's response
-
         final InputStream inputStream = new ByteArrayInputStream(Protocol.formatLobbyAnswer(partyList).getBytes());
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
 
         client.connect(socket);
 
         List<Party> partiesRead = client.connectToLobby();
-        Assert.assertEquals(partyList, partiesRead);
+        
+        assertEquals(partyList, partiesRead);
     }
 
     @Test
