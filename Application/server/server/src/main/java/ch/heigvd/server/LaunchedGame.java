@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import ch.heigvd.protocol.Difficulty;
 import ch.heigvd.protocol.Obstacle;
 import ch.heigvd.protocol.Protocol;
 import ch.heigvd.protocol.Protocol.Direction;
@@ -34,10 +35,12 @@ public class LaunchedGame {
 	 private Socket client2 = null;
 	 private BufferedWriter out2;
 	 private final int id;
+	 private Difficulty difficulty;
 	//TODO put clients here
 	
-	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY, Socket client1) {
+	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY, Difficulty difficulty, Socket client1) {
 		fixedObstacle = obstacles;
+		this.difficulty = difficulty;
 		dynamicObstacle = new ArrayList<Obstacle>();
 		this.mapHeight = mapHeight;
 		this.mapWidth = mapWidth;

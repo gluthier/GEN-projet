@@ -14,6 +14,7 @@ import java.net.Socket;
 import java.rmi.server.UID;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ public class Game extends Thread implements ILog {
     private int connectNbTry;
     private boolean logged;
     private String userName;
+    private List<Obstacle> fixedObstacles;
 
     public Game(Socket socket) {
         this.client = socket;
@@ -43,6 +45,7 @@ public class Game extends Thread implements ILog {
         this.uid = new UID();
         this.connectNbTry = 0;
         this.logged = false;
+        fixedObstacles = new ArrayList<Obstacle>();
     }
 
     @Override
@@ -50,9 +53,6 @@ public class Game extends Thread implements ILog {
     public void run() {
         try {
             bdd.logInfo(this, "START NEW GAME THREAD");
-            // Try to login => change in that implementation
-            //Login login = new Login(client, uid);
-            //while (!login.connect()) ;
             // we wait on the client if he send us the right command to log in
             in = new BufferedReader(
                     new InputStreamReader(client.getInputStream()));
@@ -121,23 +121,18 @@ public class Game extends Thread implements ILog {
         do {
             // TODO Remove hardcoded max ID
             id = rand.nextInt(100);
-        } while (!App.CURRENT_GAMES.containsKey(id));
+        } while (App.CURRENT_GAMES.containsKey(id));
+
+        MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSize(args).getId());
+        Difficulty diff = bdd.getDifficultyById(Protocol.getFormatCreatePartyDifficulty(args).getId());
+
 
         // generate all fixedObstacle
-        List<Obstacle> ls = new ArrayList<Obstacle>();
-        // TODO Do global variable
-        for (int i = 0; i < 10; i++) {
-            //TODO get width and height via MapSizeId
-            ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+        for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
+            fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
 
-        //TODO get the difficulty as well
-        //TODO define the initial position
-        //TODO do it better
-        // MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
-        MapSize map = bdd.getMapSizeById(1);
-
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), ls, 5, 5, client));
+        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, 5, 5, diff, client));
     }
 
     private boolean login(String message) throws IOException {

@@ -197,14 +197,14 @@ public class Protocol {
         return getJsonParam(message, "param", "token");
     }
 
-    public static int getFormatCreatePartyDifficultyId(String message) {
+    public static Difficulty getFormatCreatePartyDifficulty(String message) {
         JSONObject object = new JSONObject(message);
-        return Integer.valueOf(object.getJSONObject("param").getString("difficulty"));
+        return new Difficulty(object.getJSONObject("param").getJSONObject("difficulty"));
     }
 
-    public static int getFormatCreatePartyMapSizeId(String message) {
+    public static MapSize getFormatCreatePartyMapSize(String message) {
         JSONObject object = new JSONObject(message);
-        return Integer.valueOf(object.getJSONObject("param").getString("mapSize"));
+        return new MapSize(object.getJSONObject("param").getJSONObject("mapSize"));
     }
 
     public static String getFormatLobbyToken(String message) {

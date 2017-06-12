@@ -1,15 +1,11 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import java.util.Observer;
 
-import javafx.geometry.Bounds;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.shape.Shape;
 
 /**
  * Represent a game item. It's mainly an ImageView node implementing collision detection.
@@ -82,7 +78,7 @@ public abstract class Item extends ImageView {
      * @param folder
      */
     protected void changeImage(String folder) {
-        Image image = new Image(getClass().getResource(Constants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
+        Image image = new Image(getClass().getResource(ClientConstants.IMG_FOLDER + folder + type + ".png").toString(), Constants.CELL_WIDTH, Constants.CELL_HEIGHT, true, true);
 
         setImage(image);
     }

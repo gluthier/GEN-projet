@@ -1,10 +1,7 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 
 /**
  * Represent a Player of the frogger
@@ -29,9 +26,9 @@ public class Player extends Item {
                 || getType() == Constants.ItemType.Skier
                 || getType() == Constants.ItemType.SkierRight
                 || getType() == Constants.ItemType.SkierDownFall) {
-            folder = Constants.PLAYER_FOLDER;
+            folder = ClientConstants.PLAYER_FOLDER;
         } else {
-            folder = Constants.OBSTACLE_FOLDER;
+            folder = ClientConstants.OBSTACLE_FOLDER;
         }
 
         changeImage(folder);

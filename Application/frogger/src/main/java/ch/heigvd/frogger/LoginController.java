@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.applet.Main;
 
 /**
  * FXML Controller class
@@ -58,6 +59,8 @@ public class LoginController implements Initializable {
             if (!MainApp.getTcpClient().login(username.getText(), password.getText())) {
                 password.getStyleClass().add("textFieldError");
             } else {
+                MainApp.getTcpClient().populateSettings(MainApp.getGameSettings());
+                MainApp.getGameSettings().setUsername(username.getText());
                 openLobby();
             }
         } catch (IOException ex) {

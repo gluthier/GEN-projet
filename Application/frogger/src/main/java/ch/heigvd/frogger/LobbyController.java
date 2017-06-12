@@ -76,6 +76,7 @@ public class LobbyController implements Initializable {
             }
 
             partiesGrid.add(vBox, column, row);
+            i++;
         }
     }
 
@@ -109,6 +110,14 @@ public class LobbyController implements Initializable {
 
     @FXML
     private void createParty(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CreateParty.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            MainApp.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 }

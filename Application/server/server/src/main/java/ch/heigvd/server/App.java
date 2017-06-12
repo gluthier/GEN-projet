@@ -47,6 +47,7 @@ public class App implements ILog {
     public static void main(String[] args) {
     	CONNECTED_USER = new HashMap<String, String>();
     	CURRENT_LOBBIES = new HashMap<Integer, Party>();
+    	CURRENT_GAMES = new HashMap<Integer, LaunchedGame>();
         App app = new App();
     }
 

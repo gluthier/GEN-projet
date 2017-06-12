@@ -1,11 +1,8 @@
 package ch.heigvd.frogger.item;
 
-import java.util.Observable;
-
-import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.Constants.ItemType;
-import ch.heigvd.frogger.GameFXMLController;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
+import ch.heigvd.protocol.Constants.ItemType;
 
 /**
  * @author Tony Clavien
@@ -19,6 +16,6 @@ public class Decoration extends Obstacle {
 
     @Override
     public void changeImage() {
-        changeImage(Constants.DECORATiON_FOLDER);
+        changeImage(ClientConstants.DECORATiON_FOLDER);
     }
 }

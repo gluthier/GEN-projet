@@ -5,8 +5,10 @@ import org.json.JSONObject;
 public class Party implements Sendable {
 
     public static enum FreeRole {
-        skier,
-        defender;
+        skier("Skieur"),
+        defender("Défendeur");
+
+        private String value;
 
         public static FreeRole fromString(String in) {
             if (in.equals("skier")) {
@@ -17,7 +19,14 @@ public class Party implements Sendable {
                 //TODO throw exception ?
                 return null;
             }
+        }
+        FreeRole(String value) {
+            this.value = value;
+        }
 
+        @Override
+        public String toString() {
+            return value;
         }
     }
 

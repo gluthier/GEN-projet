@@ -1,6 +1,6 @@
 package ch.heigvd.frogger;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.protocol.Constants;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;

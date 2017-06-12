@@ -2,6 +2,7 @@ package ch.heigvd.frogger;
 
 import ch.heigvd.protocol.Difficulty;
 import ch.heigvd.protocol.MapSize;
+import ch.heigvd.protocol.Party;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 public class GameSettings {
     private List<Difficulty> difficulties;
     private List<MapSize> mapSizes;
+    private String username;
+    private Party.FreeRole role;
 
     public List<MapSize> getMapSizes() {
         return mapSizes;
@@ -35,5 +38,21 @@ public class GameSettings {
 
     public void setDifficulties(List<Difficulty> difficulties) {
         this.difficulties = difficulties;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Party.FreeRole getRole() {
+        return role;
+    }
+
+    public void setRole(Party.FreeRole role) {
+        this.role = role;
     }
 }
