@@ -6,12 +6,14 @@ import ch.heig.bdd.Log;
 import ch.heig.bdd.User;
 import ch.heigvd.protocol.MapSize;
 import com.jfoenix.controls.JFXRadioButton;
+import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -46,6 +48,12 @@ public class FXMLController implements Initializable {
     private TextField initialPlayerX;
     @FXML
     private TextField initialPlayerY;
+    @FXML
+    private Label mapSizeNom;
+    @FXML
+    private JFXTextField mapSizeHeight;
+    @FXML
+    private JFXTextField mapSizeWidth;
 
     public FXMLController() {
         bdd = BDD.getInstance();
@@ -123,10 +131,20 @@ public class FXMLController implements Initializable {
 
     private void updateMapSize(int id) {
         idMapSizeEdited = id;
+        
+        MapSize map = bdd.getMapSizeById(idMapSizeEdited);
+        mapSizeNom.setText(map.getName());
+        mapSizeHeight.setText(String.valueOf(map.getHeight()));
+        mapSizeWidth.setText(String.valueOf(map.getWidth()));
 
         System.out.println(idMapSizeEdited);
     }
 
+    @FXML
+    private void setMapSize() {
+        // TODO
+    }
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Nothing

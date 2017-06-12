@@ -2,7 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
-<?import javafx.scene.Cursor?>
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.ScrollPane?>
@@ -36,7 +36,7 @@
                                         </AnchorPane>
                                     </content>
                                 </ScrollPane>
-                                <JFXButton layoutX="14.0" layoutY="14.0" onAction="#logUpdate" style="-fx-background-color: lightblue;" text="Refresh&#10;" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS"></JFXButton>
+                                <JFXButton layoutX="14.0" layoutY="14.0" onAction="#logUpdate" style="-fx-background-color: lightblue;" text="Refresh&#10;" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS" />
                                 <ProgressIndicator fx:id="logProgress" layoutX="76.0" layoutY="14.0" progress="0.0" />
                             </children>
                         </AnchorPane>
@@ -105,9 +105,17 @@
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                             <children>
-                                <JFXButton layoutX="34.0" layoutY="30.0" onAction="#updateMapSizeSmall" style="-fx-background-color: lightblue;" text="Small" />
-                                <JFXButton layoutX="115.0" layoutY="30.0" onAction="#updateMapSizeMedium" style="-fx-background-color: lightblue;" text="Medium" />
-                                <JFXButton layoutX="208.0" layoutY="30.0" onAction="#updateMapSizeMarge" style="-fx-background-color: lightblue;" text="Large" />
+                                <JFXButton layoutX="205.0" layoutY="30.0" onAction="#updateMapSizeSmall" style="-fx-background-color: lightblue;" text="Small" />
+                                <JFXButton layoutX="286.0" layoutY="30.0" onAction="#updateMapSizeMedium" style="-fx-background-color: lightblue;" text="Medium" />
+                                <JFXButton layoutX="379.0" layoutY="30.0" onAction="#updateMapSizeMarge" style="-fx-background-color: lightblue;" text="Large" />
+                        <Label layoutX="29.0" layoutY="34.0" text="Séléctionnez la taille à modifier" />
+                        <Label layoutX="29.0" layoutY="134.0" text="Hauteur" />
+                        <Label layoutX="29.0" layoutY="172.0" text="Largeur" />
+                        <JFXTextField fx:id="mapSizeHeight" layoutX="112.0" layoutY="130.0" />
+                        <JFXTextField fx:id="mapSizeWidth" layoutX="112.0" layoutY="168.0" />
+                        <Label layoutX="29.0" layoutY="95.0" text="Nom actuelle" />
+                        <Label fx:id="mapSizeNom" layoutX="112.0" layoutY="95.0" />
+                        <JFXButton layoutX="29.0" layoutY="225.0" onAction="#setMapSize" style="-fx-background-color: lightblue;" text="Mettre à jour" />
                             </children>
                         </AnchorPane>
                     </content>
