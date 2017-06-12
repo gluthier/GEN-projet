@@ -5,6 +5,7 @@ import ch.heig.bdd.Config;
 import ch.heig.bdd.Log;
 import ch.heig.bdd.User;
 import ch.heigvd.protocol.MapSize;
+import com.jfoenix.controls.JFXRadioButton;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ public class FXMLController implements Initializable {
     private static final String SPACE = "      ";
 
     private final BDD bdd;
+    private int idMapSizeEdited;
     @FXML
     private GridPane logGrid;
     @FXML
@@ -44,8 +46,6 @@ public class FXMLController implements Initializable {
     private TextField initialPlayerX;
     @FXML
     private TextField initialPlayerY;
-    @FXML
-    private GridPane gridMapSize;
 
     public FXMLController() {
         bdd = BDD.getInstance();
@@ -107,21 +107,24 @@ public class FXMLController implements Initializable {
     }
 
     @FXML
-    private void updateMapSite() {
-        MapSize mapSize = null;
+    private void updateMapSizeSmall() {
+        updateMapSize(2);
+    }
 
-        gridMapSize.add(new Text("ID"), 0, 0);
-        gridMapSize.add(new Text("NAME"), 1, 0);
-        gridMapSize.add(new Text("WIDTH"), 2, 0);
-        gridMapSize.add(new Text("HEIGHT"), 3, 0);
+    @FXML
+    private void updateMapSizeMedium() {
+        updateMapSize(1);
+    }
 
-        for (int i = 1; i <= 3; i++) {
-            mapSize = bdd.getMapSizeById(i);
-            gridMapSize.add(new Text(String.valueOf(mapSize.getId())), 0, i);
-            gridMapSize.add(new Text(String.valueOf(mapSize.getName())), 1, i);
-            gridMapSize.add(new Text(String.valueOf(mapSize.getHeight())), 2, i);
-            gridMapSize.add(new Text(String.valueOf(mapSize.getWidth())), 3, i);
-        }
+    @FXML
+    private void updateMapSizeMarge() {
+        updateMapSize(3);
+    }
+
+    private void updateMapSize(int id) {
+        idMapSizeEdited = id;
+
+        System.out.println(idMapSizeEdited);
     }
 
     @Override
