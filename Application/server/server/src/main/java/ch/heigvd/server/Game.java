@@ -121,17 +121,18 @@ public class Game extends Thread implements ILog {
         do {
             // TODO Remove hardcoded max ID
             id = rand.nextInt(100);
-        } while (App.CURRENT_GAMES.containsKey(id));
+        } while (App.CURRENT_LOBBIES.containsKey(id));
 
-        MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSize(args).getId());
-        Difficulty diff = bdd.getDifficultyById(Protocol.getFormatCreatePartyDifficulty(args).getId());
+        Party party = Protocol.getFormatCreateParty(args);
+        MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
+        Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
 
 
         // generate all fixedObstacle
         for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
             fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
-
+        App.CURRENT_LOBBIES.put(id, party);
         App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, 5, 5, diff, client));
     }
 

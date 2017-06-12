@@ -193,18 +193,21 @@ public class Protocol {
         return getJsonParam(message, "param", "time");
     }
 
+    public static Party getFormatCreateParty(String message) {
+        JSONObject object = new JSONObject(message);
+        return new Party(object.getJSONObject("param").getJSONObject("party"));
+    }
+
     public static String getFormatCreatePartyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
 
     public static Difficulty getFormatCreatePartyDifficulty(String message) {
-        JSONObject object = new JSONObject(message);
-        return new Difficulty(object.getJSONObject("param").getJSONObject("party").getJSONObject("difficulty"));
+        return getFormatCreateParty(message).getDifficulty();
     }
 
     public static MapSize getFormatCreatePartyMapSize(String message) {
-        JSONObject object = new JSONObject(message);
-        return new MapSize(object.getJSONObject("param").getJSONObject("party").getJSONObject("mapSize"));
+        return getFormatCreateParty(message).getMapSize();
     }
 
     public static String getFormatLobbyToken(String message) {
