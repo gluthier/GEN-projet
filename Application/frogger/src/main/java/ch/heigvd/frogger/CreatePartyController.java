@@ -65,6 +65,7 @@ public class CreatePartyController implements Initializable {
         Party party = new Party(-1, settings.getUsername(), diff, mapSize, freeRole);
         try {
             MainApp.getTcpClient().createParty(party);
+            MainApp.getTcpClient().startGame();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
             Parent root = loader.load();
 

@@ -199,12 +199,12 @@ public class Protocol {
 
     public static Difficulty getFormatCreatePartyDifficulty(String message) {
         JSONObject object = new JSONObject(message);
-        return new Difficulty(object.getJSONObject("param").getJSONObject("difficulty"));
+        return new Difficulty(object.getJSONObject("param").getJSONObject("party").getJSONObject("difficulty"));
     }
 
     public static MapSize getFormatCreatePartyMapSize(String message) {
         JSONObject object = new JSONObject(message);
-        return new MapSize(object.getJSONObject("param").getJSONObject("mapSize"));
+        return new MapSize(object.getJSONObject("param").getJSONObject("party").getJSONObject("mapSize"));
     }
 
     public static String getFormatLobbyToken(String message) {
