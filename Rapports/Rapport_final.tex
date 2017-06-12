@@ -9,7 +9,7 @@
 \newcommand\partageTache{\item[\textit{Partage des t\^aches :}]}
 \newcommand\effort{\item[\textit{Effort :}]}
 
-\documentclass[a4paper,11pt]{article}
+\documentclass[a4paper,12pt]{article}
 %
 \author{\auteur}
 \title{\titre}
@@ -127,7 +127,7 @@
 	
 	
 	\subsection{Utilisation de l'applicatif}
-	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier ($\leftarrow \downarrow \rightarrow$) et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait que l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
+	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier ($\leftarrow$: à gauche, $\downarrow $: en bas, $\rightarrow$: à droite) et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait que l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
 	
 	L'administrateur peut régler les paramètres du jeu (« skin » du jeu, vitesse des obstacles, vitesse de rechargement de la bouteille de Fendant\texttrademark). L'administrateur est un rôle hérité de celui de joueur (un administrateur est donc avant tout un joueur). Ce droit est stocké dans la base de données.
 	
@@ -433,20 +433,25 @@
 	La création des obstacles dynamiques qui sont créés par le 2ème joueur (à l'aide de son clavier) a été mise en place. Les collisions avec le skier ont aussi été développée, mais le code n'a pas encore été mergé à ce moment là et les deux fonctionnalités marchent, mais séparément. La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX}	a été choisie et testée pour effectuer nos tests fonctionnant avec JavaFX. Pas de replanification a été faite, mais le bug des collisions devra être corrigé par la suite.
 	
 	\subsubsection{Itération 4: Mise en place des logiques de jeu}
-	Remise en question générale et changement du déplacement du skieur pour rendre la détection des collisions plus facile et aussi par anticipation à la mise en place du serveur. En effet, comme c'est lui qui devra gérer la logique du jeu, on diminue ainsi le nombre de requêtes qui lui seront transmises. Une grosse partie de travail effectué lors de cette itération à été de changer le fonctionnement interne du jeu, l'ajout de nouvelles fonctionnalités en a donc péri. \\
+	Remise en question générale et changement du déplacement du skieur pour rendre la détection des collisions plus facile et aussi par anticipation à la mise en place du serveur. En effet, comme c'est lui qui devra gérer la logique du jeu, on diminue ainsi le nombre de requêtes qui lui seront transmises. Une grosse partie de travail effectué lors de cette itération à été de changer le fonctionnement interne du jeu, l'ajout de nouvelles fonctionnalités en a donc péri.
+	
 	Cette fois-ci, une replanification est nécessaire. Les trois cas d'utilisation qui auraient du être développé se voient partagé dans les itérations suivantes. L'UC \textit{Jouer une partie} et l'UC \textit{S'identifie} sont reporté à l'itération 5 tandis que l'UC \textit{Voir ses statistiques} se reporte à l'itération 6.
 	
 	\subsubsection{Itération 5: Ajout de la communication avec le serveur}
-	Cette itération nous a pris beaucoup plus de temps que prévu. On a décider de se concentrer sur le case d'utilisation \textit{Jouer une partie}, qui constitue le cœur du jeu. Il a été possible de finaliser ce case d'utilisation, mais cela nous a demandé de refactorer presque l'ensemble du projet pour implémenter les collisions entre les obstacles, la logique de victoire/défaite d'une partie et l'interface pour pouvoir relancer une partie. \\
-	L'UC \textit{S'identifie} a quand même été entamée. La base de donnée qui contiendra les intormations des utilisateurs, les logs ainsi que les paramètres du jeux a été mise en place. Il reste cependant à faire communiquer le client avec le serveur pour effectivement pouvoir s'identifier. \\
+	Cette itération nous a pris beaucoup plus de temps que prévu. On a décider de se concentrer sur le case d'utilisation \textit{Jouer une partie}, qui constitue le cœur du jeu. Il a été possible de finaliser ce case d'utilisation, mais cela nous a demandé de refactorer presque l'ensemble du projet pour implémenter les collisions entre les obstacles, la logique de victoire/défaite d'une partie et l'interface pour pouvoir relancer une partie.
+	
+	L'UC \textit{S'identifie} a quand même été entamée. La base de donnée qui contiendra les intormations des utilisateurs, les logs ainsi que les paramètres du jeux a été mise en place. Il reste cependant à faire communiquer le client avec le serveur pour effectivement pouvoir s'identifier.
+	
 	Pour pouvoir finir ce cas d'utilisation, on effectue une replanification et déplace l'UC \textit{S'identifie} à l'itération suivante (la 6).
 	
 	\subsubsection{Itération 6: Application administrateur}
-	L'application de l'interface d'administration est développée avec une interface sommaire pour le moment. Un affichage des logs du serveur avec un système d'ID pour le suivi de chaque instance (de chaque joueur qui se connecte au serveur) est implémenté. L'interface du login est aussi mis en place, mais la communication avec le serveur est toujours pas fonctionnelle. Un gros travail sur les divers éléments de communication est fournis, mais rien n'est encore fonctionnel à 100\%. \\
+	L'application de l'interface d'administration est développée avec une interface sommaire pour le moment. Un affichage des logs du serveur avec un système d'ID pour le suivi de chaque instance (de chaque joueur qui se connecte au serveur) est implémenté. L'interface du login est aussi mis en place, mais la communication avec le serveur est toujours pas fonctionnelle. Un gros travail sur les divers éléments de communication est fournis, mais rien n'est encore fonctionnel à 100\%.
+	
 	Une replanification est faite pour reporter tous les cas d'utilisation qui nécessitent de communiquer avec le serveur à l'itération suivante.
 	
 	\subsubsection{Itération 7: Ajout du Lobby}
-	Les paramètres des jeux sont maintenant configurable dans un onglet dans l'interface administrateur. Tous ces paramètres sont fonctionnels, enregistrés dans la base de données et communiqués par la suite au client par le serveur. Le principal du travail a été fournis sur le backend, il n'y a donc pas grand chose de nouveau à montrer. Le problème principal est que tout a été très bien avancé, mais rien à 100\%. On a donc pour l'instant une application qui n'est pas fonctionnelle. \\
+	Les paramètres des jeux sont maintenant configurable dans un onglet dans l'interface administrateur. Tous ces paramètres sont fonctionnels, enregistrés dans la base de données et communiqués par la suite au client par le serveur. Le principal du travail a été fournis sur le backend, il n'y a donc pas grand chose de nouveau à montrer. Le problème principal est que tout a été très bien avancé, mais rien à 100\%. On a donc pour l'instant une application qui n'est pas fonctionnelle.
+	
 	La replanification est plutôt simple: on reporte tout pour la dernière itération.
 	
 	\subsubsection{Itération 8: Finalisation}
@@ -481,11 +486,11 @@
 	%
 	\section{Auto-critique}
 	
+	Notre principale difficulté à été de commencer à développer l'application en local puis ensuite de vouloir la transformer pour pouvoir jouer à travers un serveur. Beaucoup d'effort a été fourni pour la rendre fonctionnel à deux joueurs sur un ordinateur et il a fallu presque tout refaire la logique du jeu pour pouvoir communiquer avec le serveur.
 	
-	\begin{enumerate}
-		\item Relativement à votre solution technique, votre gestion de projet, votre plan d'itération
-		\item Ce que vous auriez pu améliorer et comment
-	\end{enumerate}
+	Un autre aspect qu'on aurait pu mieux faire a été notre dispersion. Au fil des itérations et surtout des replanifications, la charge de travail c'est accumulée et on avait de plus en plus de fonctionnalités à développer. Au lieu de se focaliser sur l'essentiel, on a profité d'être 4 et à chaque fois on a partagé le travail dans l'espoir de tout finir. Il en a suivit que presque toutes les fonctionnalités que l'on avait prévu lors de la planification du projet ont été commencé, mais la plus part ne sont pas fonctionnelle à 100\%.
+	
+	On a aussi eu plus de peine à gérer la fin de semestre et tous les rendus des autres cours qui viennent en même temps. Pour améliorer ça, on aurait pu, lors des replanifications, oser redéfinir les fonctionnalités pour enlever celles qui ne sont pas essentielles (notamment les statistiques ou le lobby par exemple) pour pouvoir se concentrer sur l'aboutissement du cœur du jeu.
 
 
 	%
