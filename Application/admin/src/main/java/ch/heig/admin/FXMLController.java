@@ -4,6 +4,7 @@ import ch.heig.bdd.BDD;
 import ch.heig.bdd.Config;
 import ch.heig.bdd.Log;
 import ch.heig.bdd.User;
+import ch.heigvd.protocol.MapSize;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -13,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
@@ -42,6 +44,8 @@ public class FXMLController implements Initializable {
     private TextField initialPlayerX;
     @FXML
     private TextField initialPlayerY;
+    @FXML
+    private GridPane gridMapSize;
 
     public FXMLController() {
         bdd = BDD.getInstance();
@@ -100,6 +104,24 @@ public class FXMLController implements Initializable {
                 Integer.valueOf(initialPlayerY.getText())
         );
         bdd.setConfig(config);
+    }
+
+    @FXML
+    private void updateMapSite() {
+        MapSize mapSize = null;
+
+        gridMapSize.add(new Text("ID"), 0, 0);
+        gridMapSize.add(new Text("NAME"), 1, 0);
+        gridMapSize.add(new Text("WIDTH"), 2, 0);
+        gridMapSize.add(new Text("HEIGHT"), 3, 0);
+
+        for (int i = 1; i <= 3; i++) {
+            mapSize = bdd.getMapSizeById(i);
+            gridMapSize.add(new Text(String.valueOf(mapSize.getId())), 0, i);
+            gridMapSize.add(new Text(String.valueOf(mapSize.getName())), 1, i);
+            gridMapSize.add(new Text(String.valueOf(mapSize.getHeight())), 2, i);
+            gridMapSize.add(new Text(String.valueOf(mapSize.getWidth())), 3, i);
+        }
     }
 
     @Override
