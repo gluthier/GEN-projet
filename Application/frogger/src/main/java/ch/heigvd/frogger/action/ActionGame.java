@@ -1,6 +1,9 @@
 package ch.heigvd.frogger.action;
 
-import ch.heigvd.frogger.GameController;
+import ch.heigvd.frogger.controllers.ClientController;
+import ch.heigvd.frogger.MainApp;
+import ch.heigvd.frogger.controllers.IController;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,15 +25,15 @@ public class ActionGame implements Actions {
     
     @Override
     public void act() {
-            GameController gc = null;
+            IController controller = null;
             try {
-                gc = GameController.getInstance();
+                controller = MainApp.getController();
             } catch (Exception e) {
                 Logger.getLogger(ActionAttack.class.getName()).log(Level.SEVERE, null, e);
             }
             switch (action) {
                 case RESTART:
-                    gc.restartGame();
+                    controller.restartGame();
                     break;
                 default:
                     break;

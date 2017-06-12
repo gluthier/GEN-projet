@@ -36,7 +36,7 @@ public class LaunchedGame {
 	 private final int id;
 	//TODO put clients here
 	
-	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY,Socket client1) {
+	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY, Socket client1) {
 		fixedObstacle = obstacles;
 		dynamicObstacle = new ArrayList<Obstacle>();
 		this.mapHeight = mapHeight;

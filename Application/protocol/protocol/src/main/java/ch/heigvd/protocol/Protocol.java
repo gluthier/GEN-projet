@@ -2,6 +2,7 @@ package ch.heigvd.protocol;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,23 +27,10 @@ public class Protocol {
         right,
         left,
         bottom;
-
-        public static Direction fromString(String in) {
-            if (in.equals("right")) {
-                return Direction.right;
-            } else if (in.equals("left")) {
-                return Direction.left;
-            } else if (in.equals("bottom")) {
-                return Direction.bottom;
-            } else {
-                // throw exepction ?
-                return null;
-            }
-        }
     }
 
     // TODO enum of all commands
-    public static enum command {
+    public static enum command implements Sendable {
         login("login"),
         getlobby("get-lobby"),
         join("join"),
@@ -51,6 +39,7 @@ public class Protocol {
         skierWon("skier-won"),
         vaudoisWon("vaudois-won"),
         skierPosition("skier-position"),
+        obstaclesPositions("obstacles-positions"),
         createParty("create-party"),
         startParty("start-party");
 
@@ -64,42 +53,29 @@ public class Protocol {
         public String toString() {
             return value;
         }
-        
-    }
 
-    /**
-     * Prepare the request to ask the client to login
-     *
-     * @param isLogged
-     * @return
-     */
-    public static String formatRequestLogin(boolean isLogged) {
-        JSONObject json = new JSONObject();
-        json.put("logged", isLogged);
-        return json.toString();
-    }
-
-    /**
-     * Get the server response if the login is correct
-     *
-     * @param message
-     * @return
-     */
-    public static boolean getRequestLogin(String message) {
-        JSONObject json = new JSONObject(message);
-        if ("true".equals(getJsonParam(message, "param", "logged"))) {
-            return true;
+        @Override
+        public JSONObject toJson() {
+            return null;
         }
-        return false;
+
+        public static command fromString(String string) {
+            for (command c : values()) {
+                if (c.value.equals(string)) {
+                    return c;
+                }
+            }
+            return null;
+        }
     }
 
-    public static String formatArraytoJson(List<Sendable> ls) {
+    public static <T extends Sendable> String formatArraytoJson(Collection<T> ls) {
         JSONArray array = new JSONArray();
         for (Sendable s : ls) {
             array.put(s.toJson());
         }
 
-        return array.toString();
+        return array.toString() + "\n";
     }
 
     public static String getJsonParam(String message, String object, String param) {
@@ -122,7 +98,7 @@ public class Protocol {
         param.put("user", user);
         param.put("password", Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString());
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatLoginUser(String message) {
@@ -136,7 +112,7 @@ public class Protocol {
     public static String formatWrongLoginAnswer() {
         JSONObject json = new JSONObject();
         json.put("token", "");
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String formatLoginAnswer(String token, List<Difficulty> difficulty, List<MapSize> map) {
@@ -149,11 +125,11 @@ public class Protocol {
         json.put("difficulties", difficultyArray);
         JSONArray mapArray = new JSONArray();
         for (MapSize m : map) {
-            difficultyArray.put(m.toJson());
+            mapArray.put(m.toJson());
         }
         json.put("mapSizes", mapArray);
 
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatLoginToken(String message) {
@@ -186,20 +162,19 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("token", token);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
-    
-    public static String formatCreateParty(String token, Difficulty diff, MapSize map) {
+
+    public static String formatCreateParty(String token, Party party) {
         JSONObject json = new JSONObject();
         json.put("command", command.createParty);
         JSONObject param = new JSONObject();
         param.put("token", token);
-        param.put("difficulty", diff.getName());
-        param.put("mapSize", map.getId());
+        param.put("party", party.toJson());
         json.put("param", param);
         return json.toString();
     }
-    
+
     public static String formatStartGame(String id, LocalTime time) {
         JSONObject json = new JSONObject();
         json.put("command", command.startParty);
@@ -209,32 +184,34 @@ public class Protocol {
         json.put("param", param);
         return json.toString();
     }
-    
+
     public static String getFormatStartGameId(String message) {
         return getJsonParam(message, "param", "id");
     }
-    
+
     public static String getFormatStartGameTime(String message) {
         return getJsonParam(message, "param", "time");
     }
-    
+
     public static String getFormatCreatePartyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
-    
-    public static String getFormatCreatePartyDifficulty(String message) {
-        return getJsonParam(message, "param", "difficulty");
+
+    public static int getFormatCreatePartyDifficultyId(String message) {
+        JSONObject object = new JSONObject(message);
+        return Integer.valueOf(object.getJSONObject("param").getString("difficulty"));
     }
-    
-    public static String getFormatCreatePartyMapSize(String message) {
-        return getJsonParam(message, "param", "mapSize");
+
+    public static int getFormatCreatePartyMapSizeId(String message) {
+        JSONObject object = new JSONObject(message);
+        return Integer.valueOf(object.getJSONObject("param").getString("mapSize"));
     }
 
     public static String getFormatLobbyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
 
-    public static String formatLobbyAnswer(List<Sendable> parties) {
+    public static String formatLobbyAnswer(Collection<Party> parties) {
         return formatArraytoJson(parties);
     }
 
@@ -255,7 +232,7 @@ public class Protocol {
         param.put("token", token);
         param.put("id", id);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String getFormatJoinToken(String message) {
@@ -266,17 +243,36 @@ public class Protocol {
         return getJsonParam(message, "param", "id");
     }
 
-    public static String formatJoinAnswer(List<Sendable> ls) {
+    public static String formatJoinAnswer(Collection<Obstacle> ls) {
         return formatArraytoJson(ls);
     }
 
     public static List<Obstacle> getFormatJoinObstacle(String message) {
         JSONArray array = new JSONObject(message).getJSONArray("fixedObstacles");
+        return getObstacles(array);
+    }
+
+    public static List<Obstacle> getFormatDynamicObstacles(String message) {
+        JSONArray array = new JSONObject(message).getJSONArray("dynamicObstacles");
+        return getObstacles(array);
+    }
+
+    private static List<Obstacle> getObstacles(JSONArray array) {
         List<Obstacle> obstacles = new LinkedList<Obstacle>();
         for (int i = 0; i < array.length(); i++) {
             obstacles.add(new Obstacle(array.getJSONObject(i)));
         }
         return obstacles;
+    }
+
+    public static command getFormatCommand(String message) {
+        JSONObject json = new JSONObject(message);
+        return command.fromString(json.getString("command"));
+    }
+
+    public static Skier getFormatSkier(String message) {
+        JSONObject json = new JSONObject(message);
+        return (Skier) json.get("skier");
     }
 
     public static String formatMoveSend(Direction dir) {
@@ -285,11 +281,11 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("direction", dir);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static Direction getFormatMove(String message) {
-        return Direction.fromString(getJsonParam(message, "param", "direction"));
+        return Direction.valueOf(getJsonParam(message, "param", "direction"));
     }
 
     public static String formatNewDynamicObstacle(int row) {
@@ -298,9 +294,9 @@ public class Protocol {
         JSONObject param = new JSONObject();
         param.put("row", row);
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     // TODO send skier coordinate
-    // TODO send new Dynamic obstacle coordinate
+    // TODO send Dynamic obstacle coordinate
 }

@@ -47,4 +47,17 @@ public class MapSize implements Sendable{
 		json.put("height", height);
 		return json;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		MapSize mapSize = (MapSize) o;
+
+		if (getId() != mapSize.getId()) return false;
+		if (getWidth() != mapSize.getWidth()) return false;
+		if (getHeight() != mapSize.getHeight()) return false;
+		return getName().equals(mapSize.getName());
+	}
 }

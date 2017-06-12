@@ -54,6 +54,10 @@ public class BDDTest extends TestCase implements ILog {
     /**
      * LOGIN
      */
+    public void testCorrectLogin() {
+        assertTrue(bdd.testLogin("test", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", ilog));
+    }
+
     public void testCorrectLoginWronPassword() {
         assertFalse(bdd.testLogin("test", "1212", ilog));
     }

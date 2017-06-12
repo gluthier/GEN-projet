@@ -18,3 +18,12 @@
     -fx-stroke: black;
     -fx-stroke-width: 1;
 }
+
+.textFieldError {
+    -fx-text-box-border: red ;
+    -fx-focus-color: red ;
+}
+
+.buttonJoin {
+     -fx-background-color: #b2ff8c;
+}

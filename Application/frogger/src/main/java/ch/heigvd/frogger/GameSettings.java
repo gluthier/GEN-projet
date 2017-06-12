@@ -24,6 +24,15 @@ public class GameSettings {
         return difficulties;
     }
 
+    public Difficulty getDifficultyById(int id) {
+        for (Difficulty d : difficulties) {
+            if (d.getId() == id) {
+                return d;
+            }
+        }
+        return null;
+    }
+
     public void setDifficulties(List<Difficulty> difficulties) {
         this.difficulties = difficulties;
     }

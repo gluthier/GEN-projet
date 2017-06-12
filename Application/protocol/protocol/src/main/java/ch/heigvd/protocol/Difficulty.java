@@ -61,4 +61,19 @@ public class Difficulty implements Sendable{
 		
 		return json;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Difficulty that = (Difficulty) o;
+
+		if (getId() != that.getId()) return false;
+		if (getManaRegenerationSpeed() != that.getManaRegenerationSpeed()) return false;
+		if (getPlayerMoveSpeed() != that.getPlayerMoveSpeed()) return false;
+		if (getObstacleMoveSpeed() != that.getObstacleMoveSpeed()) return false;
+		if (getObstacleWidth() != that.getObstacleWidth()) return false;
+		return getName().equals(that.getName());
+	}
 }

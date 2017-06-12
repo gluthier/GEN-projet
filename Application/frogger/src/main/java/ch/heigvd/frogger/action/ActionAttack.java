@@ -1,14 +1,13 @@
 package ch.heigvd.frogger.action;
 
-import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.GameController;
+import ch.heigvd.frogger.MainApp;
+import ch.heigvd.frogger.controllers.GameController;
 import ch.heigvd.frogger.ItemClock;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.controllers.IController;
+import sun.applet.Main;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 /**
  * Define Attack action for Player 1
@@ -37,21 +36,21 @@ public class ActionAttack implements Actions {
     @Override
     public void act() {
         if (ItemClock.getInstance().isRunning()) {
-            GameController gc = null;
+            IController controller = null;
             try {
-                gc = GameController.getInstance();
+                controller = MainApp.getController();
             } catch (Exception e) {
                 Logger.getLogger(ActionAttack.class.getName()).log(Level.SEVERE, null, e);
             }
             switch (move) {
                 case LEFT:
-                    gc.movePlayerLeft();
+                    controller.movePlayerLeft();
                     break;
                 case DOWN:
-                    gc.movePlayerDown();
+                    controller.movePlayerDown();
                     break;
                 case RIGHT:
-                    gc.movePlayerRight();
+                    controller.movePlayerRight();
                     break;
                 default:
                     break;

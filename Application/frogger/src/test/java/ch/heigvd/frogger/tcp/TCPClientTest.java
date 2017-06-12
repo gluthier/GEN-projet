@@ -1,8 +1,10 @@
 package ch.heigvd.frogger.tcp;
 
 import ch.heigvd.frogger.GameSettings;
+import ch.heigvd.frogger.item.Obstacle;
 import ch.heigvd.protocol.Difficulty;
 import ch.heigvd.protocol.MapSize;
+import ch.heigvd.protocol.Party;
 import ch.heigvd.protocol.Protocol;
 import com.google.common.hash.Hashing;
 import org.junit.After;
@@ -12,11 +14,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +28,19 @@ import static org.mockito.Mockito.mock;
  * Created by lognaume on 5/30/17.
  */
 public class TCPClientTest {
+
+    private TCPClient client;
+    private Socket socket;
+    private ByteArrayOutputStream byteArrayOutputStream;
+
     @Before
     public void setUp() throws Exception {
+        // Using Mockito
+        socket = Mockito.mock(Socket.class);
+        byteArrayOutputStream = new ByteArrayOutputStream();
+        Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
+
+        client = new TCPClient("address", 1234);
     }
 
     @After
@@ -42,15 +53,10 @@ public class TCPClientTest {
 
     @Test
     public void loginSendCorrectJSon() throws IOException {
-        // Using Mockito
-        final Socket socket = Mockito.mock(Socket.class);
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
-
+        // Build server's response
         final InputStream inputStream = new ByteArrayInputStream("".getBytes());
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
 
-        TCPClient client = new TCPClient("address", 1234);
         client.connect(socket);
 
         try {
@@ -58,20 +64,15 @@ public class TCPClientTest {
         } catch (Exception e) {
         }
 
-        Assert.assertEquals(Protocol.formatLoginSend("toto","1234"), byteArrayOutputStream.toString());
+        Assert.assertEquals(Protocol.formatLoginSend("toto", "1234"), byteArrayOutputStream.toString());
     }
 
     @Test
     public void wrongLogin() throws IOException {
-        // Using Mockito
-        final Socket socket = Mockito.mock(Socket.class);
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
-
+        // Build server's response
         final InputStream inputStream = new ByteArrayInputStream(Protocol.formatWrongLoginAnswer().getBytes());
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
 
-        TCPClient client = new TCPClient("address", 1234);
         client.connect(socket);
 
         Assert.assertFalse(client.login("toto", "1234"));
@@ -79,18 +80,13 @@ public class TCPClientTest {
 
     @Test
     public void correctLogin() throws IOException {
-        // Using Mockito
-        final Socket socket = Mockito.mock(Socket.class);
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
-
         final List<Difficulty> difficultyList = new LinkedList<>();
         final List<MapSize> mapSizes = new LinkedList<>();
 
+        // Build server's response
         final InputStream inputStream = new ByteArrayInputStream(Protocol.formatLoginAnswer("tok", difficultyList, mapSizes).getBytes());
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
 
-        TCPClient client = new TCPClient("address", 1234);
         client.connect(socket);
 
         Assert.assertTrue(client.login("toto", "1234"));
@@ -101,23 +97,47 @@ public class TCPClientTest {
         // To receive the settings
         GameSettings settings = new GameSettings();
 
-        // Using Mockito
-        final Socket socket = Mockito.mock(Socket.class);
-        final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        Mockito.when(socket.getOutputStream()).thenReturn(byteArrayOutputStream);
-
         final List<Difficulty> difficultyList = new LinkedList<>();
         final List<MapSize> mapSizes = new LinkedList<>();
 
+        // Build server's response
         final InputStream inputStream = new ByteArrayInputStream(Protocol.formatLoginAnswer("tok", difficultyList, mapSizes).getBytes());
         Mockito.when(socket.getInputStream()).thenReturn(inputStream);
 
-        TCPClient client = new TCPClient("address", 1234);
         client.connect(socket);
 
         Assert.assertTrue(client.login("toto", "1234"));
         client.populateSettings(settings);
         Assert.assertEquals(difficultyList, settings.getDifficulties());
         Assert.assertEquals(mapSizes, settings.getMapSizes());
+    }
+
+    @Test
+    public void connectToLobbyReturnsCorrectPartyList() throws IOException {
+
+        Difficulty diffEasy = new Difficulty(0, "Easy", 1, 1, 1, 1);
+        Difficulty diffMedium = new Difficulty(1, "Medium", 1, 1, 1, 1);
+        Difficulty diffHard = new Difficulty(2, "Hard", 1, 1, 1, 1);
+
+        MapSize ms = new MapSize(0, "Small", 800, 600);
+
+        final List<Party> partyList = new LinkedList<>();
+        partyList.add(new Party(0, "Player1", diffEasy, ms, Party.FreeRole.defender));
+        partyList.add(new Party(1, "Player2", diffMedium, ms, Party.FreeRole.defender));
+        partyList.add(new Party(2, "Player3", diffHard, ms, Party.FreeRole.skier));
+
+        // Build server's response
+        final InputStream inputStream = new ByteArrayInputStream(Protocol.formatLobbyAnswer(partyList).getBytes());
+        Mockito.when(socket.getInputStream()).thenReturn(inputStream);
+
+        client.connect(socket);
+
+        List<Party> partiesRead = client.connectToLobby();
+        
+        assertEquals(partyList, partiesRead);
+    }
+
+    @Test
+    public void connectToPartyReturnsCorrectObstacleList() throws IOException {
     }
 }
