@@ -89,6 +89,7 @@
 	% \hrule
 
 	\tableofcontents
+	
 	\listoffigures
 
 	% On a pas de tableau
@@ -96,41 +97,203 @@
 
 	\newpage
 	
+	%
+	% INTRODUCTION
+	%	
 	\section{Introduction}
 	
 	
-	\section{Analayse}
+	Dans le cadre du cours GEN (Génie logiciel), nous allons créer une application client-serveur par groupe de 4 personnes. Nous avons choisi de développer un jeu reprenant le jeu \textit{Frogger} qui consiste à faire traverser des routes pleines de trafic à une grenouille sans se faire écraser. 
+	
+	
+	%
+	% FONCTIONNEMENT GENERAL DU JEU
+	%	
+	\section{Fonctionnement général du jeu}
+	
+	
+	\subsection{Objectifs de base}
+	Le but de ce projet est de réaliser une application client-serveur dans le cadre du cours GEN. Nous avons décidé de proposer un jeu de type « Frogger » en version valaisanne. \par
+	
+	Le but du jeu sera de faire descendre une piste de ski à un Valaisan (\textit{joueur skieur}). Il devra éviter les obstacles la traversant qui seront envoyé par le \textit{défenseur}.
+	
+	\begin{figure}[h!]
+		\centering
+		\fbox{\includegraphics[scale=0.7]{../Screenshots/demo_annotation.png}}
+		\caption{Maquette d'une partie}
+		\label{fig:maquette}
+	\end{figure}
+	
+	Les zones rouges sont les zones à disposition du joueur 2 pour placer les obstacles, les sapins sont des obstacles fixes. Le joueur 1 gagne s'il atteint la zone en vert sans heurter d'obstacle.
+	
+	
+	\subsection{Utilisation de l'applicatif}
+	Le joueur 1 contrôle son personnage à l'aide des flèches du clavier ($\leftarrow \downarrow \rightarrow$) et tente d'éviter les obstacles. Le joueur 2 place les obstacles dans les colonnes, ceci fait que l'obstacle se met en mouvement dans la colonne. Une bouteille de Fendant\texttrademark se vide au fur et à mesure que le joueur 2 place des obstacles. Il doit ensuite attendre qu'elle se remplisse à nouveau pour placer de nouveaux obstacles.\par
+	
+	L'administrateur peut régler les paramètres du jeu (« skin » du jeu, vitesse des obstacles, vitesse de rechargement de la bouteille de Fendant\texttrademark). L'administrateur est un rôle hérité de celui de joueur (un administrateur est donc avant tout un joueur). Ce droit est stocké dans la base de données.
+	
 	
 	\subsection{Règles du jeu}
+	Pour le joueur 1: le but est d'arriver en bas de la piste sans avoir heurté d'obstacle. \\
+	Pour le joueur 2: le but est que le joueur 1 heurte un obstacle.
+	
+	
+	\subsection{Contraintes}
+	Le joueur 1 ne peut pas revenir en arrière, une fois descendu une portion de piste il peut s'arrêter, changer de «colonne» ou de continuer à descendre. \par
+	
+	Le joueur 2 peut envoyer des obstacles pour autant que la bouteille de Fendant\texttrademark ne soit pas vide.
+	
+	
+	\subsection{Priorités de développement}
+	\begin{enumerate}
+		\item Première version du jeu «standalone» avec un seul joueur qui prend le rôle du joueur 1 (descendre la piste). Les obstacles sont envoyés aléatoirement. (En parallèle, développement du serveur et de l'API).
+		\item Ajout du deuxième joueur en local (les deux jouent sur la même machine avec des touches différentes du clavier).
+		\item Les joueurs jouent chacun sur leur machine et se connectent à un serveur distant centralisant la partie. Lorsqu'un joueur se connecte, il voit la liste des parties crées (soit en attente d'un joueur, soit en cours). Il peut soit rejoindre une partie en attente d'un joueur soit créer une nouvelle partie.
+		\item L'administrateur peut configurer le serveur (paramètres des parties).
+	\end{enumerate}
+	
+	
+	\subsection{Base de données}
+	La base de données stocke et partage les informations suivantes entre les joueurs et l'administrateur :
+	\begin{itemize}
+		\item Informations des joueurs (nom d'utilisateur, mot de passe, rôle, points totaux gagnés)
+		\item Informations des parties (joueurs, points remportés par chacun)
+		\item Paramètres de l'application (ce qui peut être configuré par l'administrateur)
+		\item Logs de l'application
+	\end{itemize}
+	
+	
+	%
+	% ANALYSE
+	%
+	\section{Analyse}
+	
 	
 	\subsection{Partage des responsabilités entre le serveur et le client}
-	
+
+
 	\subsection{Diagramme d'activité général}
+	La figure~\ref{fig:diagramme_activite} représente le diagramme d'activité qui illustre la répartition des responsabilités entre le client et le serveur.
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{Diagramme_Activite.pdf}
+		\caption{Diagramme d'activité}
+		\label{fig:diagramme_activite}
+	\end{figure}
+	
+	
+	\subsection{Rôle des participants}
+	\textbf{Joueurs} : 2 personnes par partie, le \textit{skieur} ayant pour but de réussir à descendre la piste, tandis que l'autre essaye de l'en empêcher (\textit{défenseur}). \\
+	
+	\textbf{Administrateur} : Peut changer les règles générales du jeu (configuration des difficulté, tailles des cartes, etc...), et s'occuper des données (nettoyer, modifier des joueurs, etc...)
+	
 	
 	\subsection{Cas d'utilisation}
+	
 	\subsubsection{Diagramme général de contexte}
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{diagramme_utilisation.png}
+		\caption{Diagramme d'utilisation}
+		\label{fig:diagramme_utilisation}
+	\end{figure}
+
 	\subsubsection{Description des acteurs}
+	\begin{enumerate}
+		\item Joueurs, dans une partie nommés : \textit{Skieur} et \textit{Défenseur}
+		\item Administrateur
+	\end{enumerate}
+
 	\subsubsection{Scénario principal}
-	\subsubsection{Scénarios alternatifs significatifs}
+	\begin{enumerate}
+		\item L'un des deux joueurs se connecte au lobby et crée une partie en spécifiant les paramètres qu'il souhaite.
+		\begin{enumerate}
+			\item Difficulté
+			\item Taille de la carte
+			\item Son rôle (\textit{Skieur} ou \textit{Défenseur})
+		\end{enumerate}
+		\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prends le rôle restant.
+		\item Lorsque les 2 joueurs sont prêts la partie commence.
+		\begin{enumerate}
+			\item "\textit{Le skieur}" tente de traverser la piste en déplaçant son personnage de haut en bas.
+			\item "\textit{Le défenseur}" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
+			\item La partie se termine si le skieur n'a plus de vie ou si il a atteint l'autre côté (le but).
+		\end{enumerate}
+		\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompue et les joueurs retournent au lobby.
+	\end{enumerate}
+		
+	\subsubsection{Extensions (ou scénarios alternatifs)}
+	Pour permettre la récupération des parties de manière correct, il faut s'assurer que tous les états et les événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
+	
+	Lors d'une partie, si l'un des deux joueurs est déconnecté, l'adversaire gagne automatiquement la partie et est renvoyé au lobby.
+	
+	\subsubsection{Scénario d'administration}
+	\begin{enumerate}
+		\item l'administrateur se connecte à l'interface.
+		\item Il modifie l'une des options à sa disposition :
+		\begin{enumerate}
+			\item Les paramètres du jeu.
+			\item Les données d'un joueur.
+		\end{enumerate}
+		\item puis il peut se déconnecte ou recommencer à l'étape 2.
+	\end{enumerate}
+
 	
 	\subsection{Modèle de domaine}
+	La figure~\ref{fig:model_domain} représente une ébauche du modèle de domaine.
+	
+	\begin{figure}[!ht]
+		\centering
+		\includegraphics[scale=0.6]{../Schemas/model_domain.pdf}
+		\caption{Modèle de domaine}
+		\label{fig:model_domain}
+	\end{figure}
+	
 	\subsubsection{Modèle de domaine pour le client}
 	\subsubsection{Modèle de domaine pour le serveur}
 	
+	
 	\subsection{Base de données}
+	L'objectif de la base de données est principalement de stocker les paramètres du jeu et les données utilisateurs. Nous avons fait le choix de ne pas stocker d'informations concernant les parties en cours qui seront chargées uniquement dans la mémoire du serveur. \par
+	
+	On trouve donc une entité \texttt{User} qui peut être \texttt{Administrator}, dont on stocke le login et le nombre de victoires. \texttt{Settings} modélise les réglages généraux du jeu, \texttt{MapSize} permettra à l'utilisateur qui créé une partie de choisir parmi plusieurs tailles de carte. \texttt{DifficultyLevel} modélise les niveaux de difficultés parmi lesquels l'utilisateur créant la partie aura le choix.
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Database/ER_diagram.png}
+		\caption{Modèle conceptuel}
+		\label{fig:database_er}
+	\end{figure}
+
 	\subsubsection{Modèle conceptuel (entité-associations)}
 	
 	
+	%
+	% CONCEPTION DU PROJET
+	%
 	\section{Conception du projet}
 	
+	
 	\subsection{Protocole d'échange entre le client et le serveur}
+	\subsubsection{Communication}
+	Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \par
+	En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
+	
+	\subsubsection{Données échangées}
+	L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API} \\
+	L'idée est que chaque joueur envoie au serveur ses commandes : pour le skieur s'il souhaite tourner à gauche ou à droite, pour le valaisan sur quelle ligne il envoie un obstacle. Le serveur s'occupe de placer les obstacles et le skieur et envoie les positions de manière régulière aux deux clients. Les clients ne font que l'affichage et l'envoi de commande alors que le serveur s'occupe de la synchronisation, gestion des collisions etc.
+	
 	
 	\subsection{Diagrammes de classes du serveur et du client}
 	
 	\subsection{Modèle conceptuel \& relationnel de la base de données}
 	
 	
+	%
+	% IMPLEMENTATION DU PROJET
+	%
 	\section{Implémentation du projet}
+	
 	
 	\subsection{Technologies, langages, bibliothèques utilisés}
 	
@@ -143,18 +306,94 @@
 	\subsection{Problèmes éventuels rencontrés et solutions apportées}
 	
 	
+	%
+	% GESTION DU PROJET
+	%
 	\section{Gestion du projet}
 	
+	
 	\subsection{Rôle des participants au sein du groupe de développement}
+	\begin{enumerate}
+		\item Tony Clavien: Analyste, design manager, programmeur, représentant valaisan
+		\item Maxime Guillod: Chef de projet, programmeur
+		\item Gabriel Luthier: Responsable des tests, programmeur
+		\item Guillaume Milani: Architecte, concepteur en chef, programmeur, community manager
+	\end{enumerate}
 	
 	\subsection{Plan d'itérations initial}
-	Pour chaque itération:
-	\begin{enumerate}
-		\item Objectifs (exprimés en termes de case d'utilisation)
-		\item Durée, dates
-		\item Qui fait quoi
-		\item Charge estimée en heures
+	
+	\subsubsection{Création de l'interface de base}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Mise en place de l'interface utilisateur de l'écran principal du jeu.
+		\duree 1 semaine
+		\dateRendu 26.04.2017
+		\partageTache Création des images/sprites, affichage de l'UI, mise en place des obstacles fixes
+		\effort 15 heures
 	\end{enumerate}
+
+	\subsubsection{Ajout du 1er joueur avec les obstacles}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Développement de la logique du joueur "skieur" qui descend la piste.
+		\duree 1 semaine
+		\dateRendu 03.05.2017
+		\partageTache interaction avec les touches du clavier, déplacement du skieur sur la carte
+		\effort 20 heures
+	\end{enumerate}
+
+	\subsubsection{Ajout du 2ème joueur en local}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Développement de la logique du joueur "défendant" qui envoie des obstacles contre l'autre joueur.
+		\duree 1 semaine
+		\dateRendu 10.05.2017
+		\partageTache interaction avec les touches du clavier, logique de déplacement des obstacles sur la carte
+		\effort 20 heures
+	\end{enumerate}
+
+	\subsubsection{Mise en place des logiques de jeu}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "skieur", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
+		\duree 1 semaine
+		\dateRendu 17.05.2017
+		\partageTache détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
+		\effort 20 heures
+	\end{enumerate}
+
+	\subsubsection{Ajout de la communication avec le serveur}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Développement du serveur pour pouvoir jouer à distance.
+		\duree 1 semaine
+		\dateRendu 24.05.2017
+		\partageTache connexion des deux joueurs à une partie, communication réseau entre le serveur et les deux joueurs, gestion de l'état d'une partie
+		\effort 30 heures
+	\end{enumerate}
+
+	\subsubsection{Application administrateur}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Développement de l'application administrateur utilisée afin de modifier les paramètres des différents modes de jeu et des données des joueurs.
+		\duree 1 semaine
+		\dateRendu 31.05.2017
+		\partageTache UI de l'applicatif, connexion à la base de données, fonctions de modification de la BD
+		\effort 20 heures
+	\end{enumerate}
+
+	\subsubsection{Ajout du Lobby}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Gestion du lobby (UI et logique).
+		\duree 1 semaine
+		\dateRendu 07.06.2017
+		\partageTache UI du lobby (menu), récupérer les informations sur les parties en recherche de joueurs, création d'une nouvelle partie
+		\effort 20 heures
+	\end{enumerate}
+
+	\subsubsection{Finalisation}
+	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
+		\objectif Finalisation de l'application et ajout de bonus.
+		\duree 1 semaine
+		\dateRendu 14.07.2017
+		\partageTache derniers détails, mise en places des bonus/easter eggs
+		\effort 15 heures
+	\end{enumerate}
+
 	
 	\subsection{Suivi du projet}
 	Itérations par itérations (bilan, problèmes rencontrés, replanifications, ...), synthèse Trello (sur une page environ)
@@ -170,23 +409,38 @@
 	\subsection{Stratégie d'intégration du code de chaque participant (GIT)}
 
 
+	%
+	% ETAT DES LIEUX
+	%
 	\section{État des lieux}
+	
 	
 	\subsection{Ce qui fonctionne (résultats des tests)}
 	
 	\subsection{Ce qu'il resterait à développer (en proposant une planification)}
 	
 	
+	%
+	% AUTO-CRITIQUE
+	%
 	\section{Auto-critique}
+	
+	
 	\begin{enumerate}
 		\item Relativement à votre solution technique, votre gestion de projet, votre plan d'itération
 		\item Ce que vous auriez pu améliorer et comment
 	\end{enumerate}
 
 
+	%
+	% CONCLUSION
+	%
 	\section{Conclusion}
 	
 	
+	%
+	% MAUEL D'UTILISATION
+	%
 	\appendix
 	\section{Manuel d'utilisation} \label{app:manuelUtil}
 	\begin{enumerate}
