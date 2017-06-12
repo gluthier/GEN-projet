@@ -131,7 +131,7 @@ public class FXMLController implements Initializable {
 
     private void updateMapSize(int id) {
         idMapSizeEdited = id;
-        
+
         MapSize map = bdd.getMapSizeById(idMapSizeEdited);
         mapSizeNom.setText(map.getName());
         mapSizeHeight.setText(String.valueOf(map.getHeight()));
@@ -142,9 +142,12 @@ public class FXMLController implements Initializable {
 
     @FXML
     private void setMapSize() {
-        // TODO
+        bdd.setMapSizeById(
+                idMapSizeEdited,
+                mapSizeWidth.getText(),
+                mapSizeHeight.getText());
     }
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Nothing

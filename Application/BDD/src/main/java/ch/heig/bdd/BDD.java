@@ -176,75 +176,88 @@ public class BDD {
         }
         return retour;
     }
-    
+
     public List<Difficulty> getDifficulties() {
-    	List<Difficulty> ret = new ArrayList<>();
-    	try {
+        List<Difficulty> ret = new ArrayList<>();
+        try {
             Statement s = connection.createStatement();
             ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel ORDER BY id;");
             while (result.next()) {
-            	ret.add(new Difficulty(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("manaRegenerationSpeed"),
-            			result.getInt("playerMoveSpeed"),
-            			result.getInt("obstacleMoveSpeed"),
-            			result.getInt("obstacleWidth")));
+                ret.add(new Difficulty(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("manaRegenerationSpeed"),
+                        result.getInt("playerMoveSpeed"),
+                        result.getInt("obstacleMoveSpeed"),
+                        result.getInt("obstacleWidth")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
-    	return ret;
+        return ret;
     }
-    
+
     public Difficulty getDifficultyById(int id) {
-    	try {
+        try {
             Statement s = connection.createStatement();
-            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel WHERE id="+id+" ;");
+            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel WHERE id=" + id + " ;");
             while (result.next()) {
-            	return new Difficulty(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("manaRegenerationSpeed"),
-            			result.getInt("playerMoveSpeed"),
-            			result.getInt("obstacleMoveSpeed"),
-            			result.getInt("obstacleWidth"));
+                return new Difficulty(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("manaRegenerationSpeed"),
+                        result.getInt("playerMoveSpeed"),
+                        result.getInt("obstacleMoveSpeed"),
+                        result.getInt("obstacleWidth"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     public MapSize getMapSizeById(int id) {
-    	try {
+        try {
             Statement s = connection.createStatement();
-            ResultSet result = s.executeQuery("SELECT * FROM MapSize WHERE id="+ id +";");
+            ResultSet result = s.executeQuery("SELECT * FROM MapSize WHERE id=" + id + ";");
             while (result.next()) {
-            	return new MapSize(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("width"),
-            			result.getInt("height"));
+                return new MapSize(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("width"),
+                        result.getInt("height"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
+    public void setMapSizeById(int id, String width, String height) {
+        try {
+            Statement s = connection.createStatement();
+            s.execute("UPDATE MapSize SET "
+                    + " width=" + width
+                    + ", height=" + height
+                    + " WHERE id=" + id + ";");
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public List<MapSize> getMapSizes() {
-    	List<MapSize> ret = new ArrayList<>();
-    	try {
+        List<MapSize> ret = new ArrayList<>();
+        try {
             Statement s = connection.createStatement();
             ResultSet result = s.executeQuery("SELECT * FROM MapSize ORDER BY id;");
             while (result.next()) {
-            	ret.add(new MapSize(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("width"),
-            			result.getInt("height")));
+                ret.add(new MapSize(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("width"),
+                        result.getInt("height")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
-    	return ret;
+        return ret;
     }
 
     public List<Log> getLog() {
