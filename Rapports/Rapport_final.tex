@@ -170,7 +170,12 @@
 	
 	
 	\subsection{Partage des responsabilités entre le serveur et le client}
-
+	
+	\subsubsection{Responsabilités du client}
+	Le client est en charge de transmettre les actions effectuée par le joueur au serveur. Ces actions sont en fait les touches appuyées qui correspondent à  une action spécifique dans le jeu (comme par exemple aller à droite ou à gauche, ou envoyer un obstacle à un endroit spécifique). Le client doit aussi gérer l'affichage du jeu, en récupérant les emplacements de tous les éléments du jeu (skieur, obstacles fixes et obstacles dynamiques) à partir du serveur.
+	
+	\subsubsection{Responsabilités du serveur}
+	Le serveur lui doit gérer la logique du jeu. Pour chaque action effectuée par un des joueurs, il va mettre à jour les emplacements des éléments du jeu et vérifie si la partie est gagnée (ou perdue) en regardant s'il y a eu une collision ou si le skieur est arrivé en bas de la piste de ski. Il fait ces mise-à-jours de manière asynchrone, mais il va contacter les clients de manières synchrone (toutes les x millisecondes) pour que les deux joueurs aient le jeu dans le même état chacun.
 
 	\subsection{Diagramme d'activité général}
 	La figure~\ref{fig:diagramme_activite} représente le diagramme d'activité qui illustre la répartition des responsabilités entre le client et le serveur.
@@ -295,13 +300,32 @@
 	\section{Implémentation du projet}
 	
 	
+	\subsection{Structure du projet}
+	Pour partager les différentes parties de l'applicatif, nous avons séparé le code en plusieurs projets afin d'exposer que le code qui est nécessaire. Le client, par exemple, n'a pas besoin d'avoir accès au code qui gère la base de donnée ni à code de l'applicatif administrateur.
+
+	\subsubsection{GEN-protocol}
+	\texttt{GEN-protocol} définit la protocol utilisé par le client et le serveur pour communiquer entre eux.
+	\subsubsection{GEN-BDD}
+	\texttt{GEN-BDD} offre une interface pour communiquer avec la base de donnée du jeu.
+	\subsubsection{GEN-server}
+	\texttt{GEN-server} est la partie que gère la logique du jeu et la synchronisation des joueurs entre eux.
+	\subsubsection{GEN-admin}
+	\texttt{GEN-admin} est l'applicatif administrateur qui permet de gérer la base de donnée, ajouter des comptes utilisateurs, consulter les logs en offrant une interface graphique.
+	\subsubsection{GEN-Frogger}
+	\texttt{GEN-Frogger} est le code destiné au client qui gère l'affichage graphique du jeu, ainsi que les interactions du joueur.
+	
+	
 	\subsection{Technologies, langages, bibliothèques utilisés}
+	Ce projet a été réalisé entièrement en Java, que ce soit le client ou le serveur.
+	Nous avons utilisé JavaFX pour gérer la partie graphique du jeu. Il s'agit d'une bibliothèque de création d'interface graphique pour le langage Java. Elle contient notamment des outils pour du graphisme 2D que nous avons utilisés pour la gestion des éléments affiché à l'écran.
 	
 	\subsection{Technologies "originales" (autres que les technologies étudiées à l'école)}
-	\subsubsection{Descriptif}
-	\subsubsection{Avantages}
-	\subsubsection{Limitations}
-	\subsubsection{Remarques personnelles}
+	\begin{enumerate}
+		\item Descriptif
+		\item Avantages
+		\item Limitations
+		\item Remarques personnelles
+	\end{enumerate}
 	
 	\subsection{Problèmes éventuels rencontrés et solutions apportées}
 	
@@ -406,8 +430,8 @@
 		\item Résultats des tests
 	\end{enumerate}
 
-	\subsection{Stratégie d'intégration du code de chaque participant (GIT)}
-
+	\subsection{Stratégie d'intégration du code de chaque participant}
+	Afin de collaborer efficacement, nous avons utilisé Git (avec la plateforme Github) pour gérer l'intégration du code de chaque développeur. Pour chaque fonctionnalité, une branche était crée pour permettre à différentes personnes de collaborer dessus. Puis, quand la fonctionnalité était finie, une pull request était ouverte sur Github pour permettre aux autres membres du groupe d'analyser et critiquer (si besoin) les changements effectué. Une fois tout le monde satisfait, la pull request était mergée sur la branche master qui correspond à l'ensemble de fonctionnalités finies.
 
 	%
 	% ETAT DES LIEUX
@@ -416,6 +440,7 @@
 	
 	
 	\subsection{Ce qui fonctionne (résultats des tests)}
+	
 	
 	\subsection{Ce qu'il resterait à développer (en proposant une planification)}
 	
