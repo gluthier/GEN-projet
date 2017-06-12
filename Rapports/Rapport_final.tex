@@ -103,7 +103,7 @@
 	\section{Introduction}
 	
 	
-	Dans le cadre du cours GEN (Génie logiciel), nous allons créer une application client-serveur par groupe de 4 personnes. Nous avons choisi de développer un jeu reprenant le jeu \textit{Frogger} qui consiste à faire traverser des routes pleines de trafic à une grenouille sans se faire écraser. 
+	Dans le cadre du cours GEN (Génie logiciel), nous allons créer une application client-serveur par groupe de 4 personnes. Nous avons choisi de développer un jeu se basant sur \textit{Frogger}, qui consiste à faire traverser des routes pleines de trafic à une grenouille sans se faire écraser. 
 	
 	
 	%
@@ -113,7 +113,6 @@
 	
 	
 	\subsection{Objectifs de base}
-	Le but de ce projet est de réaliser une application client-serveur dans le cadre du cours GEN. Nous avons décidé de proposer un jeu de type « Frogger » en version valaisanne. \par
 	
 	Le but du jeu sera de faire descendre une piste de ski à un Valaisan (\textit{joueur skieur}). Il devra éviter les obstacles la traversant qui seront envoyé par le \textit{défenseur}.
 	
@@ -317,7 +316,10 @@
 	
 	\subsection{Technologies, langages, bibliothèques utilisés}
 	Ce projet a été réalisé entièrement en Java, que ce soit le client ou le serveur.
-	Nous avons utilisé JavaFX pour gérer la partie graphique du jeu. Il s'agit d'une bibliothèque de création d'interface graphique pour le langage Java. Elle contient notamment des outils pour du graphisme 2D que nous avons utilisés pour la gestion des éléments affiché à l'écran.
+	Nous avons utilisé JavaFX pour gérer la partie graphique du jeu. Il s'agit d'une bibliothèque de création d'interface graphique pour le langage Java. Elle contient notamment des outils pour du graphisme 2D que nous avons utilisés pour la gestion des éléments affiché à l'écran. \\
+	
+	La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX} a été utilisée pour mettre en place des tests qui fonctionnent avec JavaFX, car celui-ci demande a besoin que l'application s'exécute réellement pour fonctionner correctement. Les tests unitaires classiques (comme JUnit) ne peuvent pas être utiliser pour tester les parties gérées par JavaFX.
+	
 	
 	\subsection{Technologies "originales" (autres que les technologies étudiées à l'école)}
 	\begin{enumerate}
@@ -420,7 +422,36 @@
 
 	
 	\subsection{Suivi du projet}
-	Itérations par itérations (bilan, problèmes rencontrés, replanifications, ...), synthèse Trello (sur une page environ)
+	
+	\subsubsection{Itération 1: Création de l'interface de base}
+	Cette itération a été consacrée à la découverte de la bibliothèque JavaFX pour afficher l'interface de base. L'image du fond et les différentes sprites du jeu ont été mis en place, ainsi que la grille où tous les éléments seront affichés. Pas de problèmes ont été rencontrés et donc aucune replanification n'est nécessaire.
+	
+	\subsubsection{Itération 2: Ajout du 1er joueur avec les obstacles}
+	Le premier joueur (le skieur) est mis en place et peut se déplacer à travers la grille (pas case par case, cela sera développé plus tard). Le premier problème rencontré a été d'écrire des tests qui fonctionnent avec JavaFX. En effet, des tests unitaires (JUnit) classiques ne fonctionnent pas, car JavaFX a besoin que le jeu s'afficher "en vrai" pour pouvoir s'exécuter correctement (par exemple pour répondre à un clique du joueur, il a besoin de savoir à quelle position il a cliqué pour éventuellement interagir avec l'élément cliqué). Aucune replanification a été faite, les tests seront simplement développé ensuite au fil des itérations.
+	
+	\subsubsection{Itération 3: Ajout du 2ème joueur en local}
+	La création des obstacles dynamiques qui sont créés par le 2ème joueur (à l'aide de son clavier) a été mise en place. Les collisions avec le skier ont aussi été développée, mais le code n'a pas encore été mergé à ce moment là et les deux fonctionnalités marchent, mais séparément. La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX}	a été choisie et testée pour effectuer nos tests fonctionnant avec JavaFX. Pas de replanification a été faite, mais le bug des collisions devra être corrigé par la suite.
+	
+	\subsubsection{Itération 4: Mise en place des logiques de jeu}
+	Remise en question générale et changement du déplacement du skieur pour rendre la détection des collisions plus facile et aussi par anticipation à la mise en place du serveur. En effet, comme c'est lui qui devra gérer la logique du jeu, on diminue ainsi le nombre de requêtes qui lui seront transmises. Une grosse partie de travail effectué lors de cette itération à été de changer le fonctionnement interne du jeu, l'ajout de nouvelles fonctionnalités en a donc péri. \\
+	Cette fois-ci, une replanification est nécessaire. Les trois cas d'utilisation qui auraient du être développé se voient partagé dans les itérations suivantes. L'UC \textit{Jouer une partie} et l'UC \textit{S'identifie} sont reporté à l'itération 5 tandis que l'UC \textit{Voir ses statistiques} se reporte à l'itération 6.
+	
+	\subsubsection{Itération 5: Ajout de la communication avec le serveur}
+	Cette itération nous a pris beaucoup plus de temps que prévu. On a décider de se concentrer sur le case d'utilisation \textit{Jouer une partie}, qui constitue le cœur du jeu. Il a été possible de finaliser ce case d'utilisation, mais cela nous a demandé de refactorer presque l'ensemble du projet pour implémenter les collisions entre les obstacles, la logique de victoire/défaite d'une partie et l'interface pour pouvoir relancer une partie. \\
+	L'UC \textit{S'identifie} a quand même été entamée. La base de donnée qui contiendra les intormations des utilisateurs, les logs ainsi que les paramètres du jeux a été mise en place. Il reste cependant à faire communiquer le client avec le serveur pour effectivement pouvoir s'identifier. \\
+	Pour pouvoir finir ce cas d'utilisation, on effectue une replanification et déplace l'UC \textit{S'identifie} à l'itération suivante (la 6).
+	
+	\subsubsection{Itération 6: Application administrateur}
+	L'application de l'interface d'administration est développée avec une interface sommaire pour le moment. Un affichage des logs du serveur avec un système d'ID pour le suivi de chaque instance (de chaque joueur qui se connecte au serveur) est implémenté. L'interface du login est aussi mis en place, mais la communication avec le serveur est toujours pas fonctionnelle. Un gros travail sur les divers éléments de communication est fournis, mais rien n'est encore fonctionnel à 100\%. \\
+	Une replanification est faite pour reporter tous les cas d'utilisation qui nécessitent de communiquer avec le serveur à l'itération suivante.
+	
+	\subsubsection{Itération 7: Ajout du Lobby}
+	Les paramètres des jeux sont maintenant configurable dans un onglet dans l'interface administrateur. Tous ces paramètres sont fonctionnels, enregistrés dans la base de données et communiqués par la suite au client par le serveur. Le principal du travail a été fournis sur le backend, il n'y a donc pas grand chose de nouveau à montrer. Le problème principal est que tout a été très bien avancé, mais rien à 100\%. On a donc pour l'instant une application qui n'est pas fonctionnelle. \\
+	La replanification est plutôt simple: on reporte tout pour la dernière itération.
+	
+	\subsubsection{Itération 8: Finalisation}
+	TODO
+	
 	
 	\subsection{Stratégie de tests}
 	\begin{enumerate}
