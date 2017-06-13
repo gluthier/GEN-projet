@@ -1,5 +1,6 @@
 package ch.heigvd.frogger;
 
+import ch.heigvd.frogger.controllers.ClientController;
 import ch.heigvd.frogger.controllers.IController;
 import ch.heigvd.frogger.exception.ControllerNotSetException;
 import ch.heigvd.frogger.tcp.TCPClient;
@@ -12,6 +13,11 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class MainApp extends Application {
 
@@ -26,6 +32,34 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            // load a properties file
+            prop.load(input);
+
+            // get the property values
+            ClientConstants.SERVER_ADDRESS = prop.getProperty("hostname");
+            ClientConstants.SERVER_PORT = Integer.valueOf(prop.getProperty("port"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         MainApp.stage = stage;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
         LoginController loginController = loader.getController();
