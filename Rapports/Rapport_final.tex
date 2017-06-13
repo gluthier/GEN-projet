@@ -346,7 +346,16 @@
 	
 	\subsection{Problèmes éventuels rencontrés et solutions apportées}
 	
-	 
+	\subsubsection{logique FX }
+	Venant de \textit{Swing}, nous avons eu pas mal de problèmes avec l'utilisation de \textit{JavaFx} et des nouvelles logiques de conception que ça amener. Nous les avons peu à peu résolu, en reprenant bien ce que nous avions fait et en apprenant tout depuis le début.
+	
+	\subsubsection{readLine et \textit{\textbackslash n}}
+	Dans notre protocole d'échange nous utilisons du \textit{json} pour communiquer les différents messages nécessaires au bon fonctionnement du jeu, afin de lire les messages nous utilisons la méthode \textit{readLine} qui est bloquante et permet d'attendre sur une notification.
+	Cependant nous avons remarqué que pour utiliser readLine, il fallait que nos messages soient bien terminé (via un \textit{\textbackslash n}), pour que la commande nous retourne le message reçu et le traite.
+	Nous avons donc ajouter à la fin des paquets \textit{json} un \textit{\\n} pour nous assurer que cela fonctionnait bien.
+	\subsubsection{partage de classes/code entre plusieurs projets }
+	Notre structure étant composé de 4 projets distincts, nous avions besoin de pouvoir partagé des fonctions entre eux de manière simple, et surtout sans copié-collé. 
+	Pour palier à ça, nous utilisons le système de gestion \textit{maven}, ce qui nous permet de lié les projets entre eux, d'assurer une dépendance toujours à jour et de facilement construire nos projets.
 	
 	
 	%
