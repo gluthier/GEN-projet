@@ -72,16 +72,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-\clearpage\maketitle
-\thispagestyle{empty}
-
+	\clearpage\maketitle
+	\thispagestyle{empty}
+	
 	\maketitle
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.7]{../Logo/logo.jpg}
 	\end{figure}
 	\newpage
-
+	
 	% % Entete première page
 	% \thispagestyle{empty}
 	% %
@@ -91,25 +91,25 @@
 	% \vspace{7mm}
 	% \noindent {\large \bf \domaine } \hfill \titre {\large \bf }\\[3mm]
 	% \hrule
-
+	
 	\tableofcontents
 	
 	\listoffigures
-
+	
 	% On a pas de tableau
 	% \listoftables
-
+	
 	\newpage
 	
 	%
 	% INTRODUCTION
-	%	
+	% 
 	\section{Introduction}
 	
 	
 	Dans le cadre du cours GEN (Génie logiciel), nous allons créer une application client-serveur par groupe de 4 personnes. Nous avons choisi de développer un jeu se basant sur \textit{Frogger}, qui consiste à faire traverser des routes pleines de trafic à une grenouille sans se faire écraser. 
 	
-	Les spécifications de bases de ce projet sont de faire une application client-serveur, qu'elle comporte une base de donnée (dont le format est libre), qu'elle comporte deux acteurs, que le développement soit géré avec git et que des tests soient effectués avec JUnit.
+	Les spécifications de bases de ce projet sont de faire une application client-serveur, qu'elle comporte une base de données (dont le format est libre), qu'elle comporte deux acteurs, que le développement soit géré avec git et que des tests soient effectués avec JUnit.
 	
 	Nous avons choisi de développer ce jeu avec Java, car c'est un langage que l'on maitrise tous bien, qui nous plait et qui est adapté à ce type de contraintes. On peut en effet facilement mettre en place une communication client-serveur (en tout cas pour une application simple). La gestion de requêtes SQL et aussi aisée. 
 	
@@ -117,7 +117,7 @@
 	
 	%
 	% FONCTIONNEMENT GENERAL DU JEU
-	%	
+	% 
 	\section{Fonctionnement général du jeu}
 	
 	
@@ -156,7 +156,7 @@
 	\begin{enumerate}
 		\item Première version du jeu «standalone» avec un seul joueur qui prend le rôle du joueur 1 (descendre la piste). Les obstacles sont envoyés aléatoirement. (En parallèle, développement du serveur et de l'API).
 		\item Ajout du deuxième joueur en local (les deux jouent sur la même machine avec des touches différentes du clavier).
-		\item Les joueurs jouent chacun sur leur machine et se connectent à un serveur distant centralisant la partie. Lorsqu'un joueur se connecte, il voit la liste des parties crées (soit en attente d'un joueur, soit en cours). Il peut soit rejoindre une partie en attente d'un joueur soit créer une nouvelle partie.
+		\item Les joueurs jouent chacun sur leur machine et se connectent à un serveur distant centralisant la partie. Lorsqu'un joueur se connecte, il voit la liste des parties créées (soit en attente d'un joueur, soit en cours). Il peut soit rejoindre une partie en attente d'un joueur soit créer une nouvelle partie.
 		\item L'administrateur peut configurer le serveur (paramètres des parties).
 	\end{enumerate}
 	
@@ -180,11 +180,11 @@
 	\subsection{Partage des responsabilités entre le serveur et le client}
 	
 	\subsubsection{Responsabilités du client}
-	Le client est en charge de transmettre les actions effectuée par le joueur au serveur. Ces actions sont en fait les touches appuyées qui correspondent à  une action spécifique dans le jeu (comme par exemple aller à droite ou à gauche, ou envoyer un obstacle à un endroit spécifique). Le client doit aussi gérer l'affichage du jeu, en récupérant les emplacements de tous les éléments du jeu (skieur, obstacles fixes et obstacles dynamiques) à partir du serveur.
+	Le client est en charge de transmettre les actions effectuées par le joueur au serveur. Ces actions sont en fait les touches appuyées qui correspondent à  une action spécifique dans le jeu (comme par exemple aller à droite ou à gauche, ou envoyer un obstacle à un endroit spécifique). Le client doit aussi gérer l'affichage du jeu, en récupérant les emplacements de tous les éléments du jeu (skieur, obstacles fixes et obstacles dynamiques) à partir du serveur.
 	
 	\subsubsection{Responsabilités du serveur}
-	Le serveur lui doit gérer la logique du jeu. Pour chaque action effectuée par un des joueurs, il va mettre à jour les emplacements des éléments du jeu et vérifie si la partie est gagnée (ou perdue) en regardant s'il y a eu une collision ou si le skieur est arrivé en bas de la piste de ski. Il fait ces mise-à-jours de manière asynchrone, mais il va contacter les clients de manières synchrone (toutes les x millisecondes) pour que les deux joueurs aient le jeu dans le même état chacun.
-
+	Le serveur lui doit gérer la logique du jeu. Pour chaque action effectuée par un des joueurs, il va mettre à jour les emplacements des éléments du jeu et vérifie si la partie est gagnée (ou perdue) en regardant s'il y a eu une collision ou si le skieur est arrivé en bas de la piste de ski. Il fait ces mises à jour de manière asynchrone, mais il va contacter les clients de manières synchrones (toutes les x millisecondes) pour que les deux joueurs aient le jeu dans le même état chacun.
+	
 	\subsection{Diagramme d'activité général}
 	La figure~\ref{fig:diagramme_activite} représente le diagramme d'activité qui illustre la répartition des responsabilités entre le client et le serveur.
 	\begin{figure}[!ht]
@@ -198,7 +198,7 @@
 	\subsection{Rôle des participants}
 	\textbf{Joueurs} : 2 personnes par partie, le \textit{skieur} ayant pour but de réussir à descendre la piste, tandis que l'autre essaye de l'en empêcher (\textit{défenseur}). \\
 	
-	\textbf{Administrateur} : Peut changer les règles générales du jeu (configuration des difficulté, tailles des cartes, etc...), et s'occuper des données (nettoyer, modifier des joueurs, etc...)
+	\textbf{Administrateur} : Peut changer les règles générales du jeu (configuration des difficultés, tailles des cartes, etc...), et s'occuper des données (nettoyer, modifier des joueurs, etc...)
 	
 	
 	\subsection{Cas d'utilisation}
@@ -210,13 +210,13 @@
 		\caption{Diagramme d'utilisation}
 		\label{fig:diagramme_utilisation}
 	\end{figure}
-
+	
 	\subsubsection{Description des acteurs}
 	\begin{enumerate}
-		\item Joueurs, dans une partie nommés : \textit{Skieur} et \textit{Défenseur}
+		\item Joueurs, dans une partie nommée : \textit{Skieur} et \textit{Défenseur}
 		\item Administrateur
 	\end{enumerate}
-
+	
 	\subsubsection{Scénario principal}
 	\begin{enumerate}
 		\item L'un des deux joueurs se connecte au lobby et crée une partie en spécifiant les paramètres qu'il souhaite.
@@ -225,8 +225,8 @@
 			\item Taille de la carte
 			\item Son rôle (\textit{Skieur} ou \textit{Défenseur})
 		\end{enumerate}
-		\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prends le rôle restant.
-		\item Lorsque les 2 joueurs sont prêts la partie commence.
+		\item Le second joueur rejoint la partie libre du joueur 1 dans le lobby et prend le rôle restant.
+		\item Lorsque les 2 joueurs sont prêts, la partie commence.
 		\begin{enumerate}
 			\item "\textit{Le skieur}" tente de traverser la piste en déplaçant son personnage de haut en bas.
 			\item "\textit{Le défenseur}" tente de l'en empêcher en envoyant des obstacles de gauche à droite.
@@ -234,9 +234,9 @@
 		\end{enumerate}
 		\item À la fin de la partie, soit les rôles s'inversent et on recommence une partie à l'étape 3, soit les joueurs quittent la partie. Cette dernière est donc interrompue et les joueurs retournent au lobby.
 	\end{enumerate}
-		
+	
 	\subsubsection{Extensions (ou scénarios alternatifs)}
-	Pour permettre la récupération des parties de manière correct, il faut s'assurer que tous les états et les événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
+	Pour permettre la récupération des parties de manière correcte, il faut s'assurer que tous les états et les événements sensibles du système peuvent être récupérés à n'importe quelle étape du scénario. \\
 	
 	Lors d'une partie, si l'un des deux joueurs est déconnecté, l'adversaire gagne automatiquement la partie et est renvoyé au lobby.
 	
@@ -250,7 +250,7 @@
 		\end{enumerate}
 		\item puis il peut se déconnecte ou recommencer à l'étape 2.
 	\end{enumerate}
-
+	
 	
 	\subsection{Modèle de domaine}
 	La figure~\ref{fig:model_domain} représente une ébauche du modèle de domaine.
@@ -269,7 +269,7 @@
 	\subsection{Base de données}
 	L'objectif de la base de données est principalement de stocker les paramètres du jeu et les données utilisateurs. Nous avons fait le choix de ne pas stocker d'informations concernant les parties en cours qui seront chargées uniquement dans la mémoire du serveur. \par
 	
-	On trouve donc une entité \texttt{User} qui peut être \texttt{Administrator}, dont on stocke le login et le nombre de victoires. \texttt{Settings} modélise les réglages généraux du jeu, \texttt{MapSize} permettra à l'utilisateur qui créé une partie de choisir parmi plusieurs tailles de carte. \texttt{DifficultyLevel} modélise les niveaux de difficultés parmi lesquels l'utilisateur créant la partie aura le choix.
+	On trouve donc une entité \texttt{User} qui peut être \texttt{Administrator}, dont on stocke le login et le nombre de victoires. \texttt{Settings} modélise les réglages généraux du jeu, \texttt{MapSize} permettra à l'utilisateur qui crée une partie de choisir parmi plusieurs tailles de carte. \texttt{DifficultyLevel} modélise les niveaux de difficulté parmi lesquels l'utilisateur créant la partie aura le choix.
 	
 	\begin{figure}[ht]
 		\centering
@@ -277,7 +277,7 @@
 		\caption{Modèle conceptuel}
 		\label{fig:database_er}
 	\end{figure}
-
+	
 	\subsubsection{Modèle conceptuel (entité-associations)}
 	
 	
@@ -290,11 +290,11 @@
 	\subsection{Protocole d'échange entre le client et le serveur}
 	\subsubsection{Communication}
 	Nous allons utiliser JSON\footnote{JSON : JavaScript Object Notation} comme protocole d'échange entre le client et le serveur. \par
-	En effet, de part la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
+	En effet, de par la structure de son contenu, l'échange d'information entre les deux intervenants est très facilement sérialisable/désérialisable, sans compter sur le fait que le contenu est lisible par un individu (contrairement à un contenu binaire).
 	
 	\subsubsection{Données échangées}
 	L'API de communication en cours d'élaboration se trouve sur le wiki de notre projet GitHub \\ \url{https://github.com/gluthier/GEN-projet/wiki/Communication-API} \\
-	L'idée est que chaque joueur envoie au serveur ses commandes : pour le skieur s'il souhaite tourner à gauche ou à droite, pour le valaisan sur quelle ligne il envoie un obstacle. Le serveur s'occupe de placer les obstacles et le skieur et envoie les positions de manière régulière aux deux clients. Les clients ne font que l'affichage et l'envoi de commande alors que le serveur s'occupe de la synchronisation, gestion des collisions etc.
+	L'idée est que chaque joueur envoie au serveur ses commandes : pour le skieur s'il souhaite tourner à gauche ou à droite, pour le Valaisan sur quelle ligne il envoie un obstacle. Le serveur s'occupe de placer les obstacles et le skieur et envoie les positions de manière régulière aux deux clients. Les clients ne font que l'affichage et l'envoi de commande alors que le serveur s'occupe de la synchronisation, gestion des collisions, etc.
 	
 	
 	\subsection{Diagrammes de classes du serveur et du client}
@@ -309,25 +309,25 @@
 	
 	
 	\subsection{Structure du projet}
-	Pour partager les différentes parties de l'applicatif, nous avons séparé le code en plusieurs projets afin d'exposer que le code qui est nécessaire. Le client, par exemple, n'a pas besoin d'avoir accès au code qui gère la base de donnée ni à code de l'applicatif administrateur.
-
+	Pour partager les différentes parties de l'applicatif, nous avons séparé le code en plusieurs projets afin d'exposer que le code qui est nécessaire. Le client, par exemple, n'a pas besoin d'avoir accès au code qui gère la base de données ni à code de l'applicatif administrateur.
+	
 	\subsubsection{GEN-protocol}
-	\texttt{GEN-protocol} définit la protocol utilisé par le client et le serveur pour communiquer entre eux.
+	\texttt{GEN-protocol} définit le protocole utilisé par le client et le serveur pour communiquer entre eux.
 	\subsubsection{GEN-BDD}
-	\texttt{GEN-BDD} offre une interface pour communiquer avec la base de donnée du jeu.
+	\texttt{GEN-BDD} offre une interface pour communiquer avec la base de données du jeu.
 	\subsubsection{GEN-server}
 	\texttt{GEN-server} est la partie que gère la logique du jeu et la synchronisation des joueurs entre eux.
 	\subsubsection{GEN-admin}
-	\texttt{GEN-admin} est l'applicatif administrateur qui permet de gérer la base de donnée, ajouter des comptes utilisateurs, consulter les logs en offrant une interface graphique.
+	\texttt{GEN-admin} est l'applicatif administrateur qui permet de gérer la base de données, ajouter des comptes utilisateurs, consulter les logs en offrant une interface graphique.
 	\subsubsection{GEN-Frogger}
 	\texttt{GEN-Frogger} est le code destiné au client qui gère l'affichage graphique du jeu, ainsi que les interactions du joueur.
 	
 	
-	\subsection{Technologies, langages, bibliothèques utilisés}
+	\subsection{Technologies, langages, bibliothèques utilisées}
 	Ce projet a été réalisé entièrement en Java, que ce soit le client ou le serveur.
-	Nous avons utilisé JavaFX pour gérer la partie graphique du jeu. Il s'agit d'une bibliothèque de création d'interface graphique pour le langage Java. Elle contient notamment des outils pour du graphisme 2D que nous avons utilisés pour la gestion des éléments affiché à l'écran. \\
+	Nous avons utilisé JavaFX pour gérer la partie graphique du jeu. Il s'agit d'une bibliothèque de création d'interfaces graphiques pour le langage Java. Elle contient notamment des outils pour du graphisme 2D que nous avons utilisés pour la gestion des éléments affichés à l'écran. \\
 	
-	La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX} a été utilisée pour mettre en place des tests qui fonctionnent avec JavaFX, car celui-ci demande a besoin que l'application s'exécute réellement pour fonctionner correctement. Les tests unitaires classiques (comme JUnit) ne peuvent pas être utiliser pour tester les parties gérées par JavaFX.
+	La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX} a été utilisée pour mettre en place des tests qui fonctionnent avec JavaFX, car celui-ci demande a besoin que l'application s'exécute réellement pour fonctionner correctement. Les tests unitaires classiques (comme JUnit) ne peuvent pas être utilisés pour tester les parties gérées par JavaFX.
 	
 	
 	\subsection{Technologies "originales" (autres que les technologies étudiées à l'école)}
@@ -365,7 +365,7 @@
 		\partageTache Création des images/sprites, affichage de l'UI, mise en place des obstacles fixes
 		\effort 15 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Ajout du 1er joueur avec les obstacles}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Développement de la logique du joueur "skieur" qui descend la piste.
@@ -374,7 +374,7 @@
 		\partageTache interaction avec les touches du clavier, déplacement du skieur sur la carte
 		\effort 20 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Ajout du 2ème joueur en local}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Développement de la logique du joueur "défendant" qui envoie des obstacles contre l'autre joueur.
@@ -383,7 +383,7 @@
 		\partageTache interaction avec les touches du clavier, logique de déplacement des obstacles sur la carte
 		\effort 20 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Mise en place des logiques de jeu}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Détection des collisions entre les obstacles (fixes et mobiles) avec le joueur "skieur", des conditions de victoire et défaite et barre de recharge pour la pose d'obstacles.
@@ -392,7 +392,7 @@
 		\partageTache détection de collisions, conditions de victoire, conditions de défaite, barre de recharge pour la pose d'obstacles
 		\effort 20 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Ajout de la communication avec le serveur}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Développement du serveur pour pouvoir jouer à distance.
@@ -401,7 +401,7 @@
 		\partageTache connexion des deux joueurs à une partie, communication réseau entre le serveur et les deux joueurs, gestion de l'état d'une partie
 		\effort 30 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Application administrateur}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Développement de l'application administrateur utilisée afin de modifier les paramètres des différents modes de jeu et des données des joueurs.
@@ -410,7 +410,7 @@
 		\partageTache UI de l'applicatif, connexion à la base de données, fonctions de modification de la BD
 		\effort 20 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Ajout du Lobby}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Gestion du lobby (UI et logique).
@@ -419,7 +419,7 @@
 		\partageTache UI du lobby (menu), récupérer les informations sur les parties en recherche de joueurs, création d'une nouvelle partie
 		\effort 20 heures
 	\end{enumerate}
-
+	
 	\subsubsection{Finalisation}
 	\begin{enumerate}[labelwidth=5em,leftmargin=8em]
 		\objectif Finalisation de l'application et ajout de bonus.
@@ -428,38 +428,38 @@
 		\partageTache derniers détails, mise en places des bonus/easter eggs
 		\effort 15 heures
 	\end{enumerate}
-
+	
 	
 	\subsection{Suivi du projet}
 	
 	\subsubsection{Itération 1: Création de l'interface de base}
-	Cette itération a été consacrée à la découverte de la bibliothèque JavaFX pour afficher l'interface de base. L'image du fond et les différentes sprites du jeu ont été mis en place, ainsi que la grille où tous les éléments seront affichés. Pas de problèmes ont été rencontrés et donc aucune replanification n'est nécessaire.
+	Cette itération a été consacrée à la découverte de la bibliothèque JavaFX pour afficher l'interface de base. L'image du fond et les différents sprites du jeu ont été mis en place, ainsi que la grille où tous les éléments seront affichés. Pas de problèmes ont été rencontrés et donc aucune replanification n'est nécessaire.
 	
 	\subsubsection{Itération 2: Ajout du 1er joueur avec les obstacles}
-	Le premier joueur (le skieur) est mis en place et peut se déplacer à travers la grille (pas case par case, cela sera développé plus tard). Le premier problème rencontré a été d'écrire des tests qui fonctionnent avec JavaFX. En effet, des tests unitaires (JUnit) classiques ne fonctionnent pas, car JavaFX a besoin que le jeu s'afficher "en vrai" pour pouvoir s'exécuter correctement (par exemple pour répondre à un clique du joueur, il a besoin de savoir à quelle position il a cliqué pour éventuellement interagir avec l'élément cliqué). Aucune replanification a été faite, les tests seront simplement développé ensuite au fil des itérations.
+	Le premier joueur (le skieur) est mis en place et peut se déplacer à travers la grille (pas case par case, cela sera développé plus tard). Le premier problème rencontré a été d'écrire des tests qui fonctionnent avec JavaFX. En effet, des tests unitaires (JUnit) classiques ne fonctionnent pas, car JavaFX a besoin que le jeu s'afficher "en vrai" pour pouvoir s'exécuter correctement (par exemple pour répondre à un clique du joueur, il a besoin de savoir à quelle position il a cliqué pour éventuellement interagir avec l'élément cliqué). Aucune replanification a été faite, les tests seront simplement développés ensuite au fil des itérations.
 	
 	\subsubsection{Itération 3: Ajout du 2ème joueur en local}
-	La création des obstacles dynamiques qui sont créés par le 2ème joueur (à l'aide de son clavier) a été mise en place. Les collisions avec le skier ont aussi été développée, mais le code n'a pas encore été mergé à ce moment là et les deux fonctionnalités marchent, mais séparément. La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX}	a été choisie et testée pour effectuer nos tests fonctionnant avec JavaFX. Pas de replanification a été faite, mais le bug des collisions devra être corrigé par la suite.
+	La création des obstacles dynamiques qui sont créés par le 2ème joueur (à l'aide de son clavier) a été mise en place. Les collisions avec le skier ont aussi été développée, mais le code n'a pas encore été mergé à ce moment-là et les deux fonctionnalités marchent, mais séparément. La bibliothèque \href{https://github.com/TestFX/TestFX}{TestFX} a été choisie et testée pour effectuer nos tests fonctionnant avec JavaFX. Pas de replanification a été faite, mais le bug des collisions devra être corrigé par la suite.
 	
 	\subsubsection{Itération 4: Mise en place des logiques de jeu}
 	Remise en question générale et changement du déplacement du skieur pour rendre la détection des collisions plus facile et aussi par anticipation à la mise en place du serveur. En effet, comme c'est lui qui devra gérer la logique du jeu, on diminue ainsi le nombre de requêtes qui lui seront transmises. Une grosse partie de travail effectué lors de cette itération à été de changer le fonctionnement interne du jeu, l'ajout de nouvelles fonctionnalités en a donc péri.
 	
-	Cette fois-ci, une replanification est nécessaire. Les trois cas d'utilisation qui auraient du être développé se voient partagé dans les itérations suivantes. L'UC \textit{Jouer une partie} et l'UC \textit{S'identifie} sont reporté à l'itération 5 tandis que l'UC \textit{Voir ses statistiques} se reporte à l'itération 6.
+	Cette fois-ci, une replanification est nécessaire. Les trois cas d'utilisation qui auraient dû être développés se voient partagés dans les itérations suivantes. L'UC \textit{Jouer une partie} et l'UC \textit{S'identifie} sont reporté à l'itération 5 tandis que l'UC \textit{Voir ses statistiques} se reportent à l'itération 6.
 	
 	\subsubsection{Itération 5: Ajout de la communication avec le serveur}
-	Cette itération nous a pris beaucoup plus de temps que prévu. On a décider de se concentrer sur le case d'utilisation \textit{Jouer une partie}, qui constitue le cœur du jeu. Il a été possible de finaliser ce case d'utilisation, mais cela nous a demandé de refactorer presque l'ensemble du projet pour implémenter les collisions entre les obstacles, la logique de victoire/défaite d'une partie et l'interface pour pouvoir relancer une partie.
+	Cette itération nous a pris beaucoup plus de temps que prévu. On a décidé de se concentrer sur le case d'utilisation \textit{Jouer une partie}, qui constitue le cœur du jeu. Il a été possible de finaliser ce case d'utilisation, mais cela nous a demandé de refactorer presque l'ensemble du projet pour implémenter les collisions entre les obstacles, la logique de victoire/défaite d'une partie et l'interface pour pouvoir relancer une partie.
 	
-	L'UC \textit{S'identifie} a quand même été entamée. La base de donnée qui contiendra les intormations des utilisateurs, les logs ainsi que les paramètres du jeux a été mise en place. Il reste cependant à faire communiquer le client avec le serveur pour effectivement pouvoir s'identifier.
+	L'UC \textit{S'identifie} a quand même été entamée. La base de données qui contiendra les informations des utilisateurs, les logs ainsi que les paramètres du jeux a été mise en place. Il reste cependant à faire communiquer le client avec le serveur pour effectivement pouvoir s'identifier.
 	
 	Pour pouvoir finir ce cas d'utilisation, on effectue une replanification et déplace l'UC \textit{S'identifie} à l'itération suivante (la 6).
 	
 	\subsubsection{Itération 6: Application administrateur}
-	L'application de l'interface d'administration est développée avec une interface sommaire pour le moment. Un affichage des logs du serveur avec un système d'ID pour le suivi de chaque instance (de chaque joueur qui se connecte au serveur) est implémenté. L'interface du login est aussi mis en place, mais la communication avec le serveur est toujours pas fonctionnelle. Un gros travail sur les divers éléments de communication est fournis, mais rien n'est encore fonctionnel à 100\%.
+	L'application de l'interface d'administration est développée avec une interface sommaire pour le moment. Un affichage des logs du serveur avec un système d'ID pour le suivi de chaque instance (de chaque joueur qui se connecte au serveur) est implémenté. L'interface du login est aussi mise en place, mais la communication avec le serveur n’est toujours pas fonctionnelle. Un gros travail sur les divers éléments de communication est fourni, mais rien n'est encore fonctionnel à 100\%.
 	
 	Une replanification est faite pour reporter tous les cas d'utilisation qui nécessitent de communiquer avec le serveur à l'itération suivante.
 	
 	\subsubsection{Itération 7: Ajout du Lobby}
-	Les paramètres des jeux sont maintenant configurable dans un onglet dans l'interface administrateur. Tous ces paramètres sont fonctionnels, enregistrés dans la base de données et communiqués par la suite au client par le serveur. Le principal du travail a été fournis sur le backend, il n'y a donc pas grand chose de nouveau à montrer. Le problème principal est que tout a été très bien avancé, mais rien à 100\%. On a donc pour l'instant une application qui n'est pas fonctionnelle.
+	Les paramètres des jeux sont maintenant configurables dans un onglet dans l'interface administrateur. Tous ces paramètres sont fonctionnels, enregistrés dans la base de données et communiqués par la suite au client par le serveur. Le principal du travail a été fourni sur le backend, il n'y a donc pas grand-chose de nouveau à montrer. Le problème principal est que tout a été très bien avancé, mais rien à 100\%. On a donc pour l'instant une application qui n'est pas fonctionnelle.
 	
 	La replanification est plutôt simple: on reporte tout pour la dernière itération.
 	
@@ -470,13 +470,13 @@
 	\subsection{Stratégie de tests}
 	Nous avons effectué quelques tests pour les parties importantes de l'application. Généralement, la personne qui développait une fonctionnalité faisait elle-même les tests nécessaires pour assurer le bon fonctionnement du programme. Tout n'a pas été testé, car on a été rattrapé par les deadlines. 
 	
-	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est un application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
+	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est une application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
 	
 	\subsubsection{Utilisation de JUnit pour une classe définissant le protocole}
 	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
 	
 	\subsubsection{Résultats des tests}
-	La figure~\ref{fig:resTests} montre le résultats des tests JUnit.
+	La figure~\ref{fig:resTests} montre le résultat des tests JUnit.
 	\begin{figure}[ht]
 		\centering
 		\includegraphics{tests.png}
@@ -484,10 +484,10 @@
 		\label{fig:resTests}
 	\end{figure}
 	
-
+	
 	\subsection{Stratégie d'intégration du code de chaque participant}
-	Afin de collaborer efficacement, nous avons utilisé Git (avec la plateforme Github) pour gérer l'intégration du code de chaque développeur. Pour chaque fonctionnalité, une branche était crée pour permettre à différentes personnes de collaborer dessus. Puis, quand la fonctionnalité était finie, une pull request était ouverte sur Github pour permettre aux autres membres du groupe d'analyser et critiquer (si besoin) les changements effectué. Une fois tout le monde satisfait, la pull request était mergée sur la branche master qui correspond à l'ensemble de fonctionnalités finies.
-
+	Afin de collaborer efficacement, nous avons utilisé Git (avec la plateforme Github) pour gérer l'intégration du code de chaque développeur. Pour chaque fonctionnalité, une branche était créée pour permettre à différentes personnes de collaborer dessus. Puis, quand la fonctionnalité était finie, une pull request était ouverte sur Github pour permettre aux autres membres du groupe d'analyser et critiquer (si besoin) les changements effectués. Une fois tout le monde satisfait, la pull request était mergée sur la branche master qui correspond à l'ensemble de fonctionnalités finies.
+	
 	%
 	% ETAT DES LIEUX
 	%
@@ -505,24 +505,24 @@
 	%
 	\section{Auto-critique}
 	
-	Notre principale difficulté à été de commencer à développer l'application en local puis ensuite de vouloir la transformer pour pouvoir jouer à travers un serveur. Beaucoup d'effort a été fourni pour la rendre fonctionnel à deux joueurs sur un ordinateur et il a fallu presque tout refaire la logique du jeu pour pouvoir communiquer avec le serveur.
+	Notre principale difficulté a été de commencer à développer l'application en local puis ensuite de vouloir la transformer pour pouvoir jouer à travers un serveur. Beaucoup d'effort a été fourni pour la rendre fonctionnelle à deux joueurs sur un ordinateur et il a fallu presque tout refaire la logique du jeu pour pouvoir communiquer avec le serveur.
 	
-	Un autre aspect qu'on aurait pu mieux faire a été notre dispersion. Au fil des itérations et surtout des replanifications, la charge de travail c'est accumulée et on avait de plus en plus de fonctionnalités à développer. Au lieu de se focaliser sur l'essentiel, on a profité d'être 4 et à chaque fois on a partagé le travail dans l'espoir de tout finir. Il en a suivit que presque toutes les fonctionnalités que l'on avait prévu lors de la planification du projet ont été commencé, mais la plus part ne sont pas fonctionnelle à 100\%.
+	Un autre aspect qu'on aurait pu mieux faire a été notre dispersion. Au fil des itérations et surtout des replanifications, la charge de travail c'est accumulée et on avait de plus en plus de fonctionnalités à développer. Au lieu de se focaliser sur l'essentiel, on a profité d'être 4 et à chaque fois on a partagé le travail dans l'espoir de tout finir. Il en a suivi que presque toutes les fonctionnalités que l'on avait prévu lors de la planification du projet ont été commencées, mais la plupart ne sont pas fonctionnelle à 100\%.
 	
 	On a aussi eu plus de peine à gérer la fin de semestre et tous les rendus des autres cours qui viennent en même temps. Pour améliorer ça, on aurait pu, lors des replanifications, oser redéfinir les fonctionnalités pour enlever celles qui ne sont pas essentielles (notamment les statistiques ou le lobby par exemple) pour pouvoir se concentrer sur l'aboutissement du cœur du jeu.
-
-
+	
+	
 	%
 	% CONCLUSION
 	%
 	\section{Conclusion}
 	Pour conclure, ce projet aura été une belle expérience. En effet, on a beaucoup appris des difficultés qui peuvent survenir lorsque l'on entreprend de développer un projet de plus grande envergure que ce à quoi on a été habitué de développer de notre côté. Une des leçons a été l'importance d'une bonne planification et replanification si besoin. On a plutôt eu tendance à simplement repousser le travail des itérations qui n'avait pas été fini aux itérations suivantes sans réfléchir vraiment si c'était une bonne idée.
 	
-	Malgré l'utilisation d'outils tel que Trello et Github, la collaboration n'a pas été aisée. Planifier les itérations et ensuite partager le travail demande pas mal de temps. Ensuite, plus le projet avance, plus l'on est dépendant du bon développement des collègues. Il nous est arrivé de nous retrouver dans la situation que, malgré l'accès à l'historique des modifications apportées par chacun, de remodifier le changement et ainsi revenir en arrière parce que l'on avait pas aperçu la raison du changement plus loin dans le code.
+	Malgré l'utilisation d'outils tels que Trello et Github, la collaboration n'a pas été aisée. Planifier les itérations et ensuite partager le travail demande pas mal de temps. Ensuite, plus le projet avance, plus l'on est dépendant du bon développement des collègues. Il nous est arrivé de nous retrouver dans la situation que, malgré l'accès à l'historique des modifications apportées par chacun, de remodifier le changement et ainsi revenir en arrière parce que l'on n’avait pas aperçu la raison du changement plus loin dans le code.
 	
-	On peut également ajouté que le temps nécessaire à une programmation propre, clair et facilement adaptable par la suite, à été négligé. En effet, bon nombres de changements ont du s'effectuer à posteriori de leur développement, ce qui de part la qualité du code des premières itérations, nous à demandé un effort supplémentaire et non prévu. 
+	On peut également ajouter que le temps nécessaire à une programmation propre, claire et facilement adaptable par la suite a été négligé. En effet, bon nombre de changements ont du s'effectuer a posteriori de leur développement, ce qui de par la qualité du code des premières itérations, nous à demandé un effort supplémentaire et non prévu. 
 	
-	Malgré tout, même si l'on n'a pas réussi à terminer entièrement le projet tel que l'on avait planifié en début de semestre, on a pu développer une bonne partie, en prenant soin de bien structurer notre application. On a pu mettre en place un base de donnée ainsi qu'une API permettant d'y accéder sans devoir écrire toutes les requêtes SQL "à la main". Notre partie administration fonctionne bien aussi. On peut accéder aux logs de tout ce qu'il se passe dans l'application, ce qui est utile non seulement en phase debug, mais aussi lors du cours normal pour pouvoir vérifier que tout fonctionne correctement. Le protocole que l'on a définit est aussi bien abouti. Le fait de l'avoir séparé du client et du serveur nous permet de simplement le définir une seule fois et laisser ensuite et le client et le serveur le soin d'aller chercher les informations qu'ils ont besoin pour communiquer entre eux.
+	Malgré tout, même si l'on n'a pas réussi à terminer entièrement le projet tel que l'on avait planifié en début de semestre, on a pu développer une bonne partie, en prenant soin de bien structurer notre application. On a pu mettre en place une base de données ainsi qu'une API permettant d'y accéder sans devoir écrire toutes les requêtes SQL "à la main". Notre partie administration fonctionne bien aussi. On peut accéder aux logs de tous ce qu'il se passe dans l'application, ce qui est utile non seulement en phase debug, mais aussi lors du cours normal pour pouvoir vérifier que tout fonctionne correctement. Le protocole que l'on a défini est aussi bien abouti. Le fait de l'avoir séparé du client et du serveur nous permet de simplement le définir une seule fois et laisser ensuite et le client et le serveur le soin d'aller chercher les informations qu'ils ont besoin pour communiquer entre eux.
 	
 	En somme, ce projet nous a beaucoup appris sur le cycle complet (accéléré dans notre cas) d'un développement à partir de la phase d'initialisation jusqu'à la fin de celle de construction, en passant par la phase d'élaboration et en s'arrêtant avant celle de transition qui serait celle où l'on livre l'application finale au client. Ces connaissances sont très utiles pour la suite dans le monde professionnel.
 	
@@ -535,6 +535,7 @@
 		\item Installation
 		\item Utilisation (avec copies d'écran)
 	\end{enumerate}
-
-
+	
+	
 \end{document}
+
