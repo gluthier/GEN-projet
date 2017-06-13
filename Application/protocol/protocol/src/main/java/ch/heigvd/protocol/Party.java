@@ -49,6 +49,7 @@ public class Party implements Sendable {
         this.playerName = json.getString("playerName");
         this.difficulty = new Difficulty(json.getJSONObject("difficulty"));
         this.mapSize = new MapSize(json.getJSONObject("mapSize"));
+        System.out.println(json.toString());
         this.freeRole = FreeRole.fromString(json.getString("freeRole"));
     }
 
@@ -78,6 +79,7 @@ public class Party implements Sendable {
         json.put("playerName", playerName);
         json.put("difficulty", difficulty.toJson());
         json.put("mapSize", mapSize.toJson());
+        System.out.println("FREEROLE : " + freeRole);
         json.put("freeRole", freeRole);
 
         return json;
