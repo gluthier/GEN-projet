@@ -72,6 +72,8 @@ public class LaunchedGame {
 	// start the game in s seconds
 	public void start(int s) {
 		if(client2 != null) {
+			// Remove party from lobby
+			App.CURRENT_LOBBIES.remove(party);
 			// send that the party start in s seconds
 			long time = System.currentTimeMillis();
 			time += s * 1000;
