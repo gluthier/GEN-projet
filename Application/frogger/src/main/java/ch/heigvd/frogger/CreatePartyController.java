@@ -64,15 +64,22 @@ public class CreatePartyController implements Initializable {
 
         Party party = new Party(-1, settings.getUsername(), diff, mapSize, freeRole);
         try {
-            MainApp.getTcpClient().createParty(party);
-            MainApp.getTcpClient().startGame();
+            List<FixedObstacle> obstacles = MainApp.getTcpClient().createParty(party);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
             Parent root = loader.load();
 
             GameFXMLController view = loader.getController();
 
+            MainApp.setController(new ClientController(view, MainApp.getTcpClient(), obstacles));
+
             Scene scene = new Scene(root);
             MainApp.getStage().setScene(scene);
+
+            // Center stage
+            Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+            MainApp.getStage().setX((primScreenBounds.getWidth() -  MainApp.getStage().getWidth()) / 2);
+            MainApp.getStage().setY((primScreenBounds.getHeight() -  MainApp.getStage().getHeight()) / 2);
         } catch (IOException ex) {
             Logger.getLogger(CreatePartyController.class.getName()).log(Level.SEVERE, null, ex);
         }
