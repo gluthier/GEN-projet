@@ -269,7 +269,6 @@ public class Protocol {
 
     public static Skier getFormatSkier(String message) {
         JSONObject json = new JSONObject(message);
-        System.out.println(message);
         return new Skier(json.getJSONObject("skier"));
     }
 
@@ -298,7 +297,7 @@ public class Protocol {
     public static Obstacle getFormatNewDynamicObstacle(String message) {
     	 JSONObject object = new JSONObject(message);
     	 int row = object.getJSONObject("param").getInt("row");
-    	return new Obstacle(row,3);
+    	return new Obstacle(2,row, -1);
     }
     
     public static String formatSkierWon() {
@@ -320,14 +319,10 @@ public class Protocol {
         return json.toString() + "\n";
     }
     
-    public static String formatSendDynamicObstacle(List<Obstacle> obstacles) {
+    public static String formatSendDynamicObstacle(Collection<Obstacle> obstacles) {
     	JSONObject json = new JSONObject();
         json.put("command", command.obstaclesPositions);
-        JSONArray obstacleArray = new JSONArray();
-        for (Obstacle obstacle : obstacles) {
-        	obstacleArray.put(obstacle.toJson());
-        }
-        json.put("dynamicObstacles", obstacleArray);
+        json.put("dynamicObstacles", obstacles);
 
         return json.toString() + "\n";
     }

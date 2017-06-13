@@ -4,21 +4,12 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.time.Duration;
-import java.time.LocalTime;
-import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.*;
 
-import ch.heigvd.protocol.Difficulty;
-import ch.heigvd.protocol.Obstacle;
-import ch.heigvd.protocol.Party;
-import ch.heigvd.protocol.Protocol;
-import ch.heigvd.protocol.Skier;
+import ch.heigvd.protocol.*;
 import ch.heigvd.protocol.Protocol.Direction;
 
 /**
@@ -28,7 +19,8 @@ import ch.heigvd.protocol.Protocol.Direction;
  */
 public class LaunchedGame {
 	private List<Obstacle> fixedObstacle;
-	private List<Obstacle> dynamicObstacle;
+	private HashMap<Integer, Obstacle> dynamicObstacle;
+	private int dynamicObstacleCounter;
 	//TODO replace by skier
 	private Skier skier;
 	private final Party party;
@@ -39,12 +31,14 @@ public class LaunchedGame {
 	 private BufferedWriter out2;
 	 private Difficulty difficulty;
 	 private Timer timer;
+	 private long lastObstacleMove;
 	//TODO put clients here
 	
 	public LaunchedGame(Party party, List<Obstacle> obstacles, Skier initialSkier, Socket client1) {
 		this.party = party;
 		fixedObstacle = obstacles;
-		dynamicObstacle = new ArrayList<Obstacle>();
+		dynamicObstacle = new HashMap();
+		dynamicObstacleCounter = 0;
 		skier = initialSkier;
 		this.client1 = client1;
 		timer = new Timer();
@@ -55,7 +49,7 @@ public class LaunchedGame {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		lastObstacleMove = System.currentTimeMillis();
 	}
 	
 	public List<Obstacle> getFixedObstacle() {
@@ -112,7 +106,7 @@ public class LaunchedGame {
 				public void run() {
 					tick();
 				}
-			},s*1000 - (System.currentTimeMillis() - time), 1000);
+			},s*1000 - (System.currentTimeMillis() - time), ServerConstants.tickRate);
 		}
 	}
 	
@@ -124,7 +118,8 @@ public class LaunchedGame {
 	}
 	
 	public void addDynamicObstacle(Obstacle o) {
-		dynamicObstacle.add(o);
+		o.setId(dynamicObstacleCounter);
+		dynamicObstacle.put(dynamicObstacleCounter++, o);
 	}
 	
 	private boolean checkCollision() {
@@ -135,7 +130,7 @@ public class LaunchedGame {
 			}
 		}
 		// check collision with dynamic obstacle
-		for (Obstacle obstacle : dynamicObstacle) {
+		for (Obstacle obstacle : dynamicObstacle.values()) {
 			if(obstacle.compareToCoordinate(skier.getX(), skier.getY())){
 				return true;
 			}
@@ -144,28 +139,31 @@ public class LaunchedGame {
 	}
 	
 	private void tick() {
-		System.out.println("Tick");
 		// Move everything accordingly to the Timer tick
 		moveSkier();
-		moveDynamicObstacle();
+		if (System.currentTimeMillis() - lastObstacleMove > 200 * (5 - (party.getDifficulty().getObstacleMoveSpeed() % 5))) {
+			moveDynamicObstacle();
+			lastObstacleMove = System.currentTimeMillis();
+		}
+
 		if(checkCollision())
 		{
 			System.out.println("Collision check");
 			// TODO Remove launched Game from game
-			broadcast(Protocol.formatSkierWon());
+			broadcast(Protocol.formatVaudoisWon());
 			timer.cancel();
 		}
 		
 		if(checkSkierWon()) {
 			System.out.println("Skier won check");
-			broadcast(Protocol.formatVaudoisWon());
+			broadcast(Protocol.formatSkierWon());
 			timer.cancel();
 		}
 		
 		lastMove= null;
 		// send new informations
 		broadcast(Protocol.formatSendSkierPosition(skier));
-		broadcast(Protocol.formatSendDynamicObstacle(dynamicObstacle));
+		broadcast(Protocol.formatSendDynamicObstacle(dynamicObstacle.values()));
 	}
 
 	/**
@@ -173,7 +171,7 @@ public class LaunchedGame {
 	 * @return true if the skier has reach the end
 	 */
 	private boolean checkSkierWon() {
-		return skier.getY() >= party.getMapSize().getHeight();
+		return skier.getY() >= Constants.GAME_HEIGHT;
 	}
 
 	/**
@@ -181,10 +179,10 @@ public class LaunchedGame {
 	 * if obstacle reach the edge of the map remove
 	 */
 	private void moveDynamicObstacle() {
-		for (Obstacle obstacle : dynamicObstacle) {
+		for (Obstacle obstacle : dynamicObstacle.values()) {
 			obstacle.moveRight();
-			if(obstacle.getX() >= party.getMapSize().getWidth()) {
-				dynamicObstacle.remove(obstacle);
+			if(obstacle.getX() >= Constants.GAME_WIDTH) {
+				dynamicObstacle.remove(obstacle.getId());
 			}
 		}
 	}

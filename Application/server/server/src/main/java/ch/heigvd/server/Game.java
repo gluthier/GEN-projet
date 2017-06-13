@@ -14,7 +14,6 @@ import java.net.Socket;
 import java.rmi.server.UID;
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -100,22 +99,21 @@ public class Game extends Thread implements ILog {
                 break;
             }
             case moveSkier:
-                if (logged) {
+                if (logged) {;
                   App.CURRENT_GAMES.get(GameID).move(Protocol.getFormatMove(args));
                 }
                 break;
             case addObstacle:
                 if (logged) {
-                    //TODO 
                     // should it be done here ?
-                	App.CURRENT_GAMES.get(GameID).addDynamicObstacle(Protocol.getFormatNewDynamicObstacle(args));
+                    App.CURRENT_GAMES.get(GameID).addDynamicObstacle(Protocol.getFormatNewDynamicObstacle(args));
                 }
             default:
                 break;
         }
     }
 
-    private void createParty(String args) {
+    private void createParty(String args) throws IOException {
         bdd.logInfo(this, "Creating new party");
         // create new party key
         Random rand = new Random();
@@ -134,18 +132,12 @@ public class Game extends Thread implements ILog {
         for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
             fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
-        // add the 2 rows of obstacle on the edge
-        for (int i = 0; i < map.getHeight(); i++) {
-            
-            fixedObstacles.add(new Obstacle(0, i));
-            fixedObstacles.add(new Obstacle(1, i));
-            fixedObstacles.add(new Obstacle(Constants.NUM_COLS - 2, i));
-            fixedObstacles.add(new Obstacle(Constants.NUM_COLS - 1, i));
-        }
         
         GameID = id;
         App.CURRENT_LOBBIES.put(id, party);
         App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), client));
+        out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
+        out.flush();
     }
 
     private boolean login(String message) throws IOException {
@@ -186,9 +178,13 @@ public class Game extends Thread implements ILog {
         int id = Protocol.getParamParty(message).getId();
         String token = Protocol.getFormatJoinToken(message);
         // check token
-        if (App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)) {
+        if (!App.CONNECTED_USER.get(userName).equals(token)) {
+            bdd.logWarning(this, "Incorrect token");
+        }
+        if (App.CURRENT_GAMES.containsKey(id)) {
             out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
             out.flush();
+            GameID = id;
             App.CURRENT_GAMES.get(id).addAnotherPlayer(client);
             App.CURRENT_GAMES.get(id).start(3);
         }

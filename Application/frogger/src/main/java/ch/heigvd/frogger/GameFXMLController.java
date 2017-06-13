@@ -59,6 +59,7 @@ public class GameFXMLController implements Initializable {
             GraphicsContext gc = canvas.getGraphicsContext2D();
             gc.drawImage(background, 0, 0);
 
+            /*
             // ----- ONLY FOR DEBUG : draw lines -----
             // TODO : Remove
             // Draw the lines directly on the graphicContext
@@ -72,6 +73,8 @@ public class GameFXMLController implements Initializable {
                 gc.strokeLine(i * Constants.CELL_WIDTH, 0, i * Constants.CELL_WIDTH, Constants.GAME_HEIGHT);
             }
             // ---------------------------------------
+
+            */
 
             // make the canvas focusable
             canvas.setFocusTraversable(true);

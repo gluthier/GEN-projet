@@ -64,14 +64,13 @@ public class CreatePartyController implements Initializable {
 
         Party party = new Party(-1, settings.getUsername(), diff, mapSize, freeRole);
         try {
-            MainApp.getTcpClient().createParty(party);
+            List<FixedObstacle> obstacles = MainApp.getTcpClient().createParty(party);
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Game.fxml"));
             Parent root = loader.load();
 
             GameFXMLController view = loader.getController();
 
-            List<FixedObstacle> obstacles = MainApp.getTcpClient().joinParty(party);
             MainApp.setController(new ClientController(view, MainApp.getTcpClient(), obstacles));
 
             Scene scene = new Scene(root);
