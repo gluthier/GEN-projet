@@ -1,11 +1,10 @@
 package ch.heigvd.frogger.tcp;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.GameSettings;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.FixedObstacle;
-import ch.heigvd.frogger.item.Item;
-import ch.heigvd.frogger.item.Player;
 import ch.heigvd.protocol.*;
 
 import java.io.*;
@@ -14,8 +13,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static ch.heigvd.protocol.Protocol.getFormatJoinObstacle;
 
 /**
  * Created by lognaume on 5/24/17.
@@ -81,7 +78,7 @@ public class TCPClient {
         difficultyList = Protocol.getFormatLoginDifficulty(line);
         mapSizeList = Protocol.getFormatLoginMapSize(line);
 
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to server "+Constants.SERVER_ADDRESS+":"+Constants.SERVER_PORT);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to server "+ ClientConstants.SERVER_ADDRESS+":"+ClientConstants.SERVER_PORT);
 
         return true;
     }
@@ -99,23 +96,36 @@ public class TCPClient {
     }
 
     public List<FixedObstacle> joinParty(Party party) throws IOException {
-        String command = Protocol.formatJoinSend(token, party.getId());
+        String command = Protocol.formatJoinSend(token, party);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
         writer.write(command);
         writer.flush();
 
-        String line = reader.readLine();
-
-        List<Obstacle> obstacles = Protocol.getFormatJoinObstacle(line);
-        List<FixedObstacle> fixedObstacles = new LinkedList<>();
-        obstacles.forEach(o -> fixedObstacles.add(new FixedObstacle(o.getX(), o.getY(), Constants.ItemType.Sapin)));
+        List<FixedObstacle> fixedObstacles = startGame();
 
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joined party #"+party.getId());
         return fixedObstacles;
     }
 
+    public List<FixedObstacle> startGame() throws IOException {
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Waiting for other player to join party");
+
+        String line = reader.readLine();
+        System.out.println("Reading line : " + line);
+
+        List<Obstacle> obstacles = Protocol.getFormatJoinObstacle(line);
+        List<FixedObstacle> fixedObstacles = new LinkedList<>();
+        obstacles.forEach(o -> fixedObstacles.add(new FixedObstacle(o.getX(), o.getY(), Constants.ItemType.Sapin)));
+
+        return fixedObstacles;
+    }
+
     public void createParty(Party party) {
         String command = Protocol.formatCreateParty(token, party);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Creating new party");
+
+        writer.write(command);
+        writer.flush();
     }
 
     public void moveLeft() {

@@ -60,4 +60,9 @@ public class MapSize implements Sendable{
 		if (getHeight() != mapSize.getHeight()) return false;
 		return getName().equals(mapSize.getName());
 	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

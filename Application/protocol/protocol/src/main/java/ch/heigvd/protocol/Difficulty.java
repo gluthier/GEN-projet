@@ -76,4 +76,9 @@ public class Difficulty implements Sendable{
 		if (getObstacleWidth() != that.getObstacleWidth()) return false;
 		return getName().equals(that.getName());
 	}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

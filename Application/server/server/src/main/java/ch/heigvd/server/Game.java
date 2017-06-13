@@ -2,9 +2,7 @@ package ch.heigvd.server;
 
 import ch.heig.bdd.BDD;
 import ch.heig.bdd.ILog;
-import ch.heigvd.protocol.MapSize;
-import ch.heigvd.protocol.Obstacle;
-import ch.heigvd.protocol.Protocol;
+import ch.heigvd.protocol.*;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -16,6 +14,7 @@ import java.net.Socket;
 import java.rmi.server.UID;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
@@ -38,6 +37,7 @@ public class Game extends Thread implements ILog {
     private int connectNbTry;
     private boolean logged;
     private String userName;
+    private List<Obstacle> fixedObstacles;
 
     public Game(Socket socket) {
         this.client = socket;
@@ -45,16 +45,13 @@ public class Game extends Thread implements ILog {
         this.uid = new UID();
         this.connectNbTry = 0;
         this.logged = false;
+        fixedObstacles = new ArrayList<Obstacle>();
     }
 
     @Override
-    @SuppressWarnings("empty-statement")
     public void run() {
+        bdd.logInfo(this, "START NEW GAME THREAD");
         try {
-            bdd.logInfo(this, "START NEW GAME THREAD");
-            // Try to login => change in that implementation
-            //Login login = new Login(client, uid);
-            //while (!login.connect()) ;
             // we wait on the client if he send us the right command to log in
             in = new BufferedReader(
                     new InputStreamReader(client.getInputStream()));
@@ -64,8 +61,7 @@ public class Game extends Thread implements ILog {
             String line;
             while ((line = in.readLine()) != null) {
                 JSONObject json = new JSONObject(line);
-
-                Protocol.command command = Protocol.command.valueOf((String) json.get("command"));
+                Protocol.command command = Protocol.command.fromString((String) json.get("command"));
                 receiveCommand(command, line);
             }
         } catch (IOException ex) {
@@ -118,26 +114,26 @@ public class Game extends Thread implements ILog {
     }
 
     private void createParty(String args) {
+        bdd.logInfo(this, "Creating new party");
         // create new party key
         Random rand = new Random();
         int id;
         do {
             // TODO Remove hardcoded max ID
             id = rand.nextInt(100);
-        } while (!App.CURRENT_GAMES.containsKey(id));
+        } while (App.CURRENT_LOBBIES.containsKey(id));
+
+        Party party = Protocol.getParamParty(args);
+        party.setId(id);
+        MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
+        Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
 
         // generate all fixedObstacle
-        List<Obstacle> ls = new ArrayList<Obstacle>();
-        // TODO Do global variable
-        for (int i = 0; i < 10; i++) {
-            //TODO get width and height via MapSizeId
-            ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+        for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
+            fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
-
-        //TODO get the difficulty as well
-        //TODO define the initial position
-        MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), ls, 5, 5, client));
+        App.CURRENT_LOBBIES.put(id, party);
+        App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, 5, 5, client));
     }
 
     private boolean login(String message) throws IOException {
@@ -174,7 +170,8 @@ public class Game extends Thread implements ILog {
     }
 
     private void startGame(String message) throws IOException {
-        String id = Protocol.getFormatJoinId(message);
+        bdd.logInfo(this, "Player joining party");
+        int id = Protocol.getParamParty(message).getId();
         String token = Protocol.getFormatJoinToken(message);
         // check token
         if (App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)) {

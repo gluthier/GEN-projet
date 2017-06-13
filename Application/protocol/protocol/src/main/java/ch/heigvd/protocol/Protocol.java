@@ -58,6 +58,15 @@ public class Protocol {
         public JSONObject toJson() {
             return null;
         }
+
+        public static command fromString(String string) {
+            for (command c : values()) {
+                if (c.value.equals(string)) {
+                    return c;
+                }
+            }
+            return null;
+        }
     }
 
     public static <T extends Sendable> String formatArraytoJson(Collection<T> ls) {
@@ -163,39 +172,38 @@ public class Protocol {
         param.put("token", token);
         param.put("party", party.toJson());
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
-    public static String formatStartGame(String id, LocalTime time) {
+    public static String formatStartGame(Party party, long time) {
         JSONObject json = new JSONObject();
         json.put("command", command.startParty);
         JSONObject param = new JSONObject();
-        param.put("id", id);
-        param.put("time", time.toString());
+        param.put("party", party.toJson());
+        param.put("time", time);
         json.put("param", param);
-        return json.toString();
+        return json.toString()  + "\n";
     }
 
-    public static String getFormatStartGameId(String message) {
-        return getJsonParam(message, "param", "id");
+    public static Party getParamParty(String message) {
+        JSONObject object = new JSONObject(message);
+        return new Party(object.getJSONObject("param").getJSONObject("party"));
     }
 
-    public static String getFormatStartGameTime(String message) {
-        return getJsonParam(message, "param", "time");
+    public static long getFormatStartGameTime(String message) {
+        return new JSONObject(message).getJSONObject("param").getLong("time");
     }
 
     public static String getFormatCreatePartyToken(String message) {
         return getJsonParam(message, "param", "token");
     }
 
-    public static int getFormatCreatePartyDifficultyId(String message) {
-        JSONObject object = new JSONObject(message);
-        return Integer.valueOf(object.getJSONObject("param").getString("difficulty"));
+    public static Difficulty getFormatCreatePartyDifficulty(String message) {
+        return getParamParty(message).getDifficulty();
     }
 
-    public static int getFormatCreatePartyMapSizeId(String message) {
-        JSONObject object = new JSONObject(message);
-        return Integer.valueOf(object.getJSONObject("param").getString("mapSize"));
+    public static MapSize getFormatCreatePartyMapSize(String message) {
+        return getParamParty(message).getMapSize();
     }
 
     public static String getFormatLobbyToken(String message) {
@@ -208,7 +216,7 @@ public class Protocol {
 
     public static List<Party> getFormatLobbyParties(String message) {
         JSONArray array = new JSONArray(message);
-        List<Party> parties = new LinkedList<Party>();
+        List<Party> parties = new LinkedList();
         for (int i = 0; i < array.length(); i++) {
             parties.add(new Party(array.getJSONObject(i)));
         }
@@ -216,12 +224,12 @@ public class Protocol {
 
     }
 
-    public static String formatJoinSend(String token, int id) {
+    public static String formatJoinSend(String token, Party party) {
         JSONObject json = new JSONObject();
-        json.put("command", "join");
+        json.put("command", command.join);
         JSONObject param = new JSONObject();
         param.put("token", token);
-        param.put("id", id);
+        param.put("party", party.toJson());
         json.put("param", param);
         return json.toString() + "\n";
     }
@@ -230,12 +238,11 @@ public class Protocol {
         return getJsonParam(message, "param", "token");
     }
 
-    public static String getFormatJoinId(String message) {
-        return getJsonParam(message, "param", "id");
-    }
-
     public static String formatJoinAnswer(Collection<Obstacle> ls) {
-        return formatArraytoJson(ls);
+        JSONObject json = new JSONObject();
+        json.put("command",command.obstaclesPositions);
+        json.put("fixedObstacles",ls);
+        return json.toString() + "\n";
     }
 
     public static List<Obstacle> getFormatJoinObstacle(String message) {
@@ -258,7 +265,7 @@ public class Protocol {
 
     public static command getFormatCommand(String message) {
         JSONObject json = new JSONObject(message);
-        return command.valueOf(json.getString("command"));
+        return command.fromString(json.getString("command"));
     }
 
     public static Skier getFormatSkier(String message) {

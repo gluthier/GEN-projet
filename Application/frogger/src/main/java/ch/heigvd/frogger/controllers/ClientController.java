@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.controllers;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.item.*;
@@ -52,8 +53,8 @@ public class ClientController implements IController {
 
         // Create the two obstacles borders (chalets)
         for (int i = 0; i < Constants.NUM_ROWS; i++) {
-            if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-                addObstacle(new FixedObstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
+            if (ClientConstants.OBSTACLE_ROW.inverse().containsKey(i)) {
+                addObstacle(new FixedObstacle(0, i, Constants.ItemType.getRow(ClientConstants.OBSTACLE_ROW.inverse().get(i))));
             } else {
                 addObstacle(new FixedObstacle(0, i, Constants.ItemType.Chalet));
             }
