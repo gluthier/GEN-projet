@@ -77,10 +77,12 @@ public class LaunchedGame {
 	 */
 	private void broadcast(String message) {
 		try {
-			out1.write(message);
-			out1.flush();
-			out2.write(message);
-			out2.flush();
+            if(message != null) {
+                out1.write(message);
+                out1.flush();
+                out2.write(message);
+                out2.flush();
+            }
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
