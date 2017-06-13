@@ -10,7 +10,7 @@ import java.util.*;
  *
  * @author Gabriel Luthier
  */
-public interface IController extends Observer {
+public interface IController {
 
     void setView(GameFXMLController gameFXMLController);
 
