@@ -18,7 +18,6 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{amsmath}
-\usepackage{listings}
 \usepackage{listingsutf8}
 \usepackage{color}
 \usepackage{enumerate}
@@ -43,21 +42,12 @@
 
 \usepackage{color}
 \definecolor{light-gray}{gray}{0.95}
-\usepackage{listings}
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
-\lstset{
-	breaklines=true, 
-	basicstyle=\small,
-	inputencoding=utf8/latin1,
-	extendedchars=true,
-	numbers=left,   
-	firstnumber=1,
-	numberfirstline=true, 
-	language=Java,
-	keywordstyle=\color{blue}\ttfamily,
-	stringstyle=\color{red}\ttfamily,
-	commentstyle=\color{black}\ttfamily
-}
+\usepackage{listings}
 
 \usepackage{tabularx} % for 'tabularx' environment
 
@@ -483,7 +473,7 @@
 	\end{enumerate}
 
 	\subsubsection{Utilisation de JUnit}
-	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	\lstinputlisting[langage=Java,inputencoding=utf8,basicstyle=\small]{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
 	
 
 	\subsection{Stratégie d'intégration du code de chaque participant}
