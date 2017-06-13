@@ -82,7 +82,7 @@ public class Party implements Sendable {
         json.put("playerName", playerName);
         json.put("difficulty", difficulty.toJson());
         json.put("mapSize", mapSize.toJson());
-        json.put("freeRole", freeRole);
+        json.put("freeRole", freeRole.toString());
 
         return json;
     }
