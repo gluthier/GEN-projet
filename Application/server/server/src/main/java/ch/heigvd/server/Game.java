@@ -49,10 +49,9 @@ public class Game extends Thread implements ILog {
     }
 
     @Override
-    @SuppressWarnings("empty-statement")
     public void run() {
+        bdd.logInfo(this, "START NEW GAME THREAD");
         try {
-            bdd.logInfo(this, "START NEW GAME THREAD");
             // we wait on the client if he send us the right command to log in
             in = new BufferedReader(
                     new InputStreamReader(client.getInputStream()));
@@ -115,6 +114,7 @@ public class Game extends Thread implements ILog {
     }
 
     private void createParty(String args) {
+        bdd.logInfo(this, "Creating new party");
         // create new party key
         Random rand = new Random();
         int id;
@@ -124,9 +124,9 @@ public class Game extends Thread implements ILog {
         } while (App.CURRENT_LOBBIES.containsKey(id));
 
         Party party = Protocol.getFormatCreateParty(args);
+        party.setId(id);
         MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
         Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
-
 
         // generate all fixedObstacle
         for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
@@ -165,7 +165,6 @@ public class Game extends Thread implements ILog {
     }
 
     private void getLobbies() throws IOException {
-        App.CURRENT_LOBBIES.put(10, new Party(10, "Toto", new Difficulty(10, "Hardcore", 4, 5, 6, 7), new MapSize(10, "Infinite", 100, 200), Party.FreeRole.defender));
         out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()));
         out.flush();
     }
