@@ -174,27 +174,23 @@ public class Protocol {
         return json.toString() + "\n";
     }
 
-    public static String formatStartGame(String id, LocalTime time) {
+    public static String formatStartGame(Party party, long time) {
         JSONObject json = new JSONObject();
         json.put("command", command.startParty);
         JSONObject param = new JSONObject();
-        param.put("id", id);
-        param.put("time", time.toString());
+        param.put("party", party.toJson());
+        param.put("time", time);
         json.put("param", param);
         return json.toString()  + "\n";
     }
 
-    public static String getFormatStartGameId(String message) {
-        return getJsonParam(message, "param", "id");
-    }
-
-    public static String getFormatStartGameTime(String message) {
-        return getJsonParam(message, "param", "time");
-    }
-
-    public static Party getFormatCreateParty(String message) {
+    public static Party getParamParty(String message) {
         JSONObject object = new JSONObject(message);
         return new Party(object.getJSONObject("param").getJSONObject("party"));
+    }
+
+    public static long getFormatStartGameTime(String message) {
+        return new JSONObject(message).getJSONObject("param").getLong("time");
     }
 
     public static String getFormatCreatePartyToken(String message) {
@@ -202,11 +198,11 @@ public class Protocol {
     }
 
     public static Difficulty getFormatCreatePartyDifficulty(String message) {
-        return getFormatCreateParty(message).getDifficulty();
+        return getParamParty(message).getDifficulty();
     }
 
     public static MapSize getFormatCreatePartyMapSize(String message) {
-        return getFormatCreateParty(message).getMapSize();
+        return getParamParty(message).getMapSize();
     }
 
     public static String getFormatLobbyToken(String message) {
@@ -227,12 +223,12 @@ public class Protocol {
 
     }
 
-    public static String formatJoinSend(String token, int id) {
+    public static String formatJoinSend(String token, Party party) {
         JSONObject json = new JSONObject();
-        json.put("command", "join");
+        json.put("command", command.join);
         JSONObject param = new JSONObject();
         param.put("token", token);
-        param.put("id", id);
+        param.put("party", party.toJson());
         json.put("param", param);
         return json.toString() + "\n";
     }
@@ -241,12 +237,11 @@ public class Protocol {
         return getJsonParam(message, "param", "token");
     }
 
-    public static String getFormatJoinId(String message) {
-        return getJsonParam(message, "param", "id");
-    }
-
     public static String formatJoinAnswer(Collection<Obstacle> ls) {
-        return formatArraytoJson(ls);
+        JSONObject json = new JSONObject();
+        json.put("command",command.obstaclesPositions);
+        json.put("fixedObstacles",ls);
+        return json.toString() + "\n";
     }
 
     public static List<Obstacle> getFormatJoinObstacle(String message) {

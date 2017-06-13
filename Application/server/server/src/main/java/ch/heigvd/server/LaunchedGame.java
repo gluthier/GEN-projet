@@ -12,9 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.*;
 
 import ch.heigvd.protocol.Difficulty;
 import ch.heigvd.protocol.Obstacle;
+import ch.heigvd.protocol.Party;
 import ch.heigvd.protocol.Protocol;
 import ch.heigvd.protocol.Skier;
 import ch.heigvd.protocol.Protocol.Direction;
@@ -27,29 +29,24 @@ import ch.heigvd.protocol.Protocol.Direction;
 public class LaunchedGame {
 	private List<Obstacle> fixedObstacle;
 	private List<Obstacle> dynamicObstacle;
-	private final int mapWidth;
-	private final int mapHeight;
 	//TODO replace by skier
 	private Skier skier;
+	private final Party party;
 	private Direction lastMove;
 	 private final Socket client1;
 	 private BufferedWriter out1;
 	 private Socket client2 = null;
 	 private BufferedWriter out2;
-	 private final int id;
 	 private Difficulty difficulty;
 	 private Timer timer;
 	//TODO put clients here
 	
-	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, Skier initialSkier, Difficulty difficulty, Socket client1) {
+	public LaunchedGame(Party party, List<Obstacle> obstacles, Skier initialSkier, Socket client1) {
+		this.party = party;
 		fixedObstacle = obstacles;
-		this.difficulty = difficulty;
 		dynamicObstacle = new ArrayList<Obstacle>();
-		this.mapHeight = mapHeight;
-		this.mapWidth = mapWidth;
 		skier = initialSkier;
 		this.client1 = client1;
-		this.id = id;
 		timer = new Timer();
 		try {
 			out1 = new BufferedWriter(
@@ -99,11 +96,13 @@ public class LaunchedGame {
 	// start the game in s seconds
 	public void start(int s) {
 		if(client2 != null) {
+			// Remove party from lobby
+			App.CURRENT_LOBBIES.remove(party);
 			// send that the party start in s seconds
-			LocalTime time = LocalTime.now();
-			time.plusSeconds(s);
-			broadcast(Protocol.formatStartGame(String.valueOf(id), time));
-			
+			long time = System.currentTimeMillis();
+			time += s * 1000;
+				broadcast(Protocol.formatStartGame(party, time));
+
 			// wait these seconds
 			// start the game
 			// TODO put timer time in variable
@@ -113,7 +112,7 @@ public class LaunchedGame {
 				public void run() {
 					tick();
 				}
-			},Duration.between(LocalTime.now(), time).toMillis(),1000) ;
+			},s*1000 - (System.currentTimeMillis() - time));
 		}
 	}
 	
@@ -171,7 +170,7 @@ public class LaunchedGame {
 	 * @return true if the skier has reach the end
 	 */
 	private boolean checkSkierWon() {
-		return skier.getY() >= mapHeight;
+		return skier.getY() >= party.getMapSize().getHeight();
 	}
 
 	/**
@@ -181,7 +180,7 @@ public class LaunchedGame {
 	private void moveDynamicObstacle() {
 		for (Obstacle obstacle : dynamicObstacle) {
 			obstacle.moveRight();
-			if(obstacle.getX() >= mapWidth) {
+			if(obstacle.getX() >= party.getMapSize().getWidth()) {
 				dynamicObstacle.remove(obstacle);
 			}
 		}

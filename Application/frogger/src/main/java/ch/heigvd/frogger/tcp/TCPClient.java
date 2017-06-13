@@ -96,7 +96,7 @@ public class TCPClient {
     }
 
     public List<FixedObstacle> joinParty(Party party) throws IOException {
-        String command = Protocol.formatJoinSend(token, party.getId());
+        String command = Protocol.formatJoinSend(token, party);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
         writer.write(command);
         writer.flush();
@@ -111,6 +111,7 @@ public class TCPClient {
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Waiting for other player to join party");
 
         String line = reader.readLine();
+        System.out.println("Reading line : " + line);
 
         List<Obstacle> obstacles = Protocol.getFormatJoinObstacle(line);
         List<FixedObstacle> fixedObstacles = new LinkedList<>();

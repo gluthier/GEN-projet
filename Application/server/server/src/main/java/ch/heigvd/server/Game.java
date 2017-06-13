@@ -123,7 +123,7 @@ public class Game extends Thread implements ILog {
             id = rand.nextInt(100);
         } while (App.CURRENT_LOBBIES.containsKey(id));
 
-        Party party = Protocol.getFormatCreateParty(args);
+        Party party = Protocol.getParamParty(args);
         party.setId(id);
         MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
         Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
@@ -142,7 +142,7 @@ public class Game extends Thread implements ILog {
         }
         
         App.CURRENT_LOBBIES.put(id, party);
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), diff, client));
+        App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), client));
     }
 
     private boolean login(String message) throws IOException {
@@ -179,7 +179,8 @@ public class Game extends Thread implements ILog {
     }
 
     private void startGame(String message) throws IOException {
-        String id = Protocol.getFormatJoinId(message);
+        bdd.logInfo(this, "Player joining party");
+        int id = Protocol.getParamParty(message).getId();
         String token = Protocol.getFormatJoinToken(message);
         // check token
         if (App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)) {
