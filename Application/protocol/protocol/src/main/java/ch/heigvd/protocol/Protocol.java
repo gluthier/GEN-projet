@@ -54,7 +54,6 @@ public class Protocol {
             return value;
         }
 
-        @Override
         public JSONObject toJson() {
             return null;
         }
@@ -299,7 +298,35 @@ public class Protocol {
         json.put("param", param);
         return json.toString() + "\n";
     }
+    
+    public static String formatSkierWon() {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.skierWon);
+        return json.toString() + "\n";
+    }
+    
+    public static String formatVaudoisWon() {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.vaudoisWon);
+        return json.toString() + "\n";
+    }
 
-    // TODO send skier coordinate
-    // TODO send Dynamic obstacle coordinate
+    public static String formatSendSkierPosition(Skier skier) {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.skierPosition);
+        json.put("skier", skier);
+        return json.toString() + "\n";
+    }
+    
+    public static String formatSendDynamicObstacle(List<Obstacle> obstacles) {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.skierPosition);
+        JSONArray obstacleArray = new JSONArray();
+        for (Obstacle obstacle : obstacles) {
+        	obstacleArray.put(obstacle.toJson());
+        }
+        json.put("dynamicObstacles", obstacleArray);
+
+        return json.toString() + "\n";
+    }
 }

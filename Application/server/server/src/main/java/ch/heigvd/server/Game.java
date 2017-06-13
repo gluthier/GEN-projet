@@ -132,8 +132,17 @@ public class Game extends Thread implements ILog {
         for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
             fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
+        // add the 2 rows of obstacle on the edge
+        for (int i = 0; i < map.getHeight(); i++) {
+            
+            fixedObstacles.add(new Obstacle(0, i));
+            fixedObstacles.add(new Obstacle(1, i));
+            fixedObstacles.add(new Obstacle(Constants.NUM_COLS - 2, i));
+            fixedObstacles.add(new Obstacle(Constants.NUM_COLS - 1, i));
+        }
+        
         App.CURRENT_LOBBIES.put(id, party);
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, 5, 5, diff, client));
+        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), diff, client));
     }
 
     private boolean login(String message) throws IOException {
