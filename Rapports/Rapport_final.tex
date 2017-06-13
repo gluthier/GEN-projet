@@ -16,7 +16,6 @@
 \date{\today}
 
 \usepackage[frenchb]{babel}
-
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \usepackage{amsmath}
@@ -41,17 +40,20 @@
 \setlength\parindent{0pt}
 \setlength{\parskip}{0.7em}
 
-\usepackage{color}
-\definecolor{light-gray}{gray}{0.95}
-\definecolor{pblue}{rgb}{0.13,0.13,1}
-\definecolor{pgreen}{rgb}{0,0.5,0}
-\definecolor{pred}{rgb}{0.9,0,0}
-\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
-
 \usepackage{listings}
-
-\usepackage{tabularx} % for 'tabularx' environment
-
+\lstset{
+	breaklines=true, 
+	basicstyle=\scriptsize,
+	inputencoding=utf8/latin1,
+	extendedchars=true,
+	numbers=left,   
+	firstnumber=1,
+	numberfirstline=true, 
+	language=Java,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{black}\ttfamily
+}
 
 
 % headers & footers
@@ -471,7 +473,7 @@
 	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est un application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
 	
 	\subsubsection{Utilisation de JUnit pour une classe définissant le protocole}
-	\lstinputlisting[language=Java,inputencoding=utf8,basicstyle=\small]{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
 	
 	\subsubsection{Résultats des tests}
 	La figure~\ref{fig:resTests} montre le résultats des tests JUnit.
