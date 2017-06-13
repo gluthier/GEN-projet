@@ -548,11 +548,59 @@
 	%
 	\appendix
 	\section{Manuel d'utilisation} \label{app:manuelUtil}
-	\begin{enumerate}
-		\item Installation
-		\item Utilisation (avec copies d'écran)
-	\end{enumerate}
 	
+	\subsection{Installation}
+	On a plusieurs manières pour jouer. La première, la plus simple, consiste à lancer les fichiers \texttt{.jar} du serveur pour lancer un serveur et de Frogger pour lancer un client.
+	
+	La deuxième méthode consiste à compiler depuis le code source. Pour cela, il faut compiler séparément les projets suivants: \texttt{GEN-protocol}, \texttt{GEN-BDD}, \texttt{GEN-admin}, \texttt{GEN-server} puis \texttt{GEN-Frogger}. L'ordre est important car certain projets sont des dépendances d'autres.
+	
+	Ensuite, pour jouer, il faut évidemment qu'un serveur tourne quelque part. L'adresse du serveur peut être configurée dans le code dans \texttt{ch-heigvd.frogger.Client.Constants}. Ensuite lancer au moins deux clients. Le premier doit créer une partie (ou attendre que le deuxième se connecte et crée lui une partie). Ensuite l'autre client se connecte à la partie et ils peuvent enfin se mettre à jouer.
+	
+	\subsection{Utilisation}
+	
+	\begin{enumerate}
+		\item Pour commencer, il faut d'abord se login dans l'application. La figure~\ref{fig:login} montre cette étape.
+		\item Ensuite, on arrive dans le lobby. On a l'option de soit créer une partie, soit en rejoindre une. La figure~\ref{fig:lobby} montre quand le premier joueur se connecte et arrive dans le lobby vide.
+		\item La figure~\ref{fig:nouvellePartie} montre l'interface de création d'une nouvelle partie.
+		\item Après avoir créé un partie, le joueur arrive dans le jeu et est en attente d'un nouveau joueur pour pouvoir commencer le jeu. La figure~\ref{fig:jeuSkier} montre cette étape.
+		\item Quand le deuxième joueur se connecte, la partie peut alors commencer. La figure~\ref{fig:jeu} montre une partie en cours.
+	\end{enumerate}	
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Screenshots/login.png}
+		\caption{Le login}
+		\label{fig:login}
+	\end{figure}
+
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Screenshots/lobby.png}
+		\caption{Le lobby}
+		\label{fig:lobby}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Screenshots/nouvelle_partie.png}
+		\caption{Création d'une nouvelle partie}
+		\label{fig:nouvellePartie}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Screenshots/jeu_skier.png}
+		\caption{Jeu lancé avec seulement le skieur}
+		\label{fig:jeuSkier}
+	\end{figure}
+	
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Screenshots/jeu.png}
+		\caption{Jeu avec 2 clients connecté à une partie}
+		\label{fig:jeu}
+	\end{figure}
+		
 	
 \end{document}
 
