@@ -2,10 +2,12 @@ package ch.heigvd.protocol;
 
 import org.json.JSONObject;
 
+import ch.heigvd.protocol.Protocol.Direction;
+
 public class Skier implements Sendable{
 
-	private final int x;
-	private final int y;
+	private int x;
+	private int y;
 
 	public int getX() {
 		return x;
@@ -30,6 +32,23 @@ public class Skier implements Sendable{
 		return json;
 	}
 
+	public void move(Direction move) {
+		// check bounds
+			switch (move) {
+			case right:
+				x++;
+				break;
+			case left:
+				x--;
+				break;
+			case bottom:
+				y++;
+				break;
+			default:
+				break;
+			}
+		}
+	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

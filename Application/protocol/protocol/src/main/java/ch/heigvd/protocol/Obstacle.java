@@ -3,9 +3,14 @@ package ch.heigvd.protocol;
 import org.json.JSONObject;
 
 public class Obstacle implements Sendable{
-	
-	private final int x;
-	private final int y;
+	/**
+	 * Column
+	 */
+	private int x;
+	/**
+	 * Rows
+	 */
+	private int y;
 	
 	public int getX() {
 		return x;
@@ -13,9 +18,23 @@ public class Obstacle implements Sendable{
 	public int getY() {
 		return y;
 	}
+	
+	public void moveRight() {
+		x++;
+	}
 	public Obstacle(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+	
+	/**
+	 * Compare the position of an obstacle with a point
+	 * @param x
+	 * @param y
+	 * @return true if same position
+	 */
+	public boolean compareToCoordinate(int x, int y){
+		return this.x == x && this.y == y;
 	}
 	
 	public Obstacle(JSONObject json) {
