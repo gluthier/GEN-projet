@@ -44,13 +44,24 @@
 \usepackage{color}
 \definecolor{light-gray}{gray}{0.95}
 \usepackage{listings}
+
 \lstset{
-	breaklines=true,
-	breakatwhitespace=true,
-	backgroundcolor=\color{light-gray}
+	breaklines=true, 
+	basicstyle=\small,
+	inputencoding=utf8/latin1,
+	extendedchars=true,
+	numbers=left,   
+	firstnumber=1,
+	numberfirstline=true, 
+	language=Java,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{black}\ttfamily
 }
 
 \usepackage{tabularx} % for 'tabularx' environment
+
+
 
 % headers & footers
 \pagestyle{fancy}
@@ -470,6 +481,10 @@
 		\item Utilisation de JUnit pour au moins une classe conséquente
 		\item Résultats des tests
 	\end{enumerate}
+
+	\subsubsection{Utilisation de JUnit}
+	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	
 
 	\subsection{Stratégie d'intégration du code de chaque participant}
 	Afin de collaborer efficacement, nous avons utilisé Git (avec la plateforme Github) pour gérer l'intégration du code de chaque développeur. Pour chaque fonctionnalité, une branche était crée pour permettre à différentes personnes de collaborer dessus. Puis, quand la fonctionnalité était finie, une pull request était ouverte sur Github pour permettre aux autres membres du groupe d'analyser et critiquer (si besoin) les changements effectué. Une fois tout le monde satisfait, la pull request était mergée sur la branche master qui correspond à l'ensemble de fonctionnalités finies.
