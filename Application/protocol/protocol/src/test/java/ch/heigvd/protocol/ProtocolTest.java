@@ -25,12 +25,12 @@ public class ProtocolTest {
 
         String message = Protocol.formatArraytoJson(testList);
         JSONArray testArray = new JSONArray(message);
-        
+
         JSONObject testSkierObject = testArray.getJSONObject(0);
-        JSONObject testDifficultyObject = testArray.getJSONObject(1);        
+        JSONObject testDifficultyObject = testArray.getJSONObject(1);
 
         assertEquals(0, testSkierObject.get("x"));
-        assertEquals(1, testSkierObject.get("y"));       
+        assertEquals(1, testSkierObject.get("y"));
 
         assertEquals(1, testDifficultyObject.get("id"));
         assertEquals("medium", testDifficultyObject.get("name"));
@@ -47,7 +47,7 @@ public class ProtocolTest {
 
         assertEquals("maxime", Protocol.getJsonParam(message, "param", "user"));
         assertEquals("coucou", Protocol.getJsonParam(message, "param", "password"));
-        
+
         assertEquals("login", Protocol.getJsonParam(message, null, "command"));
     }
 
@@ -57,7 +57,7 @@ public class ProtocolTest {
 
         JSONObject test = new JSONObject(message);
         assertEquals("login", test.getString("command"));
-        
+
         JSONObject param = test.getJSONObject("param");
         assertEquals("test", param.getString("user"));
         assertEquals(Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString(), param.getString("password"));
@@ -74,7 +74,7 @@ public class ProtocolTest {
         String message = Protocol.formatLoginSend("test", "1234");
         assertEquals(Hashing.sha256().hashString("1234", StandardCharsets.UTF_8).toString(), Protocol.getFormatLoginPassword(message));
     }
-    
+
     @Test
     public void testFormatWrongLoginAnswer() throws Exception {
         String message = Protocol.formatWrongLoginAnswer();

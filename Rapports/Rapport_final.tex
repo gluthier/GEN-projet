@@ -466,15 +466,21 @@
 	
 	
 	\subsection{Stratégie de tests}
-	\begin{enumerate}
-		\item Effectués quand, par qui
-		\item Outils utilisés?
-		\item Utilisation de JUnit pour au moins une classe conséquente
-		\item Résultats des tests
-	\end{enumerate}
-
-	\subsubsection{Utilisation de JUnit}
+	Nous avons effectué quelques tests pour les parties importantes de l'application. Généralement, la personne qui développait une fonctionnalité faisait elle-même les tests nécessaires pour assurer le bon fonctionnement du programme. Tout n'a pas été testé, car on a été rattrapé par les deadlines. 
+	
+	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est un application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
+	
+	\subsubsection{Utilisation de JUnit pour une classe définissant le protocole}
 	\lstinputlisting[language=Java,inputencoding=utf8,basicstyle=\small]{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	
+	\subsubsection{Résultats des tests}
+	La figure~\ref{fig:resTests} montre le résultats des tests JUnit.
+	\begin{figure}[ht]
+		\centering
+		\includegraphics{tests.png}
+		\caption{Résultats des tests JUnit}
+		\label{fig:resTests}
+	\end{figure}
 	
 
 	\subsection{Stratégie d'intégration du code de chaque participant}
