@@ -29,13 +29,13 @@ public class ActionDefend implements Actions {
 
     @Override
     public void act() {
-        if (MainApp.getGameSettings().getRole() == Party.FreeRole.defender) {
+        // if (MainApp.getGameSettings().getRole() == Party.FreeRole.defender) {
             try {
                 MainApp.getController().addDynamicObstacle(ClientConstants.OBSTACLE_ROW.get(row));
             } catch (Exception e) {
                 Logger.getLogger(ActionDefend.class.getName()).log(Level.SEVERE, null, e);
             }
-        }
+        // }
     }
 
 }

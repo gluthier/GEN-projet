@@ -112,7 +112,7 @@ public class LaunchedGame {
 				public void run() {
 					tick();
 				}
-			},s*1000 - (System.currentTimeMillis() - time));
+			},s*1000 - (System.currentTimeMillis() - time), 1000);
 		}
 	}
 	
@@ -144,17 +144,20 @@ public class LaunchedGame {
 	}
 	
 	private void tick() {
+		System.out.println("Tick");
 		// Move everything accordingly to the Timer tick
 		moveSkier();
 		moveDynamicObstacle();
 		if(checkCollision())
 		{
+			System.out.println("Collision check");
 			// TODO Remove launched Game from game
 			broadcast(Protocol.formatSkierWon());
 			timer.cancel();
 		}
 		
 		if(checkSkierWon()) {
+			System.out.println("Skier won check");
 			broadcast(Protocol.formatVaudoisWon());
 			timer.cancel();
 		}

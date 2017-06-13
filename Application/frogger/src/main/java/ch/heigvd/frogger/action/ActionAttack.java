@@ -36,7 +36,7 @@ public class ActionAttack implements Actions {
 
     @Override
     public void act() {
-        if (MainApp.getGameSettings().getRole() == Party.FreeRole.skier) {
+        // if (MainApp.getGameSettings().getRole() == Party.FreeRole.skier) {
             IController controller = null;
             try {
                 controller = MainApp.getController();
@@ -56,6 +56,6 @@ public class ActionAttack implements Actions {
                 default:
                     break;
             }
-        }
+        // }
     }
 }

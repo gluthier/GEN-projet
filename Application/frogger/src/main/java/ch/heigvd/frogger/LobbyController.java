@@ -99,10 +99,7 @@ public class LobbyController implements Initializable {
 
             GameFXMLController view = loader.getController();
 
-
-            // TODO in lobby
-            List<Party> parties = MainApp.getTcpClient().connectToLobby();
-            List<FixedObstacle> obstacles = MainApp.getTcpClient().joinParty(parties.get(0));
+            List<FixedObstacle> obstacles = MainApp.getTcpClient().joinParty(party);
             MainApp.setController(new ClientController(view, MainApp.getTcpClient(), obstacles));
 
             Scene scene = new Scene(root);
