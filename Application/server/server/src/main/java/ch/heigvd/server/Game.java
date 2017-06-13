@@ -38,6 +38,7 @@ public class Game extends Thread implements ILog {
     private boolean logged;
     private String userName;
     private List<Obstacle> fixedObstacles;
+    private int GameID;
 
     public Game(Socket socket) {
         this.client = socket;
@@ -100,13 +101,14 @@ public class Game extends Thread implements ILog {
             }
             case moveSkier:
                 if (logged) {
-                    //TODO
+                  App.CURRENT_GAMES.get(GameID).move(Protocol.getFormatMove(args));
                 }
                 break;
             case addObstacle:
                 if (logged) {
                     //TODO 
                     // should it be done here ?
+                	App.CURRENT_GAMES.get(GameID).addDynamicObstacle(Protocol.getFormatNewDynamicObstacle(args));
                 }
             default:
                 break;
@@ -141,6 +143,7 @@ public class Game extends Thread implements ILog {
             fixedObstacles.add(new Obstacle(Constants.NUM_COLS - 1, i));
         }
         
+        GameID = id;
         App.CURRENT_LOBBIES.put(id, party);
         App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), client));
     }

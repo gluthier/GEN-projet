@@ -295,6 +295,12 @@ public class Protocol {
         return json.toString() + "\n";
     }
     
+    public static Obstacle getFormatNewDynamicObstacle(String message) {
+    	 JSONObject object = new JSONObject(message);
+    	 int row = object.getJSONObject("param").getInt("row");
+    	return new Obstacle(row,3);
+    }
+    
     public static String formatSkierWon() {
     	JSONObject json = new JSONObject();
         json.put("command", command.skierWon);
