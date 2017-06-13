@@ -172,7 +172,7 @@ public class Protocol {
         param.put("token", token);
         param.put("party", party.toJson());
         json.put("param", param);
-        return json.toString();
+        return json.toString() + "\n";
     }
 
     public static String formatStartGame(String id, LocalTime time) {
@@ -182,7 +182,7 @@ public class Protocol {
         param.put("id", id);
         param.put("time", time.toString());
         json.put("param", param);
-        return json.toString();
+        return json.toString()  + "\n";
     }
 
     public static String getFormatStartGameId(String message) {
@@ -220,7 +220,7 @@ public class Protocol {
 
     public static List<Party> getFormatLobbyParties(String message) {
         JSONArray array = new JSONArray(message);
-        List<Party> parties = new LinkedList<Party>();
+        List<Party> parties = new LinkedList();
         for (int i = 0; i < array.length(); i++) {
             parties.add(new Party(array.getJSONObject(i)));
         }
