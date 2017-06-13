@@ -7,13 +7,11 @@ import java.net.Socket;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.temporal.TemporalUnit;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 import ch.heigvd.protocol.Difficulty;
 import ch.heigvd.protocol.Obstacle;
+import ch.heigvd.protocol.Party;
 import ch.heigvd.protocol.Protocol;
 import ch.heigvd.protocol.Protocol.Direction;
 
@@ -25,8 +23,7 @@ import ch.heigvd.protocol.Protocol.Direction;
 public class LaunchedGame {
 	private List<Obstacle> fixedObstacle;
 	private List<Obstacle> dynamicObstacle;
-	private final int mapWidth;
-	private final int mapHeight;
+	private final Party party;
 	private int skierX;
 	private int skierY;
 	private Direction lastMove;
@@ -34,20 +31,15 @@ public class LaunchedGame {
 	 private BufferedWriter out1;
 	 private Socket client2 = null;
 	 private BufferedWriter out2;
-	 private final int id;
-	 private Difficulty difficulty;
 	//TODO put clients here
 	
-	public LaunchedGame(int id,int mapWidth, int mapHeight, List<Obstacle> obstacles, int initialX, int initialY, Difficulty difficulty, Socket client1) {
+	public LaunchedGame(Party party, List<Obstacle> obstacles, int initialX, int initialY, Socket client1) {
+		this.party = party;
 		fixedObstacle = obstacles;
-		this.difficulty = difficulty;
 		dynamicObstacle = new ArrayList<Obstacle>();
-		this.mapHeight = mapHeight;
-		this.mapWidth = mapWidth;
 		skierX = initialX;
 		skierY = initialY;
 		this.client1 = client1;
-		this.id = id;
 		try {
 			out1 = new BufferedWriter(
 			        new OutputStreamWriter(client1.getOutputStream()));
@@ -81,12 +73,12 @@ public class LaunchedGame {
 	public void start(int s) {
 		if(client2 != null) {
 			// send that the party start in s seconds
-			LocalTime time = LocalTime.now();
-			time.plusSeconds(s);
+			long time = System.currentTimeMillis();
+			time += s * 1000;
 			try {
-				out1.write(Protocol.formatStartGame(String.valueOf(id), time));
+				out1.write(Protocol.formatStartGame(party, time));
 				out1.flush();
-				out2.write(Protocol.formatStartGame(String.valueOf(id), time));
+				out2.write(Protocol.formatStartGame(party, time));
 				out2.flush();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -102,7 +94,7 @@ public class LaunchedGame {
 				public void run() {
 					tick();
 				}
-			},Duration.between(LocalTime.now(), time).toMillis(),1000) ;
+			},s*1000 - (System.currentTimeMillis() - time));
 		}
 	}
 	

@@ -123,7 +123,7 @@ public class Game extends Thread implements ILog {
             id = rand.nextInt(100);
         } while (App.CURRENT_LOBBIES.containsKey(id));
 
-        Party party = Protocol.getFormatCreateParty(args);
+        Party party = Protocol.getParamParty(args);
         party.setId(id);
         MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
         Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
@@ -133,7 +133,7 @@ public class Game extends Thread implements ILog {
             fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
         App.CURRENT_LOBBIES.put(id, party);
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), fixedObstacles, 5, 5, diff, client));
+        App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, 5, 5, client));
     }
 
     private boolean login(String message) throws IOException {
@@ -170,7 +170,8 @@ public class Game extends Thread implements ILog {
     }
 
     private void startGame(String message) throws IOException {
-        String id = Protocol.getFormatJoinId(message);
+        bdd.logInfo(this, "Player joining party");
+        int id = Protocol.getParamParty(message).getId();
         String token = Protocol.getFormatJoinToken(message);
         // check token
         if (App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)) {
