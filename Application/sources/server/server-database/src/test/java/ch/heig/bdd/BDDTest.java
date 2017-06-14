@@ -25,6 +25,11 @@ public class BDDTest extends TestCase implements ILog {
         };
     }
 
+    @Override
+    public UID getUid() {
+        return uid;
+    }
+
     /**
      * Test of getInstance method, of class BDD.
      */
@@ -47,8 +52,7 @@ public class BDDTest extends TestCase implements ILog {
     }
 
     /**
-     * *****************************
-     * LOGIN ********************************
+     * LOGIN
      */
     public void testCorrectLogin() {
         assertTrue(bdd.testLogin("test", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4", ilog));
@@ -61,15 +65,33 @@ public class BDDTest extends TestCase implements ILog {
     public void testIncorrectLogin() {
         assertFalse(bdd.testLogin("nope", "1234", ilog));
     }
-    
+
     public void testgetLog() {
         String retour = bdd.getLogString();
         System.out.println(retour);
         assertFalse(retour.equals(""));
     }
 
-    public UID getUid() {
-        return uid;
+    /**
+     * Config
+     */
+    public void testConfig() {
+        Config config = bdd.getConfig();
+
+        assertNotNull(config.getNumCols());
+        assertTrue(config.getNumCols() != 0);
+
+        assertNotNull(config.getNumRows());
+        assertTrue(config.getNumRows() != 0);
+
+        assertNotNull(config.getPlayerSpeed());
+        assertTrue(config.getPlayerSpeed() != 0);
+
+        assertNotNull(config.getIntitialPlayerX());
+        assertTrue(config.getIntitialPlayerX() != 0);
+
+        assertNotNull(config.getIntitialPlayerY());
+        assertTrue(config.getIntitialPlayerY() != 0);
     }
 
 }

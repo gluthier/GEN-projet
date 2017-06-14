@@ -13,12 +13,14 @@ public class Log {
     private final String content;
     private final String type;
     private final String date;
+    private final String uid;
 
-    public Log(String classe, String content, String type, String date) {
+    public Log(String classe, String content, String type, String date, String uid) {
         this.classe = classe;
         this.content = content;
         this.type = type;
         this.date = date;
+        this.uid = uid;
     }
 
     public Log(ResultSet result) throws SQLException {
@@ -26,6 +28,11 @@ public class Log {
         this.content = result.getString("content");
         this.type = result.getString("type");
         this.date = result.getString("date");
+        this.uid = result.getString("uid");
+    }
+    
+    public String getUid() {
+        return uid;
     }
 
     public String getClasse() {

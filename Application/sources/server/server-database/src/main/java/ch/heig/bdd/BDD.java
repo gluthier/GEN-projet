@@ -176,86 +176,104 @@ public class BDD {
         }
         return retour;
     }
-    
+
     public List<Difficulty> getDifficulties() {
-    	List<Difficulty> ret = new ArrayList<>();
-    	try {
+        List<Difficulty> ret = new ArrayList<>();
+        try {
             Statement s = connection.createStatement();
             ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel ORDER BY id;");
             while (result.next()) {
-            	ret.add(new Difficulty(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("manaRegenerationSpeed"),
-            			result.getInt("playerMoveSpeed"),
-            			result.getInt("obstacleMoveSpeed"),
-            			result.getInt("obstacleWidth")));
+                ret.add(new Difficulty(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("manaRegenerationSpeed"),
+                        result.getInt("playerMoveSpeed"),
+                        result.getInt("obstacleMoveSpeed"),
+                        result.getInt("obstacleWidth")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
-    	return ret;
+        return ret;
     }
-    
+
     public Difficulty getDifficultyById(int id) {
-    	try {
+        try {
             Statement s = connection.createStatement();
-            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel WHERE id="+id+" ;");
+            ResultSet result = s.executeQuery("SELECT * FROM DifficultyLevel WHERE id=" + id + " ;");
             while (result.next()) {
-            	return new Difficulty(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("manaRegenerationSpeed"),
-            			result.getInt("playerMoveSpeed"),
-            			result.getInt("obstacleMoveSpeed"),
-            			result.getInt("obstacleWidth"));
+                return new Difficulty(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("manaRegenerationSpeed"),
+                        result.getInt("playerMoveSpeed"),
+                        result.getInt("obstacleMoveSpeed"),
+                        result.getInt("obstacleWidth"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
     public MapSize getMapSizeById(int id) {
-    	try {
+        try {
             Statement s = connection.createStatement();
-            ResultSet result = s.executeQuery("SELECT * FROM MapSize WHERE id="+ id +";");
+            ResultSet result = s.executeQuery("SELECT * FROM MapSize WHERE id=" + id + ";");
             while (result.next()) {
-            	return new MapSize(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("width"),
-            			result.getInt("height"));
+                return new MapSize(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("width"),
+                        result.getInt("height"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-    
+
+    public void setMapSizeById(int id, String width, String height) {
+        try {
+            Statement s = connection.createStatement();
+            s.execute("UPDATE MapSize SET "
+                    + " width=" + width
+                    + ", height=" + height
+                    + " WHERE id=" + id + ";");
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
     public List<MapSize> getMapSizes() {
-    	List<MapSize> ret = new ArrayList<>();
-    	try {
+        List<MapSize> ret = new ArrayList<>();
+        try {
             Statement s = connection.createStatement();
             ResultSet result = s.executeQuery("SELECT * FROM MapSize ORDER BY id;");
             while (result.next()) {
-            	ret.add(new MapSize(result.getInt("id"),
-            			result.getString("name"),
-            			result.getInt("width"),
-            			result.getInt("height")));
+                ret.add(new MapSize(result.getInt("id"),
+                        result.getString("name"),
+                        result.getInt("width"),
+                        result.getInt("height")));
             }
         } catch (SQLException ex) {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
-    	return ret;
+        return ret;
     }
 
     public List<Log> getLog() {
         return getLog(20);
     }
 
+    private List get(String request) {
+        // TODO
+        return null;
+    }
+
     public List<Log> getLog(int limit) {
         List<Log> list = new ArrayList();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Log ORDER BY id DESC LIMIT " + limit + ";");
             while (result.next()) {
                 list.add(new Log(result));
             }
@@ -267,8 +285,8 @@ public class BDD {
 
     public String getLastLogContent() {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet result = statement.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT content FROM Log ORDER BY id DESC LIMIT 10;");
             if (result.next()) {
                 return result.getNString(1);
             }
@@ -276,6 +294,48 @@ public class BDD {
             Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public List<User> getUsers(int limit) {
+        List<User> list = new ArrayList();
+        try {
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Login ORDER BY id ASC LIMIT " + limit + ";");
+            while (result.next()) {
+                list.add(new User(result));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return list;
+    }
+
+    public Config getConfig() {
+        try {
+            int retour = -1;
+            Statement s = connection.createStatement();
+            ResultSet result = s.executeQuery("SELECT * FROM Config ORDER BY id DESC LIMIT 1");
+            result.next();
+            return new Config(result);
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public void setConfig(Config config) {
+        try {
+            Statement s = connection.createStatement();
+            s.executeUpdate("UPDATE Config SET "
+                    + " num_raws=" + config.getNumRows()
+                    + ", num_cols=" + config.getNumCols()
+                    + ", player_speed=" + config.getPlayerSpeed()
+                    + ", initial_player_x=" + config.getIntitialPlayerX()
+                    + ", initial_player_y=" + config.getIntitialPlayerY()
+                    + " WHERE id = 1;");
+        } catch (SQLException ex) {
+            Logger.getLogger(BDD.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }
