@@ -1,21 +1,19 @@
 package ch.heigvd.frogger.tcp;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.GameSettings;
 import ch.heigvd.frogger.item.DynamicObstacle;
 import ch.heigvd.frogger.item.FixedObstacle;
-import ch.heigvd.frogger.item.Item;
-import ch.heigvd.frogger.item.Player;
 import ch.heigvd.protocol.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static ch.heigvd.protocol.Protocol.getFormatJoinObstacle;
 
 /**
  * Created by lognaume on 5/24/17.
@@ -32,7 +30,8 @@ public class TCPClient {
     private List<Difficulty> difficultyList;
     private List<MapSize> mapSizeList;
 
-    private List<DynamicObstacle> dynamicObstacles;
+    private HashMap<Integer, DynamicObstacle> dynamicObstacles;
+    private List<DynamicObstacle> newDynamicObstacles;
 
     private Skier skier;
 
@@ -43,7 +42,8 @@ public class TCPClient {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
 
-        dynamicObstacles = new LinkedList<>();
+        dynamicObstacles = new HashMap<>();
+        newDynamicObstacles = new LinkedList<>();
         skier = new Skier(0, 0);
     }
 
@@ -81,7 +81,7 @@ public class TCPClient {
         difficultyList = Protocol.getFormatLoginDifficulty(line);
         mapSizeList = Protocol.getFormatLoginMapSize(line);
 
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to server "+Constants.SERVER_ADDRESS+":"+Constants.SERVER_PORT);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Connected to server "+ ClientConstants.SERVER_ADDRESS+":"+ClientConstants.SERVER_PORT);
 
         return true;
     }
@@ -99,8 +99,33 @@ public class TCPClient {
     }
 
     public List<FixedObstacle> joinParty(Party party) throws IOException {
-        String command = Protocol.formatJoinSend(token, party.getId());
+        String command = Protocol.formatJoinSend(token, party);
         Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joining party #"+party.getId());
+        writer.write(command);
+        writer.flush();
+
+        List<FixedObstacle> fixedObstacles = startGame();
+
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joined party #"+party.getId());
+        return fixedObstacles;
+    }
+
+    public List<FixedObstacle> startGame() throws IOException {
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Waiting for other player to join party");
+
+        String line = reader.readLine();
+
+        List<Obstacle> obstacles = Protocol.getFormatJoinObstacle(line);
+        List<FixedObstacle> fixedObstacles = new LinkedList<>();
+        obstacles.forEach(o -> fixedObstacles.add(new FixedObstacle(o.getX(), o.getY(), Constants.ItemType.Sapin)));
+
+        return fixedObstacles;
+    }
+
+    public List<FixedObstacle> createParty(Party party) throws IOException {
+        String command = Protocol.formatCreateParty(token, party);
+        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Creating new party");
+
         writer.write(command);
         writer.flush();
 
@@ -109,17 +134,7 @@ public class TCPClient {
         List<Obstacle> obstacles = Protocol.getFormatJoinObstacle(line);
         List<FixedObstacle> fixedObstacles = new LinkedList<>();
         obstacles.forEach(o -> fixedObstacles.add(new FixedObstacle(o.getX(), o.getY(), Constants.ItemType.Sapin)));
-
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Joined party #"+party.getId());
         return fixedObstacles;
-    }
-
-    public void createParty(Party party) {
-        String command = Protocol.formatCreateParty(token, party);
-        Logger.getLogger(TCPClient.class.getName()).log(Level.INFO, "Creating new party");
-
-        writer.write(command);
-        writer.flush();
     }
 
     public void moveLeft() {
@@ -153,11 +168,8 @@ public class TCPClient {
      * @return true if at least one command has been read
      */
     public void fetchServerInfos() throws IOException {
-        String line;
-
-        while ((line = reader.readLine()) != null) {
-            fetch(Protocol.getFormatCommand(line), line);
-        }
+        String line = reader.readLine();
+        fetch(Protocol.getFormatCommand(line), line);
     }
 
     private void fetch(Protocol.command cmd, String message) {
@@ -167,8 +179,18 @@ public class TCPClient {
                 break;
             case obstaclesPositions:
                 List<Obstacle> obs = Protocol.getFormatDynamicObstacles(message);
-                dynamicObstacles.clear();
-                obs.forEach(o -> dynamicObstacles.add(new DynamicObstacle(o.getX(), o.getY(), Constants.ItemType.Saucisson)));
+
+                obs.forEach(o -> {
+                    if (dynamicObstacles.containsKey(o.getId())) {
+                        DynamicObstacle ob = dynamicObstacles.get(o.getId());
+                        ob.setXGridCoordinate(o.getX());
+                        ob.setYGridCoordinate(o.getY());
+                    } else {
+                        DynamicObstacle ob = new DynamicObstacle(o.getX(), o.getY(), Constants.ItemType.Saucisson);
+                        dynamicObstacles.put(o.getId(), ob);
+                        newDynamicObstacles.add(ob);
+                    }
+                });
                 break;
             case skierWon:
                 skierWon = true;
@@ -177,6 +199,10 @@ public class TCPClient {
                 vaudoisWon = true;
                 break;
         }
+    }
+
+    public List<DynamicObstacle> getNewDynamicObstacles() {
+        return newDynamicObstacles;
     }
 
     public void disconnect() throws IOException {
@@ -190,7 +216,7 @@ public class TCPClient {
         settings.setMapSizes(mapSizeList);
     }
 
-    public List<DynamicObstacle> getDynamicObstacles() {
+    public HashMap<Integer, DynamicObstacle> getDynamicObstacles() {
         return dynamicObstacles;
     }
 

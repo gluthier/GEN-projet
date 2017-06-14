@@ -1,12 +1,9 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.Constants.ItemType;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
+import ch.heigvd.protocol.Constants.ItemType;
 import ch.heigvd.frogger.GameFXMLController;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Define a Dynamic Obstacle ( for now)
@@ -28,7 +25,7 @@ public class DynamicObstacle extends Obstacle {
 
     @Override
     public void changeImage() {
-        changeImage(Constants.OBSTACLE_FOLDER);
+        changeImage(ClientConstants.OBSTACLE_FOLDER);
     }
 
     public void removeObstacleFromView(GameFXMLController view) {

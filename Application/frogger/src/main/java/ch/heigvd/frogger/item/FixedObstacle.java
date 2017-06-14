@@ -1,8 +1,7 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.Constants;
-import ch.heigvd.frogger.GameFXMLController;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 
 /**
  *
@@ -16,6 +15,6 @@ public class FixedObstacle extends Obstacle {
 
     @Override
     public void changeImage() {
-        changeImage(Constants.OBSTACLE_FOLDER);
+        changeImage(ClientConstants.OBSTACLE_FOLDER);
     }
 }

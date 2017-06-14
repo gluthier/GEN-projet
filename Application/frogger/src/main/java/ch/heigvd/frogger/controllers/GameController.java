@@ -1,6 +1,7 @@
 package ch.heigvd.frogger.controllers;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
@@ -89,8 +90,8 @@ public class GameController implements IController {
 
             // Create the two obstacles borders (chalets)
             for (int i = 0; i < Constants.NUM_ROWS; i++) {
-                if (Constants.OBSTACLE_ROW.inverse().containsKey(i)) {
-                    addObstacle(new FixedObstacle(0, i, Constants.ItemType.getRow(Constants.OBSTACLE_ROW.inverse().get(i))));
+                if (ClientConstants.OBSTACLE_ROW.inverse().containsKey(i)) {
+                    addObstacle(new FixedObstacle(0, i, Constants.ItemType.getRow(ClientConstants.OBSTACLE_ROW.inverse().get(i))));
                 } else {
                     addObstacle(new FixedObstacle(0, i, Constants.ItemType.Chalet));
                 }
@@ -117,9 +118,6 @@ public class GameController implements IController {
         } catch (CellAlreadyOccupiedException e) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        // Observe the clock (tick)
-        ItemClock.getInstance().addObserver(this);
     }
 
     public void restartGame() {
@@ -147,7 +145,6 @@ public class GameController implements IController {
         grid[Constants.INITIAL_PLAYER_X][Constants.INITIAL_PLAYER_Y].add(player);
     }
 
-    @Override
     public void update(Observable observable, Object o) {
         // We use an iterator to avoid an error when removing an Obstacle while iterating over the list
         Iterator<Obstacle> iter = obstacles.iterator();

@@ -1,8 +1,10 @@
 package ch.heigvd.frogger.action;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.frogger.ClientConstants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.MainApp;
+import ch.heigvd.protocol.Party;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,13 +29,13 @@ public class ActionDefend implements Actions {
 
     @Override
     public void act() {
-        if (ItemClock.getInstance().isRunning()) {
+        // if (MainApp.getGameSettings().getRole() == Party.FreeRole.defender) {
             try {
-                MainApp.getController().addDynamicObstacle(Constants.OBSTACLE_ROW.get(row));
+                MainApp.getController().addDynamicObstacle(ClientConstants.OBSTACLE_ROW.get(row));
             } catch (Exception e) {
                 Logger.getLogger(ActionDefend.class.getName()).log(Level.SEVERE, null, e);
             }
-        }
+        // }
     }
 
 }

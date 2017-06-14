@@ -1,9 +1,7 @@
 package ch.heigvd.frogger.item;
 
-import ch.heigvd.frogger.Constants;
+import ch.heigvd.protocol.Constants;
 import ch.heigvd.frogger.GameFXMLController;
-import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
-import java.util.Observable;
 
 /**
  * Represent an Obstacle of the frogger

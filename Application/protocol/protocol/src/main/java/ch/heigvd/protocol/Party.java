@@ -5,23 +5,32 @@ import org.json.JSONObject;
 public class Party implements Sendable {
 
     public static enum FreeRole {
-        skier,
-        defender;
+        skier("Skieur"),
+        defender("Défendeur");
+
+        private String value;
 
         public static FreeRole fromString(String in) {
-            if (in.equals("skier")) {
+            if (in.equals(skier.value)) {
                 return skier;
-            } else if (in.equals("defender")) {
+            } else if (in.equals(defender.value)) {
                 return FreeRole.defender;
             } else {
                 //TODO throw exception ?
                 return null;
             }
+        }
+        FreeRole(String value) {
+            this.value = value;
+        }
 
+        @Override
+        public String toString() {
+            return value;
         }
     }
 
-    private final int id;
+    private int id;
     private final String playerName;
     private final Difficulty difficulty;
     private final MapSize mapSize;
@@ -40,7 +49,8 @@ public class Party implements Sendable {
         this.playerName = json.getString("playerName");
         this.difficulty = new Difficulty(json.getJSONObject("difficulty"));
         this.mapSize = new MapSize(json.getJSONObject("mapSize"));
-        this.freeRole = FreeRole.fromString(json.getString("freeRole"));
+        this.freeRole = FreeRole.defender;
+        // this.freeRole = FreeRole.fromString(json.getString("freeRole"));
     }
 
     public int getId() {
@@ -63,13 +73,17 @@ public class Party implements Sendable {
         return freeRole;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
         json.put("id", id);
         json.put("playerName", playerName);
         json.put("difficulty", difficulty.toJson());
         json.put("mapSize", mapSize.toJson());
-        json.put("freeRole", freeRole);
+        // json.put("freeRole", freeRole);
 
         return json;
     }

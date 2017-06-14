@@ -2,6 +2,7 @@ package ch.heigvd.frogger;
 
 import ch.heigvd.frogger.controllers.ClientController;
 import ch.heigvd.frogger.item.FixedObstacle;
+import ch.heigvd.frogger.tcp.TCPClient;
 import ch.heigvd.protocol.Party;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,6 +25,7 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -51,6 +53,10 @@ public class LobbyController implements Initializable {
             Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+        populateGrid(parties);
+    }
+
+    private void populateGrid(Collection<Party> parties) {
         int i = 0;
         for (Party party: parties) {
             VBox vBox = new VBox();
@@ -76,7 +82,12 @@ public class LobbyController implements Initializable {
             }
 
             partiesGrid.add(vBox, column, row);
+            i++;
         }
+    }
+
+    private void emptyGrid() {
+        partiesGrid.getChildren().clear();
     }
 
     private void joinParty(Party party) {
@@ -88,10 +99,7 @@ public class LobbyController implements Initializable {
 
             GameFXMLController view = loader.getController();
 
-
-            // TODO in lobby
-            List<Party> parties = MainApp.getTcpClient().connectToLobby();
-            List<FixedObstacle> obstacles = MainApp.getTcpClient().joinParty(parties.get(0));
+            List<FixedObstacle> obstacles = MainApp.getTcpClient().joinParty(party);
             MainApp.setController(new ClientController(view, MainApp.getTcpClient(), obstacles));
 
             Scene scene = new Scene(root);
@@ -109,6 +117,25 @@ public class LobbyController implements Initializable {
 
     @FXML
     private void createParty(ActionEvent event) {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/CreateParty.fxml"));
+        try {
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            MainApp.getStage().setScene(scene);
+        } catch (IOException ex) {
+            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
+
+    @FXML
+    private void refreshLobby(ActionEvent event) {
+        emptyGrid();
+        try {
+            List<Party> parties = MainApp.getTcpClient().connectToLobby();
+            populateGrid(parties);
+        } catch (IOException e) {
+            Logger.getLogger(LobbyController.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 }

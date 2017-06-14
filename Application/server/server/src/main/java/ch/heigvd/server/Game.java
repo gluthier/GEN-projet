@@ -36,6 +36,8 @@ public class Game extends Thread implements ILog {
     private int connectNbTry;
     private boolean logged;
     private String userName;
+    private List<Obstacle> fixedObstacles;
+    private int GameID;
 
     public Game(Socket socket) {
         this.client = socket;
@@ -43,16 +45,13 @@ public class Game extends Thread implements ILog {
         this.uid = new UID();
         this.connectNbTry = 0;
         this.logged = false;
+        fixedObstacles = new ArrayList<Obstacle>();
     }
 
     @Override
-    @SuppressWarnings("empty-statement")
     public void run() {
+        bdd.logInfo(this, "START NEW GAME THREAD");
         try {
-            bdd.logInfo(this, "START NEW GAME THREAD");
-            // Try to login => change in that implementation
-            //Login login = new Login(client, uid);
-            //while (!login.connect()) ;
             // we wait on the client if he send us the right command to log in
             in = new BufferedReader(
                     new InputStreamReader(client.getInputStream()));
@@ -100,44 +99,45 @@ public class Game extends Thread implements ILog {
                 break;
             }
             case moveSkier:
-                if (logged) {
-                    //TODO
+                if (logged) {;
+                  App.CURRENT_GAMES.get(GameID).move(Protocol.getFormatMove(args));
                 }
                 break;
             case addObstacle:
                 if (logged) {
-                    //TODO 
                     // should it be done here ?
+                    App.CURRENT_GAMES.get(GameID).addDynamicObstacle(Protocol.getFormatNewDynamicObstacle(args));
                 }
             default:
                 break;
         }
     }
 
-    private void createParty(String args) {
+    private void createParty(String args) throws IOException {
+        bdd.logInfo(this, "Creating new party");
         // create new party key
         Random rand = new Random();
         int id;
         do {
             // TODO Remove hardcoded max ID
             id = rand.nextInt(100);
-        } while (!App.CURRENT_GAMES.containsKey(id));
+        } while (App.CURRENT_LOBBIES.containsKey(id));
+
+        Party party = Protocol.getParamParty(args);
+        party.setId(id);
+        MapSize map = bdd.getMapSizeById(party.getMapSize().getId());
+        Difficulty diff = bdd.getDifficultyById(party.getDifficulty().getId());
 
         // generate all fixedObstacle
-        List<Obstacle> ls = new ArrayList<Obstacle>();
-        // TODO Do global variable
-        for (int i = 0; i < 10; i++) {
-            //TODO get width and height via MapSizeId
-            ls.add(new Obstacle(rand.nextInt(15), rand.nextInt(15)));
+        for (int i = 0; i < Constants.NUM_OBSTACLES; i++) {
+            fixedObstacles.add(new Obstacle(rand.nextInt(Constants.NUM_COLS - 4) + 2, rand.nextInt(Constants.NUM_ROWS - Constants.INITIAL_PLAYER_Y) + Constants.INITIAL_PLAYER_Y));
         }
-
-        //TODO get the difficulty as well
-        //TODO define the initial position
-        //TODO do it better
-        // MapSize map = bdd.getMapSizeById(Protocol.getFormatCreatePartyMapSizeId(args));
-        MapSize map = bdd.getMapSizeById(1);
-
-        App.CURRENT_GAMES.put(id, new LaunchedGame(id, map.getWidth(), map.getHeight(), ls, 5, 5, client));
+        
+        GameID = id;
+        App.CURRENT_LOBBIES.put(id, party);
+        App.CURRENT_GAMES.put(id, new LaunchedGame(party, fixedObstacles, new Skier(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y), client));
+        out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
+        out.flush();
     }
 
     private boolean login(String message) throws IOException {
@@ -169,18 +169,22 @@ public class Game extends Thread implements ILog {
     }
 
     private void getLobbies() throws IOException {
-        App.CURRENT_LOBBIES.put(10, new Party(10, "Toto", new Difficulty(10, "Hardcore", 4, 5, 6, 7), new MapSize(10, "Infinite", 100, 200), Party.FreeRole.defender));
         out.write(Protocol.formatLobbyAnswer(App.CURRENT_LOBBIES.values()));
         out.flush();
     }
 
     private void startGame(String message) throws IOException {
-        String id = Protocol.getFormatJoinId(message);
+        bdd.logInfo(this, "Player joining party");
+        int id = Protocol.getParamParty(message).getId();
         String token = Protocol.getFormatJoinToken(message);
         // check token
-        if (App.CONNECTED_USER.get(userName).equals(token) && App.CURRENT_GAMES.containsKey(id)) {
+        if (!App.CONNECTED_USER.get(userName).equals(token)) {
+            bdd.logWarning(this, "Incorrect token");
+        }
+        if (App.CURRENT_GAMES.containsKey(id)) {
             out.write(Protocol.formatJoinAnswer(App.CURRENT_GAMES.get(id).getFixedObstacle()));
             out.flush();
+            GameID = id;
             App.CURRENT_GAMES.get(id).addAnotherPlayer(client);
             App.CURRENT_GAMES.get(id).start(3);
         }
