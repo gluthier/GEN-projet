@@ -114,7 +114,7 @@ public class TCPClientTest {
 
     @Test
     public void connectToLobbyReturnsCorrectPartyList() throws IOException {
-
+        
         Difficulty diffEasy = new Difficulty(0, "Easy", 1, 1, 1, 1);
         Difficulty diffMedium = new Difficulty(1, "Medium", 1, 1, 1, 1);
         Difficulty diffHard = new Difficulty(2, "Hard", 1, 1, 1, 1);
@@ -124,7 +124,7 @@ public class TCPClientTest {
         final List<Party> partyList = new LinkedList<>();
         partyList.add(new Party(0, "Player1", diffEasy, ms, Party.FreeRole.defender));
         partyList.add(new Party(1, "Player2", diffMedium, ms, Party.FreeRole.defender));
-        partyList.add(new Party(2, "Player3", diffHard, ms, Party.FreeRole.skier));
+        //partyList.add(new Party(2, "Player3", diffHard, ms, Party.FreeRole.skier));
 
         // Build server's response
         final InputStream inputStream = new ByteArrayInputStream(Protocol.formatLobbyAnswer(partyList).getBytes());
