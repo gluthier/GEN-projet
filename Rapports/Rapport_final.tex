@@ -490,13 +490,13 @@
 	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est une application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
 	
 	\subsubsection{Utilisation de JUnit pour une classe définissant le protocole}
-	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	\lstinputlisting{../Application/sources/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
 	
 	\subsubsection{Résultats des tests}
 	La figure~\ref{fig:resTests} montre le résultat des tests JUnit.
 	\begin{figure}[ht]
 		\centering
-		\includegraphics{tests.png}
+		\includegraphics{tests.PNG}
 		\caption{Résultats des tests JUnit}
 		\label{fig:resTests}
 	\end{figure}
@@ -512,9 +512,24 @@
 	
 	
 	\subsection{Ce qui fonctionne (résultats des tests)}
-	
+	Les fonctionnalités suivantes ont été implémentées et sont fonctionnelles :
+	\begin{itemize}
+		\item Connexion au serveur distant avec un compte utilisateur et mot de passe
+		\item Affichage de la liste des parties crées dans le Lobby
+		\item Choix des paramètres de la partie (difficulté, taille de la carte, rôle du joueur)
+		\item Rejoindre une partie déjà créée
+		\item Affichage synchronisé sur les écrans des deux joueurs
+	\end{itemize}	
 	
 	\subsection{Ce qu'il resterait à développer (en proposant une planification)}
+	
+	\begin{itemize}
+		\item Création d'un nouveau compte utilisateur via l'interface graphique (fonctionne depuis la base de données)
+		\begin{itemize}
+			\item Nécessite environ 4 heures de travail en comptant les tests
+		\end{itemize}
+		
+	\end{itemize}
 	
 	
 	%
@@ -568,28 +583,28 @@
 
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/login.png}
+		\includegraphics[width=\textwidth]{../Screenshots/login.PNG}
 		\caption{Le login}
 		\label{fig:login}
 	\end{figure}
 
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/lobby.png}
+		\includegraphics[width=\textwidth]{../Screenshots/lobby.PNG}
 		\caption{Le lobby}
 		\label{fig:lobby}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/nouvelle_partie.png}
+		\includegraphics[width=\textwidth]{../Screenshots/nouvelle_partie.PNG}
 		\caption{Création d'une nouvelle partie}
 		\label{fig:nouvellePartie}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/jeu_skier.png}
+		\includegraphics[width=\textwidth]{../Screenshots/jeu_skier.PNG}
 		\caption{Jeu lancé avec seulement le skieur}
 		\label{fig:jeuSkier}
 	\end{figure}
