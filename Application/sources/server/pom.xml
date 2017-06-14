@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ch.heigvd</groupId>
-    <artifactId>frogger</artifactId>
+    <artifactId>server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>GEN-Frogger</name>
+    <name>GEN-Frogger-server</name>
 
     <organization>
         <!-- Used as the 'Vendor' for JNLP generation -->
@@ -15,8 +15,8 @@
     </organization>
 
     <modules>
-        <module>client</module>
-        <module>protocol</module>
+        <module>server-application</module>
+        <module>server-database</module>
     </modules>
 
     <build>
