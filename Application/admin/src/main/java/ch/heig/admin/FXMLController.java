@@ -87,8 +87,7 @@ public class FXMLController implements Initializable {
         List<User> list = bdd.getUsers(NB_USER);
         for (int i = 0; i < list.size(); i++) {
             userGrid.add(new Text(list.get(i).getUsername() + SPACE), 0, i);
-            userGrid.add(new Text(list.get(i).getPassword() + SPACE), 1, i);
-            userGrid.add(new Text(list.get(i).getLastLogin() + SPACE), 2, i);
+            userGrid.add(new Text(list.get(i).getLastLogin() + SPACE), 1, i);
         }
     }
 

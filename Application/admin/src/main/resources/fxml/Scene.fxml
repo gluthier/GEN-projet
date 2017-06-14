@@ -17,11 +17,6 @@
     <children>
         <JFXTabPane>
             <tabs>
-                <Tab text="Général">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="275.0" prefWidth="401.0" />
-                    </content>
-                </Tab>
                 <Tab text="Log Serveur">
                     <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="475.0" prefWidth="762.0">
@@ -94,11 +89,6 @@
                                 <TextField fx:id="initialPlayerY" layoutX="295.0" layoutY="205.0" />
                             </children>
                         </AnchorPane>
-                    </content>
-                </Tab>
-                <Tab text="DifficultyLevel">
-                    <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                     </content>
                 </Tab>
                 <Tab text="Taille de la carte">
