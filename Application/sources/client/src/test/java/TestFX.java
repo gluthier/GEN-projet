@@ -1,4 +1,3 @@
-import ch.heigvd.frogger.Constants;
 import ch.heigvd.frogger.exception.CellAlreadyOccupiedException;
 import ch.heigvd.frogger.item.Obstacle;
 import ch.heigvd.frogger.item.Player;
