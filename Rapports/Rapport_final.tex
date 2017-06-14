@@ -262,8 +262,8 @@
 		\label{fig:model_domain}
 	\end{figure}
 	
-	\subsubsection{Modèle de domaine pour le client}
-	\subsubsection{Modèle de domaine pour le serveur}
+	\subsubsection{Modèle de domaine pour le client et serveur}
+	Le modèle de domaine étant une simplification du diagramme de classes ( il suffit de ne pas prendre en compte les méthodes), nous avons trouvé plus simple (et visible), de vous le montrer au travers de nos diagrammes de classes aux figures ~\ref{fig:UML_client} ~\ref{fig:UML_server} et ainsi éviter de raser une portion de forêt en vous imprimant les même schémas légèrement modifiés. 
 	
 	
 	\subsection{Base de données}
@@ -279,7 +279,7 @@
 	\end{figure}
 	
 	\subsubsection{Modèle conceptuel (entité-associations)}
-	
+	Le modèle conceptuel est présenté dans les chapitres consacrées aux diagrammes.
 	
 	%
 	% CONCEPTION DU PROJET
@@ -299,8 +299,29 @@
 	
 	\subsection{Diagrammes de classes du serveur et du client}
 	
-	\subsection{Modèle conceptuel \& relationnel de la base de données}
+	Vous trouvez les diagrammes de classes du client à la figure~\ref{fig:UML_client} et celles du server à la figure ~\ref{fig:UML_server}, se trouvant à la fin du rapport.
+	.
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Schemas/UML_FROGGER.png}
+		\caption{Diagramme de classe du client}
+		\label{fig:UML_client}
+	\end{figure}
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Schemas/UML_SERVER.png}
+		\caption{Diagramme de classe du serveur}
+		\label{fig:UML_server}
+	\end{figure}
 	
+	\subsection{Modèle conceptuel \& relationnel de la base de données}
+	Notre base de donnée n'étant pas très compliquée, et surtout n'ayant pas de "relations" entre les tables. Nous vous mettons seulement un schéma contenant toutes les informations nécessaires à la lecture dans une seul image se trouvant à la figure~\ref{fig:ER_DB}.
+	\begin{figure}[ht]
+		\centering
+		\includegraphics[width=\textwidth]{../Schemas/DB_ER.png}
+		\caption{Diagramme de classe du serveur}
+		\label{fig:ER_DB}
+	\end{figure}
 	
 	%
 	% IMPLEMENTATION DU PROJET
@@ -366,7 +387,7 @@
 	
 	\subsection{Rôle des participants au sein du groupe de développement}
 	\begin{enumerate}
-		\item Tony Clavien: Analyste, design manager, programmeur, représentant valaisan, responsable apéro
+		\item Tony Clavien: Analyste, design manager, programmeur, représentant Valaisan, responsable apéro
 		\item Maxime Guillod: Chef de projet, programmeur
 		\item Gabriel Luthier: Responsable des tests, programmeur
 		\item Guillaume Milani: Architecte, concepteur en chef, programmeur, community manager
@@ -490,13 +511,13 @@
 	Pour faire ces tests, on a utilisé un mélange de JUnit pour tout ce qui est une application Java uniquement et TestFX pour les parties utilisant JavaFX (il s'agit de la partie client du jeu).
 	
 	\subsubsection{Utilisation de JUnit pour une classe définissant le protocole}
-	\lstinputlisting{../Application/protocol/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
+	\lstinputlisting{../Application/sources/protocol/src/test/java/ch/heigvd/protocol/ProtocolTest.java}
 	
 	\subsubsection{Résultats des tests}
 	La figure~\ref{fig:resTests} montre le résultat des tests JUnit.
 	\begin{figure}[ht]
 		\centering
-		\includegraphics{tests.png}
+		\includegraphics{tests.PNG}
 		\caption{Résultats des tests JUnit}
 		\label{fig:resTests}
 	\end{figure}
@@ -512,9 +533,50 @@
 	
 	
 	\subsection{Ce qui fonctionne (résultats des tests)}
-	
+	Les fonctionnalités suivantes ont été implémentées et sont fonctionnelles :
+	\begin{itemize}
+		\item Connexion au serveur distant avec un compte utilisateur et mot de passe
+		\item Affichage de la liste des parties créées dans le Lobby
+		\item Choix des paramètres de la partie (difficulté, taille de la carte, rôle du joueur)
+		\item Rejoindre une partie déjà créée
+		\item Affichage synchronisé sur les écrans des deux joueurs
+		\item Collision entre le joueur et les obstacles
+		\item Interface administrateur 
+	\end{itemize}	
 	
 	\subsection{Ce qu'il resterait à développer (en proposant une planification)}
+	
+	\begin{itemize}
+		\item Création d'un nouveau compte utilisateur via l'interface graphique (fonctionne depuis la base de données)
+		\begin{itemize}
+			\item Nécessite environ 3 heures de travail en comptant les tests
+		\end{itemize}
+		\item Affichage des statistiques
+		\begin{itemize}
+			\item Nécessite environ 5 heures de travail
+		\end{itemize}
+		\item Prise en compte des rôles de chaque joueur (pour l'instant chacun peut jouer les deux rôles dans la partie)
+		\begin{itemize}
+			\item Nécessite environ 2 heures de travail, les rôles sont déjà implémentés dans le protocole
+		\end{itemize}
+		\item Comptabilisation des scores
+		\begin{itemize}
+			\item Nécessite environ 4 heures de travail, n'est pas encore implémenté dans le protocole
+		\end{itemize}
+		\item Condition de gain du skieur (ne fonctionne pas en multi-joueurs)
+		\begin{itemize}
+			\item Il s'agit en fait d'un bug, 1-2 heures
+		\end{itemize}
+		\item Prise en compte des paramètres de difficulté
+		\begin{itemize}
+			\item Nécessite environ 2 heures de travail, déjà implémenté dans le protocole
+		\end{itemize}
+		\item La barre de "régénération" du joueur qui envoie les obstacles
+		\begin{itemize}
+			\item Difficile à estimer, n'est pas supporté par le protocole actuellement. Environ 6 heures de travail.
+		\end{itemize}
+		
+	\end{itemize}
 	
 	
 	%
@@ -550,46 +612,46 @@
 	\section{Manuel d'utilisation} \label{app:manuelUtil}
 	
 	\subsection{Installation}
-	On a plusieurs manières pour jouer. La première, la plus simple, consiste à lancer les fichiers \texttt{.jar} du serveur pour lancer un serveur et de Frogger pour lancer un client.
+	On a plusieurs manières pour jouer. La première, la plus simple, consiste à lancer le fichier \texttt{.jar} du serveur pour lancer un serveur et de Frogger pour lancer un client.
 	
-	La deuxième méthode consiste à compiler depuis le code source. Pour cela, il faut compiler séparément les projets suivants: \texttt{GEN-protocol}, \texttt{GEN-BDD}, \texttt{GEN-admin}, \texttt{GEN-server} puis \texttt{GEN-Frogger}. L'ordre est important car certain projets sont des dépendances d'autres.
+	La seconde méthode consiste à compiler l'application depuis le code source. Le fichier \texttt{README.txt} explique la marche à suivre en détail. En résumé, il s'agit tout d'abord de compiler le protocole, puis le client et / ou le serveur à l'aide du logicien Maven. Il est important de débuter par le protocole qui est une dépendance des deux autres applicatifs.
 	
-	Ensuite, pour jouer, il faut évidemment qu'un serveur tourne quelque part. L'adresse du serveur peut être configurée dans le code dans \texttt{ch-heigvd.frogger.Client.Constants}. Ensuite lancer au moins deux clients. Le premier doit créer une partie (ou attendre que le deuxième se connecte et crée lui une partie). Ensuite l'autre client se connecte à la partie et ils peuvent enfin se mettre à jouer.
+	Ensuite, pour jouer, il faut évidemment qu'un serveur tourne quelque part. L'adresse du serveur peut être configurée dans le code dans le fichier  \texttt{config.properties} qui doit se trouver dans le même dossier que l'exécutable \texttt{.jar} du client. Ensuite, lancer au moins deux clients. Le premier doit créer une partie (ou attendre que le deuxième se connecte et créé lui une partie). Ensuite l'autre client se connecte à la partie et ils peuvent enfin se mettre à jouer.
 	
 	\subsection{Utilisation}
 	
 	\begin{enumerate}
-		\item Pour commencer, il faut d'abord se login dans l'application. La figure~\ref{fig:login} montre cette étape.
-		\item Ensuite, on arrive dans le lobby. On a l'option de soit créer une partie, soit en rejoindre une. La figure~\ref{fig:lobby} montre quand le premier joueur se connecte et arrive dans le lobby vide.
+		\item Pour commencer, se connecter à son compote utilisateur dans l'application. La figure~\ref{fig:login} montre cette étape.
+		\item Ensuite, on arrive dans le lobby. On a le choix de créer une partie ou d'en rejoindre une. La figure~\ref{fig:lobby} montre quand le premier joueur se connecte et arrive dans le lobby vide.
 		\item La figure~\ref{fig:nouvellePartie} montre l'interface de création d'une nouvelle partie.
-		\item Après avoir créé un partie, le joueur arrive dans le jeu et est en attente d'un nouveau joueur pour pouvoir commencer le jeu. La figure~\ref{fig:jeuSkier} montre cette étape.
+		\item Après avoir créé une partie, le joueur arrive dans le jeu et est en attente d'un nouveau joueur pour pouvoir commencer le jeu. La figure~\ref{fig:jeuSkier} montre cette étape.
 		\item Quand le deuxième joueur se connecte, la partie peut alors commencer. La figure~\ref{fig:jeu} montre une partie en cours.
 	\end{enumerate}	
 
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/login.png}
+		\includegraphics[width=\textwidth]{../Screenshots/login.PNG}
 		\caption{Le login}
 		\label{fig:login}
 	\end{figure}
 
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/lobby.png}
+		\includegraphics[width=\textwidth]{../Screenshots/lobby.PNG}
 		\caption{Le lobby}
 		\label{fig:lobby}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/nouvelle_partie.png}
+		\includegraphics[width=\textwidth]{../Screenshots/nouvelle_partie.PNG}
 		\caption{Création d'une nouvelle partie}
 		\label{fig:nouvellePartie}
 	\end{figure}
 	
 	\begin{figure}[ht]
 		\centering
-		\includegraphics[width=\textwidth]{../Screenshots/jeu_skier.png}
+		\includegraphics[width=\textwidth]{../Screenshots/jeu_skier.PNG}
 		\caption{Jeu lancé avec seulement le skieur}
 		\label{fig:jeuSkier}
 	\end{figure}
