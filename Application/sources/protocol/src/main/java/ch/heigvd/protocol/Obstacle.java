@@ -3,9 +3,16 @@ package ch.heigvd.protocol;
 import org.json.JSONObject;
 
 public class Obstacle implements Sendable{
-	
-	private final int x;
-	private final int y;
+	/**
+	 * Column
+	 */
+	private int x;
+	/**
+	 * Rows
+	 */
+	private int y;
+
+	private int id;
 	
 	public int getX() {
 		return x;
@@ -13,20 +20,46 @@ public class Obstacle implements Sendable{
 	public int getY() {
 		return y;
 	}
-	public Obstacle(int x, int y) {
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {this.id = id; }
+	
+	public void moveRight() {
+		x++;
+	}
+	public Obstacle(int x, int y, int id) {
 		this.x = x;
 		this.y = y;
+		this.id = id;
+	}
+
+	public Obstacle(int x, int y) {
+		this(x, y, -1);
+	}
+	
+	/**
+	 * Compare the position of an obstacle with a point
+	 * @param x
+	 * @param y
+	 * @return true if same position
+	 */
+	public boolean compareToCoordinate(int x, int y){
+		return this.x == x && this.y == y;
 	}
 	
 	public Obstacle(JSONObject json) {
 		this.x = json.getInt("x");
 		this.y = json.getInt("y");
+		this.id = json.getInt("id");
 	}
 	
 	public JSONObject toJson() {
 		JSONObject json = new JSONObject();
 		json.put("x", x);
 		json.put("y", y);
+		json.put("id", id);
 		return json;
 	}
 
@@ -37,7 +70,6 @@ public class Obstacle implements Sendable{
 
 		Obstacle obstacle = (Obstacle) o;
 
-		if (x != obstacle.x) return false;
-		return y == obstacle.y;
+		return id == obstacle.id;
 	}
 }

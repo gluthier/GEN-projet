@@ -6,6 +6,8 @@ import ch.heigvd.frogger.GameFXMLController;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.item.*;
 import ch.heigvd.frogger.tcp.TCPClient;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 
 import java.io.IOException;
 import java.util.*;
@@ -24,6 +26,7 @@ public class ClientController implements IController {
 
     private GameFXMLController view;
     private TCPClient client;
+
 
     public ClientController(GameFXMLController view, TCPClient client, List<FixedObstacle> fixedObstacles) {
         this.view = view;
@@ -69,8 +72,50 @@ public class ClientController implements IController {
             addObstacle(o);
         }
 
-        // Observe the clock (tick)
-        ItemClock.getInstance().addObserver(this);
+        Task task = new Task() {
+
+            @Override
+            protected Void call() throws Exception {
+                while (!client.isVaudoisWon() && !client.isSkierWon()) {
+                    // Fetch informations from the server
+                    try {
+                        client.fetchServerInfos();
+                    } catch (IOException e) {
+                        Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, e);
+                    }
+
+                    // Move the skier
+                    if (client.getSkierX() < player.getXGridCoordinate()) {
+                        player.setType(Constants.ItemType.SkierLeft);
+                    } else if (client.getSkierX() > player.getXGridCoordinate()) {
+                        player.setType(Constants.ItemType.SkierRight);
+                    } else if (client.getSkierY() > player.getYGridCoordinate()) {
+                        player.setType(Constants.ItemType.Skier);
+                    }
+
+                    // Add new obstacles
+                    Platform.runLater(() -> {
+                        client.getNewDynamicObstacles().forEach(o -> view.addItem(o));
+                        client.getNewDynamicObstacles().clear();
+                    });
+
+
+                    player.setXGridCoordinate(client.getSkierX());
+                    player.setYGridCoordinate(client.getSkierY());
+
+
+                    if (client.isSkierWon()) {
+                        view.showWinnerMessage();
+                        ItemClock.getInstance().pause();
+                    } else if (client.isVaudoisWon()) {
+                        view.showLooserMessage();
+                    }
+                }
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
 
     @Override
@@ -81,7 +126,6 @@ public class ClientController implements IController {
     public void restartGame() {
         view.reset();
         initializeGame(new LinkedList<>());
-        ItemClock.getInstance().resume();
     }
 
     public void addDynamicObstacle(int row) {
@@ -109,42 +153,6 @@ public class ClientController implements IController {
     private void addPlayer() {
         player = new Player(Constants.INITIAL_PLAYER_X, Constants.INITIAL_PLAYER_Y, Constants.ItemType.Skier);
         view.addPlayer(player);
-    }
-
-    @Override
-    public void update(Observable observable, Object o) {
-        // Fetch informations from the server
-        try {
-            client.fetchServerInfos();
-        } catch (IOException e) {
-            Logger.getLogger(ClientController.class.getName()).log(Level.SEVERE, null, e);
-        }
-
-        // Move the skier
-        if (client.getSkierX() < player.getXGridCoordinate()) {
-            player.setType(Constants.ItemType.SkierLeft);
-        } else if (client.getSkierX() > player.getXGridCoordinate()) {
-            player.setType(Constants.ItemType.SkierRight);
-        } else if (client.getSkierY() > player.getYGridCoordinate()) {
-            player.setType(Constants.ItemType.Skier);;
-        }
-
-        player.setXGridCoordinate(client.getSkierX());
-        player.setYGridCoordinate(client.getSkierY());
-
-        // Remove the old dynamic obstacles
-        dynamicObstacles.forEach(this::removeObstacle);
-
-        // Add the new dynamic obstacles
-        client.getDynamicObstacles().forEach(this::addObstacle);
-
-        if (client.isSkierWon()) {
-            view.showWinnerMessage();
-            ItemClock.getInstance().pause();
-        } else if (client.isVaudoisWon()) {
-            view.showLooserMessage();
-            ItemClock.getInstance().pause();
-        }
     }
 
     public void movePlayerLeft() {

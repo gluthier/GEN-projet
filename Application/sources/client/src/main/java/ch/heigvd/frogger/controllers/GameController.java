@@ -118,9 +118,6 @@ public class GameController implements IController {
         } catch (CellAlreadyOccupiedException e) {
             Logger.getLogger(GameController.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        // Observe the clock (tick)
-        ItemClock.getInstance().addObserver(this);
     }
 
     public void restartGame() {
@@ -148,7 +145,6 @@ public class GameController implements IController {
         grid[Constants.INITIAL_PLAYER_X][Constants.INITIAL_PLAYER_Y].add(player);
     }
 
-    @Override
     public void update(Observable observable, Object o) {
         // We use an iterator to avoid an error when removing an Obstacle while iterating over the list
         Iterator<Obstacle> iter = obstacles.iterator();

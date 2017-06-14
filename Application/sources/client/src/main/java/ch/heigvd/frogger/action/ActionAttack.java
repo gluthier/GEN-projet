@@ -4,6 +4,7 @@ import ch.heigvd.frogger.MainApp;
 import ch.heigvd.frogger.controllers.GameController;
 import ch.heigvd.frogger.ItemClock;
 import ch.heigvd.frogger.controllers.IController;
+import ch.heigvd.protocol.Party;
 import sun.applet.Main;
 
 import java.util.logging.Level;
@@ -35,7 +36,7 @@ public class ActionAttack implements Actions {
 
     @Override
     public void act() {
-        if (ItemClock.getInstance().isRunning()) {
+        // if (MainApp.getGameSettings().getRole() == Party.FreeRole.skier) {
             IController controller = null;
             try {
                 controller = MainApp.getController();
@@ -55,6 +56,6 @@ public class ActionAttack implements Actions {
                 default:
                     break;
             }
-        }
+        // }
     }
 }

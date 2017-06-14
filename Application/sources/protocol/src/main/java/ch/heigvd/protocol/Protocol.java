@@ -54,7 +54,6 @@ public class Protocol {
             return value;
         }
 
-        @Override
         public JSONObject toJson() {
             return null;
         }
@@ -270,7 +269,7 @@ public class Protocol {
 
     public static Skier getFormatSkier(String message) {
         JSONObject json = new JSONObject(message);
-        return (Skier) json.get("skier");
+        return new Skier(json.getJSONObject("skier"));
     }
 
     public static String formatMoveSend(Direction dir) {
@@ -294,7 +293,37 @@ public class Protocol {
         json.put("param", param);
         return json.toString() + "\n";
     }
+    
+    public static Obstacle getFormatNewDynamicObstacle(String message) {
+    	 JSONObject object = new JSONObject(message);
+    	 int row = object.getJSONObject("param").getInt("row");
+    	return new Obstacle(2,row, -1);
+    }
+    
+    public static String formatSkierWon() {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.skierWon);
+        return json.toString() + "\n";
+    }
+    
+    public static String formatVaudoisWon() {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.vaudoisWon);
+        return json.toString() + "\n";
+    }
 
-    // TODO send skier coordinate
-    // TODO send Dynamic obstacle coordinate
+    public static String formatSendSkierPosition(Skier skier) {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.skierPosition);
+        json.put("skier", skier.toJson());
+        return json.toString() + "\n";
+    }
+    
+    public static String formatSendDynamicObstacle(Collection<Obstacle> obstacles) {
+    	JSONObject json = new JSONObject();
+        json.put("command", command.obstaclesPositions);
+        json.put("dynamicObstacles", obstacles);
+
+        return json.toString() + "\n";
+    }
 }
